@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:36:23 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/15 19:54:52 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/01/15 20:05:05 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,10 @@ void PhoneBook::searchContact()
     }
     
     // Affiche le contact complet
+    // Affiche toutes les infos du contact sélectionné
     std::cout << "First Name: " << this->_contacts[index].getFirstName() << std::endl;
     std::cout << "Last Name: " << this->_contacts[index].getLastName() << std::endl;
-    // ... etc
+    std::cout << "Nickname: " << this->_contacts[index].getNickname() << std::endl;
+    std::cout << "Phone Number: " << this->_contacts[index].getPhoneNumber() << std::endl;
+    std::cout << "Darkest Secret: " << this->_contacts[index].getDarkestSecret() << std::endl;
 }
