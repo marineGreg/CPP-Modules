@@ -6,14 +6,32 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:36:16 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/13 12:36:17 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/01/15 19:57:44 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Contact.hpp"
+#include "PhoneBook.hpp"
+#include <iostream>
 
-int	main()
+int main()
 {
-	Contact instance;
-	return (0);
+    PhoneBook phoneBook;
+    std::string command;
+    
+    while (true)
+    {
+        std::cout << "Enter command (ADD, SEARCH, EXIT): ";
+        std::getline(std::cin, command);
+        
+        if (command == "ADD")
+            phoneBook.addContact();
+        else if (command == "SEARCH")
+            phoneBook.searchContact();
+        else if (command == "EXIT")
+            break;
+        else
+            std::cout << "Invalid command!" << std::endl;
+    }
+    
+    return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:36:27 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/15 16:39:39 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/01/15 19:53:28 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,17 @@
 
 class PhoneBook {
 	private:
-		Contact _contact[8];
-		int		_index; // quel est le prochain contact a remplir
-		int		_count; // combien de contacts existent reellement (max 8)
+		Contact _contacts[8];
+		int     _contactCount;     // Nombre total de contacts ajoutés
+    	int     _oldestIndex;	// Index du plus vieux contact (pour le remplacer)
 		
 	public:
 		PhoneBook();
 		~PhoneBook();
 		
-		void addContact(Contact &contact);
+		void addContact();
 		void searchContact() const;
+		void displayContact();
 };
 
 #endif
