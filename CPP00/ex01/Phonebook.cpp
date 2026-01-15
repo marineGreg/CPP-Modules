@@ -13,6 +13,7 @@
 #include "PhoneBook.hpp"
 #include <iostream>
 #include <iomanip>
+#include <cstdlib>
 
 PhoneBook::PhoneBook()
 {
@@ -46,7 +47,32 @@ void PhoneBook::addContact()
     }
     this->_contacts[this->_oldestIndex].setLastName(input);
     
-    // ... répète pour nickname, phoneNumber, darkestSecret
+    std::cout << "Nickname: ";
+    std::getline(std::cin, input);
+    if (input.empty())
+    {
+        std::cout << "Field cannot be empty!" << std::endl;
+        return;
+    }
+    this->_contacts[this->_oldestIndex].setNickName(input);
+    
+    std::cout << "Phone Number: ";
+    std::getline(std::cin, input);
+    if (input.empty())
+    {
+        std::cout << "Field cannot be empty!" << std::endl;
+        return;
+    }
+    this->_contacts[this->_oldestIndex].setPhoneNumber(input);
+    
+    std::cout << "Darkest Secret: ";
+    std::getline(std::cin, input);
+    if (input.empty())
+    {
+        std::cout << "Field cannot be empty!" << std::endl;
+        return;
+    }
+    this->_contacts[this->_oldestIndex].setDarkestSecret(input);
     
     // Mise à jour des compteurs
     if (this->_contactCount < 8)
@@ -57,7 +83,7 @@ void PhoneBook::addContact()
     std::cout << "Contact added successfully!" << std::endl;
 }
 
-void PhoneBook::searchContact()
+void PhoneBook::searchContact() const
 {
     if (this->_contactCount == 0)
     {
@@ -82,15 +108,36 @@ void PhoneBook::searchContact()
         else
             std::cout << std::setw(10) << firstName << "|";
         
-        // ... répète pour lastName et nickname
+        // Affiche le nom (tronqué si > 10 caractères)
+        std::string lastName = this->_contacts[i].getLastName();
+        if (lastName.length() > 10)
+            std::cout << lastName.substr(0, 9) << ".|";
+        else
+            std::cout << std::setw(10) << lastName << "|";
+        
+        // Affiche le surnom (tronqué si > 10 caractères)
+        std::string nickname = this->_contacts[i].getNickName();
+        if (nickname.length() > 10)
+            std::cout << nickname.substr(0, 9) << ".|";
+        else
+            std::cout << std::setw(10) << nickname << "|";
         
         std::cout << std::endl;
     }
     
     // Demande l'index
     std::cout << "Enter index: ";
-    int index;
-    std::cin >> index;
+    std::string indexStr;
+    std::getline(std::cin, indexStr);
+    
+    // Vérifie que c'est un nombre
+    if (indexStr.empty() || indexStr.find_first_not_of("0123456789") != std::string::npos)
+    {
+        std::cout << "Invalid index!" << std::endl;
+        return;
+    }
+    
+    int index = std::atoi(indexStr.c_str());
     
     if (index < 0 || index >= this->_contactCount)
     {
@@ -99,10 +146,9 @@ void PhoneBook::searchContact()
     }
     
     // Affiche le contact complet
-    // Affiche toutes les infos du contact sélectionné
     std::cout << "First Name: " << this->_contacts[index].getFirstName() << std::endl;
     std::cout << "Last Name: " << this->_contacts[index].getLastName() << std::endl;
-    std::cout << "Nickname: " << this->_contacts[index].getNickname() << std::endl;
+    std::cout << "Nickname: " << this->_contacts[index].getNickName() << std::endl;
     std::cout << "Phone Number: " << this->_contacts[index].getPhoneNumber() << std::endl;
     std::cout << "Darkest Secret: " << this->_contacts[index].getDarkestSecret() << std::endl;
 }

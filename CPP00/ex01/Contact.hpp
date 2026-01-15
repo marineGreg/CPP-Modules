@@ -13,7 +13,6 @@
 #ifndef CONTACT_HPP
 # define CONTACT_HPP
 
-# include <iostream>
 # include <string>
 
 /*
@@ -35,11 +34,11 @@ class Contact {
 		~Contact();
 		
 		/* ------------- S E T T E R S ------------- */
-        void setFirstName(std::string& str);
-        void setLastName(std::string& str);
-        void setNickName(std::string& str);
-        void setPhoneNumber(std::string& str);
-		void setDarkestSecret(std::string& str);
+        void setFirstName(const std::string& str);
+        void setLastName(const std::string& str);
+        void setNickName(const std::string& str);
+        void setPhoneNumber(const std::string& str);
+		void setDarkestSecret(const std::string& str);
 		
         /* ------------- G E T T E R S ------------- */
         std::string getFirstName() const;
