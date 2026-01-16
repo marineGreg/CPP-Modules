@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:35:56 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/15 19:37:25 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/01/16 12:01:57 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@
 
 /*
 * This Contact Class represents a contact in the phonebook 
-*
 * It stores the first name, last name, nickname, phone number and darkest secret
-* It allows to define informations, to display them
 */
 class Contact {
 	private:
