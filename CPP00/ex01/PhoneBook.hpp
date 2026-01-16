@@ -25,6 +25,8 @@ class PhoneBook {
 		int     _contactCount;  // Nombre total de contacts ajoutés
     	int     _index;	// Index du plus vieux contact (pour le remplacer)
 		
+		void printColumn(std::string str) const;
+		
 	public:
 		PhoneBook();
 		~PhoneBook();

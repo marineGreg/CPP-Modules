@@ -25,8 +25,7 @@ PhoneBook::~PhoneBook()
 {
 }
 
-// Petite fonction utilitaire pour formater (tu peux la mettre en privé dans ta classe)
-void printColumn(std::string str) {
+void PhoneBook::printColumn(std::string str) const {
     if (str.length() > 10) {
         std::cout << str.substr(0, 9) << ".|";
     } else {

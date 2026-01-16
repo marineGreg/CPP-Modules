@@ -18,34 +18,42 @@ Contact::~Contact() {}
 
 /* ---------------- S E T T E R S ---------------- */
 void Contact::setFirstName(const std::string& str) {
-	 this->_firstName = str; 
+	this->_firstName = str;
 }
+
 void Contact::setLastName(const std::string& str) {
-	 this->_lastName = str; 
+	this->_lastName = str;
 }
+
 void Contact::setNickName(const std::string& str) {
-	 this->_nickName = str; 
+	this->_nickName = str;
 }
+
 void Contact::setPhoneNumber(const std::string& str) {
-	 this->_phoneNumber = str; 
+	this->_phoneNumber = str;
 }
+
 void Contact::setDarkestSecret(const std::string& str) {
-	 this->_darkestSecret = str; 
+	this->_darkestSecret = str;
 }
 
 /* ---------------- G E T T E R S ---------------- */
-std::string Contact::getFirstName(void) const { 
-	return (this->_firstName); 
+std::string Contact::getFirstName(void) const {
+	return (this->_firstName);
 }
+
 std::string Contact::getLastName(void) const {
-	 return (this->_lastName); 
+	return (this->_lastName);
 }
+
 std::string Contact::getNickName(void) const {
-	 return (this->_nickName); 
+	return (this->_nickName);
 }
+
 std::string Contact::getPhoneNumber(void) const {
-	 return (this->_phoneNumber); 
+	return (this->_phoneNumber);
 }
+
 std::string Contact::getDarkestSecret(void) const {
-	return (this->_darkestSecret); 
+	return (this->_darkestSecret);
 }
