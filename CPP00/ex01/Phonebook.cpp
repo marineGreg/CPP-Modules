@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:36:23 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/20 16:29:44 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/01/20 19:17:06 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ PhoneBook::~PhoneBook()
 {
 }
 
-void PhoneBook::printColumn(std::string str) const {
+void PhoneBook::printColumn(std::string str) const
+{
     if (str.length() > 10) {
         std::cout << str.substr(0, 9) << ".|";
     } else {
@@ -33,7 +34,8 @@ void PhoneBook::printColumn(std::string str) const {
     }
 }
 
-void PhoneBook::addContact() {
+void PhoneBook::addContact()
+{
     std::string fields[5] = {"First Name", "Last Name", "Nickname", "Phone Number", "Darkest Secret"};
     std::string inputs[5];
 
@@ -48,7 +50,6 @@ void PhoneBook::addContact() {
         }
     }
 
-    // Une fois qu'on a tout, on remplit le contact
     _contacts[_index].setFirstName(inputs[0]);
     _contacts[_index].setLastName(inputs[1]);
     _contacts[_index].setNickName(inputs[2]);
@@ -61,7 +62,8 @@ void PhoneBook::addContact() {
     std::cout << "Contact added successfully!" << std::endl;
 }
 
-void PhoneBook::searchContact() const {
+void PhoneBook::searchContact() const
+{
     if (_contactCount == 0) {
         std::cout << "Phonebook is empty!" << std::endl;
         return;
