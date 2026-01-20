@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:36:23 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/16 18:01:04 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/01/20 16:29:44 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void PhoneBook::addContact() {
     _contacts[_index].setPhoneNumber(inputs[3]);
     _contacts[_index].setDarkestSecret(inputs[4]);
 
-    if (_contactCount < 8) _contactCount++;
+    if (_contactCount < 8)
+		_contactCount++;
     _index = (_index + 1) % 8;
     std::cout << "Contact added successfully!" << std::endl;
 }
@@ -66,7 +67,6 @@ void PhoneBook::searchContact() const {
         return;
     }
 
-    // Header
     std::cout << "|     Index|First Name| Last Name|  Nickname|" << std::endl;
 
     for (int i = 0; i < _contactCount; i++) {
@@ -78,7 +78,6 @@ void PhoneBook::searchContact() const {
         std::cout << std::endl;
     }
 
-    // Sélection de l'index
     std::cout << "Enter index to display: ";
     std::string indexStr;
     if (!std::getline(std::cin, indexStr)) return;
