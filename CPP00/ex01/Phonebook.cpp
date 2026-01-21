@@ -6,14 +6,11 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:36:23 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/20 19:17:06 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/01/21 15:00:35 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PhoneBook.hpp"
-#include <iostream>
-#include <iomanip>
-#include <sstream>
 
 PhoneBook::PhoneBook()
 {
@@ -42,9 +39,9 @@ void PhoneBook::addContact()
     for (int i = 0; i < 5; i++) {
         while (true) {
             std::cout << fields[i] << ": ";
-            if (!std::getline(std::cin, inputs[i])) // Gestion Ctrl+D
+            if (!std::getline(std::cin, inputs[i]))
                 return; 
-            if (!inputs[i].empty()) // Vérifie si vide
+            if (!inputs[i].empty())
                 break;
             std::cout << "Field cannot be empty!" << std::endl;
         }
@@ -88,7 +85,7 @@ void PhoneBook::searchContact() const
     int index;
     std::string extra;
 
-    if (!(ss >> index) || (ss >> extra)) { // Vérifie si c'est un nombre ET s'il n'y a pas de texte après
+    if (!(ss >> index) || (ss >> extra)) {
         std::cout << "Invalid index!" << std::endl;
     } else if (index < 0 || index >= _contactCount) {
         std::cout << "Index out of range!" << std::endl;
