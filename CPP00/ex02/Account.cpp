@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/19 12:00:00 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/01/23 17:24:15 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <iomanip>
 
 // Initialisation des variables statiques
-int Account::_nbAccounts = 0;
+int	Account::_nbAccounts = 0;
 int Account::_totalAmount = 0;
 int Account::_totalNbDeposits = 0;
 int Account::_totalNbWithdrawals = 0;
@@ -58,7 +58,7 @@ int Account::getNbDeposits(void) {
 	return _totalNbDeposits;
 }
 
-int Account::getNbWithdrawals(void) {
+int	Account::getNbWithdrawals(void) {
 	return _totalNbWithdrawals;
 }
 
@@ -138,5 +138,5 @@ void Account::_displayTimestamp(void) {
 			  << std::setfill('0') << std::setw(2) << ltm->tm_hour
 			  << std::setfill('0') << std::setw(2) << ltm->tm_min
 			  << std::setfill('0') << std::setw(2) << ltm->tm_sec
-			  << "] ";
+			  << "]";
 }

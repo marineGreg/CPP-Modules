@@ -1,37 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PhoneBook.hpp                                      :+:      :+:    :+:   */
+/*   Zombie.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 12:36:27 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/23 16:26:05 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/01/13 12:35:50 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/01/23 19:02:10 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHONEBOOK_HPP
-# define PHONEBOOK_HPP
+#include "Zombie.hpp"
 
-# include <iostream>
-# include <iomanip>
-# include <sstream>
-# include "Contact.hpp"
+Zombie::Zombie() : _name(":Default") {}
 
-class PhoneBook {
-	private:
-		Contact _contacts[8];
-		int     _contactCount;
-    	int     _index;
-		
-		void	_printColumn(std::string str) const;
-		
-	public:
-		PhoneBook();
-		~PhoneBook();
-		
-		void addContact();
-		void searchContact() const;
-};
+Zombie::Zombie(std::string name) : _name(name) {}
 
-#endif
+Zombie::~Zombie() {
+	std::cout << _name << ": has been destroyed" << std::endl;
+}
+
+void	Zombie::announce(void) {
+	std::cout << _name << ": BraiiiiiiinnnzzzZ.." << std::endl;
+}

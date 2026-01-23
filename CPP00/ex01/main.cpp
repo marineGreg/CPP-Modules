@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:36:16 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/16 17:06:10 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:32:23 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int main()
         else if (command == "EXIT")
             break;
         else
-            std::cout << "Invalid command!" << std::endl;
+            std::cout << "Invalid command !" << std::endl;
     }
     
     return (0);

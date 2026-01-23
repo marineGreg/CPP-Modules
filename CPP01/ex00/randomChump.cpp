@@ -1,37 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PhoneBook.hpp                                      :+:      :+:    :+:   */
+/*   randomChump.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 12:36:27 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/23 16:26:05 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/01/23 19:03:34 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/01/23 19:06:50 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHONEBOOK_HPP
-# define PHONEBOOK_HPP
+#include "Zombie.hpp"
 
-# include <iostream>
-# include <iomanip>
-# include <sstream>
-# include "Contact.hpp"
-
-class PhoneBook {
-	private:
-		Contact _contacts[8];
-		int     _contactCount;
-    	int     _index;
-		
-		void	_printColumn(std::string str) const;
-		
-	public:
-		PhoneBook();
-		~PhoneBook();
-		
-		void addContact();
-		void searchContact() const;
-};
-
-#endif
+void	randomChump(std::string name) {
+	Zombie	stackZombie(name);
+	stackZombie.announce();
+}

@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:36:23 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/21 15:00:35 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:27:24 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ PhoneBook::~PhoneBook()
 {
 }
 
-void PhoneBook::printColumn(std::string str) const
+void PhoneBook::_printColumn(std::string str) const
 {
     if (str.length() > 10) {
         std::cout << str.substr(0, 9) << ".|";
@@ -71,9 +71,9 @@ void PhoneBook::searchContact() const
     for (int i = 0; i < _contactCount; i++) {
         std::cout << "|";
         std::cout << std::setw(10) << i << "|";
-        printColumn(_contacts[i].getFirstName());
-        printColumn(_contacts[i].getLastName());
-        printColumn(_contacts[i].getNickName());
+        _printColumn(_contacts[i].getFirstName());
+        _printColumn(_contacts[i].getLastName());
+        _printColumn(_contacts[i].getNickName());
         std::cout << std::endl;
     }
 
