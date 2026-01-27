@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   HumanA.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/23 19:18:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/27 10:14:50 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/01/23 19:03:34 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/01/27 12:47:51 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.hpp"
+#include "HumanA.hpp"
 
-int	main() {
-	
-	randomChump("StackZombie");
-	
-	Zombie *heapZombie = newZombie("HeapZombie");
-	
-	heapZombie->announce();
+HumanA::HumanA(std::string name, Weapon& weapon) :_name(name), _weapon(weapon) {}
 
-	delete heapZombie;
-	
-	return 0;
+HumanA::~HumanA() {}
+
+void	HumanA::attack() const {
+	std::cout << this->_name << " attacks with their " << this->_weapon.getType() << std::endl;
 }

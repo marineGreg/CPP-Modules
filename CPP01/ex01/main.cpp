@@ -5,22 +5,22 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/23 19:18:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/27 10:14:50 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/01/27 10:18:29 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/01/27 11:33:38 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Zombie.hpp"
 
-int	main() {
-	
-	randomChump("StackZombie");
-	
-	Zombie *heapZombie = newZombie("HeapZombie");
-	
-	heapZombie->announce();
+int main() {
+    int N = 5;
+    Zombie* maHorde = zombieHorde(N, "Soldat");
 
-	delete heapZombie;
-	
-	return 0;
+    for (int i = 0; i < N; i++) {
+        maHorde[i].announce();
+    }
+
+    delete[] maHorde; 
+
+    return 0;
 }

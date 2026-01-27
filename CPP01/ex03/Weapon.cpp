@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Weapon.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/23 19:18:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/27 10:14:50 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/01/13 12:35:50 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/01/27 12:40:01 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.hpp"
+#include "Weapon.hpp"
 
-int	main() {
-	
-	randomChump("StackZombie");
-	
-	Zombie *heapZombie = newZombie("HeapZombie");
-	
-	heapZombie->announce();
+Weapon::Weapon(std::string type) : _type(type) {}
 
-	delete heapZombie;
-	
-	return 0;
+Weapon::~Weapon() {};
+
+const std::string& Weapon::getType() const {
+	return this->_type;
+}
+
+void	Weapon::setType(const std::string& newType) {
+	this->_type = newType;	
 }
