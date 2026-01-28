@@ -16,23 +16,23 @@
 
 void	run_replace(std::string filename, std::string s1, std::string s2)
 {
-	std::ifstream	ifs(filename.c_str());
-	if (!ifs.is_open())
+	std::ifstream	input(filename.c_str());
+	if (!input.is_open())
 	{
 		std::cerr << "Could not open file" << std::endl;
 		return ;
 	}
 
-	std::ofstream ofs((filename + ".replace").c_str());
-	if (!ofs.is_open())
+	std::ofstream	output((filename + ".replace").c_str());
+	if (!output.is_open())
 	{
 		std::cerr << "Error: could not create output file" << std::endl;
-		ifs.close();
+		input.close();
 		return ;
 	}
 	
 	std::string	line;
-	while (std::getline(ifs, line))
+	while (std::getline(input, line))
 	{
 		size_t		pos = 0;
 		std::string	newLine;
@@ -49,10 +49,10 @@ void	run_replace(std::string filename, std::string s1, std::string s2)
 			newLine += s2;
 			pos = found + s1.length();
 		}
-		ofs << newLine;
-		if (ifs.eof())
-			ofs << std::endl;
+		output << newLine;
+		if (input.eof())
+			output << std::endl;
 	}
-	ifs.close();
-	ofs.close();
+	input.close();
+	output.close();
 }

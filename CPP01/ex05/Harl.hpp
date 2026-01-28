@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Harl.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/23 19:18:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/27 13:15:47 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/01/13 12:35:50 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/01/27 17:53:51 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Weapon.hpp"
-#include "HumanA.hpp"
-#include "HumanB.hpp"
+#ifndef HARL_HPP
+# define HARL_HPP
 
-int	main()
-{
-	{
-		Weapon	sword = Weapon("katana sword");
+# include <iostream>
+# include <string>
 
-		HumanA	john("John", sword);
-		john.attack();
-		sword.setType("regular sword");
-		john.attack();
-	}
-	{
-		Weapon	sword = Weapon("katana sword");
-		HumanB	theo("Theo");
-		theo.setWeapon(sword);
-		theo.attack();
-		sword.setType("regular sword");
-		theo.attack();
-	}
-	return (0);
-}
+class Harl {
+	private:
+		void debug(void);
+		void info(void);
+		void warning(void);
+		void error(void);
+
+	public:
+		Harl();
+		~Harl();
+
+		void complain(std::string level);
+};
+
+#endif

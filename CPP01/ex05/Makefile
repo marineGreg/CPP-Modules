@@ -1,7 +1,7 @@
-NAME        = replace
+NAME        = harl
 CC          = c++
 FLAGS       = -Wall -Wextra -Werror -std=c++98
-SRCS        = main.cpp replace.cpp
+SRCS        = main.cpp Harl.cpp
 OBJS        = $(SRCS:.cpp=.o)
 
 all: $(NAME)

@@ -16,7 +16,7 @@ int	main() {
 	
 	randomChump("StackZombie");
 	
-	Zombie *heapZombie = newZombie("HeapZombie");
+	Zombie* heapZombie = newZombie("HeapZombie");
 	
 	heapZombie->announce();
 

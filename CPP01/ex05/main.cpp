@@ -6,31 +6,21 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 19:18:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/27 13:15:47 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/01/27 16:40:34 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Weapon.hpp"
-#include "HumanA.hpp"
-#include "HumanB.hpp"
+#include "Harl.hpp"
 
 int	main()
 {
-	{
-		Weapon	sword = Weapon("katana sword");
+	Harl harl;
 
-		HumanA	john("John", sword);
-		john.attack();
-		sword.setType("regular sword");
-		john.attack();
-	}
-	{
-		Weapon	sword = Weapon("katana sword");
-		HumanB	theo("Theo");
-		theo.setWeapon(sword);
-		theo.attack();
-		sword.setType("regular sword");
-		theo.attack();
-	}
+	harl.complain("DEBUG");
+	harl.complain("INFO");
+	harl.complain("WARNING");
+	harl.complain("ERROR");
+	harl.complain("UNKNOWN");
+
 	return (0);
 }
