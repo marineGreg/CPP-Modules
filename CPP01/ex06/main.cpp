@@ -24,16 +24,16 @@ int	getLevel(std::string level)
 	return (-1);
 }
 
-int	main(int argc, char **argv)
+int	main(int ac, char **av)
 {
-	if (argc != 2)
+	if (ac != 2)
 	{
 		std::cout << "Usage: ./harlFilter [DEBUG|INFO|WARNING|ERROR]" << std::endl;
 		return (1);
 	}
 
 	Harl harl;
-	int level = getLevel(argv[1]);
+	int level = getLevel(av[1]);
 
 	switch (level)
 	{
