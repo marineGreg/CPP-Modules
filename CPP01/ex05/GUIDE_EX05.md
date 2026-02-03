@@ -188,22 +188,57 @@ void Harl::complain(std::string level) {
 
 ## 🧪 Tests et utilisation
 
-### main.cpp
+### main.cpp - Version complète
+
+⚠️ **IMPORTANT** : Le sujet demande de créer des tests qui montrent que **"Harl complains a lot"** (Harl se plaint beaucoup). Un main avec seulement 5 appels n'est pas suffisant !
 
 ```cpp
 int main()
 {
     Harl harl;
 
-    harl.complain("DEBUG");    // Affiche le message DEBUG
-    harl.complain("INFO");     // Affiche le message INFO
-    harl.complain("WARNING");  // Affiche le message WARNING
-    harl.complain("ERROR");    // Affiche le message ERROR
-    harl.complain("UNKNOWN");  // Affiche le message par défaut
+    std::cout << "=== Test 1: Tous les niveaux ===" << std::endl;
+    harl.complain("DEBUG");
+    harl.complain("INFO");
+    harl.complain("WARNING");
+    harl.complain("ERROR");
+
+    std::cout << "\n=== Test 2: Harl se plaint beaucoup de DEBUG ===" << std::endl;
+    for (int i = 0; i < 3; i++)
+        harl.complain("DEBUG");
+
+    std::cout << "\n=== Test 3: Harl est vraiment énervé (ERROR) ===" << std::endl;
+    for (int i = 0; i < 5; i++)
+        harl.complain("ERROR");
+
+    std::cout << "\n=== Test 4: Mélange de plaintes ===" << std::endl;
+    harl.complain("INFO");
+    harl.complain("WARNING");
+    harl.complain("DEBUG");
+    harl.complain("ERROR");
+    harl.complain("INFO");
+    harl.complain("WARNING");
+
+    std::cout << "\n=== Test 5: Niveau invalide ===" << std::endl;
+    harl.complain("UNKNOWN");
+    harl.complain("CRITICAL");
+    harl.complain("");
+
+    std::cout << "\n=== Test 6: Harl ne s'arrête jamais de se plaindre ===" << std::endl;
+    std::string levels[] = { "DEBUG", "INFO", "WARNING", "ERROR" };
+    for (int i = 0; i < 10; i++)
+        harl.complain(levels[i % 4]);
 
     return (0);
 }
 ```
+
+**Pourquoi ce main est meilleur ?**
+- ✅ Montre vraiment que Harl se plaint **BEAUCOUP**
+- ✅ Teste tous les niveaux multiples fois
+- ✅ Utilise des boucles pour simuler des plaintes répétées
+- ✅ Teste les cas invalides
+- ✅ Démontre la robustesse du système
 
 ### Compilation et exécution
 
@@ -212,14 +247,30 @@ make
 ./harl
 ```
 
-### Résultat attendu
+### Aperçu du résultat
+
+Le programme affichera une **longue série** de messages (plus de 30 plaintes !), démontrant vraiment que Harl se plaint énormément :
 
 ```
+=== Test 1: Tous les niveaux ===
 [ DEBUG ] I love having extra bacon for my 7XL-double-cheese-triple-pickle-special ketchup burger. I really do !
 [ INFO ] I cannot believe adding extra bacon costs more money. You didn't put enough bacon in my burger ! If you did, I wouldn't be asking for more !
 [ WARNING ] I think I deserve to have some extra bacon for free. I've been coming for years whereas you started working here since last month.
 [ ERROR ] This is unacceptable ! I want to speak to the manager now.
-[ Probably complaining about insignificant problems ]
+
+=== Test 2: Harl se plaint beaucoup de DEBUG ===
+[ DEBUG ] I love having extra bacon...
+[ DEBUG ] I love having extra bacon...
+[ DEBUG ] I love having extra bacon...
+
+=== Test 3: Harl est vraiment énervé (ERROR) ===
+[ ERROR ] This is unacceptable ! I want to speak to the manager now.
+[ ERROR ] This is unacceptable ! I want to speak to the manager now.
+[ ERROR ] This is unacceptable ! I want to speak to the manager now.
+[ ERROR ] This is unacceptable ! I want to speak to the manager now.
+[ ERROR ] This is unacceptable ! I want to speak to the manager now.
+
+... et ainsi de suite (30+ messages au total)
 ```
 
 ---
@@ -318,6 +369,7 @@ void Harl::complain(Level level) {
 - [ ] La méthode complain() utilise des pointeurs vers fonctions membres
 - [ ] Tous les niveaux ("DEBUG", "INFO", "WARNING", "ERROR") fonctionnent
 - [ ] Un niveau invalide affiche un message par défaut
+- [ ] ⚠️ **IMPORTANT** : Le main montre que Harl se plaint BEAUCOUP (pas juste 5 appels !)
 - [ ] Le code respecte la norme C++98
 - [ ] Pas de fuite mémoire (vérifier avec valgrind si nécessaire)
 - [ ] Le Makefile compile avec `-Wall -Wextra -Werror -std=c++98`
