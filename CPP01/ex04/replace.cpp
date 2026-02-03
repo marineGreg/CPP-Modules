@@ -50,7 +50,7 @@ void	run_replace(std::string filename, std::string s1, std::string s2)
 			pos = found + s1.length();
 		}
 		output << newLine;
-		if (input.eof())
+		if (!input.eof())
 			output << std::endl;
 	}
 	input.close();

@@ -28,11 +28,11 @@ class Contact {
 		~Contact();
 		
 		/* ------------- S E T T E R S ------------- */
-        void setFirstName(const std::string& str);
-        void setLastName(const std::string& str);
-        void setNickName(const std::string& str);
-        void setPhoneNumber(const std::string& str);
-		void setDarkestSecret(const std::string& str);
+        void setFirstName(const std::string str);
+        void setLastName(const std::string str);
+        void setNickName(const std::string str);
+        void setPhoneNumber(const std::string str);
+		void setDarkestSecret(const std::string str);
 		
         /* ------------- G E T T E R S ------------- */
         std::string getFirstName() const;
