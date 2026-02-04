@@ -5,32 +5,25 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/23 19:18:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 12:47:04 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/02/04 12:27:19 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/02/04 14:20:01 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Weapon.hpp"
-#include "HumanA.hpp"
-#include "HumanB.hpp"
+#include "Fixed.hpp"
+#include <iostream>
 
-int	main()
+int	main(void)
 {
-	{
-		Weapon	sword = Weapon("katana sword");
+	Fixed	a;
+	Fixed	b( a );
+	Fixed	c;
+	
+	c = b;
 
-		HumanA	alex("Alex", sword);
-		alex.attack();
-		sword.setType("regular sword");
-		alex.attack();
-	}
-	{
-		Weapon	sword = Weapon("katana sword");
-		HumanB	theo("Theo");
-		theo.setWeapon(sword);
-		theo.attack();
-		sword.setType("regular sword");
-		theo.attack();
-	}
-	return (0);
+	std::cout << a.getRawBits() << std::endl;
+	std::cout << b.getRawBits() << std::endl;
+	std::cout << c.getRawBits() << std::endl;
+
+	return 0;
 }

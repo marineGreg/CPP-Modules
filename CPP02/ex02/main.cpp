@@ -5,32 +5,27 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/23 19:18:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 12:47:04 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/02/04 12:27:19 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/02/04 16:04:20 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Weapon.hpp"
-#include "HumanA.hpp"
-#include "HumanB.hpp"
+#include "Fixed.hpp"
+#include <iostream>
 
-int	main()
+int	main(void)
 {
-	{
-		Weapon	sword = Weapon("katana sword");
+	Fixed		a;
+	Fixed const	b( Fixed( 5.05f ) * Fixed( 2 ) );
 
-		HumanA	alex("Alex", sword);
-		alex.attack();
-		sword.setType("regular sword");
-		alex.attack();
-	}
-	{
-		Weapon	sword = Weapon("katana sword");
-		HumanB	theo("Theo");
-		theo.setWeapon(sword);
-		theo.attack();
-		sword.setType("regular sword");
-		theo.attack();
-	}
-	return (0);
+	std::cout << a << std::endl;
+	std::cout << ++a << std::endl;
+	std::cout << a << std::endl;
+	std::cout << a++ << std::endl;
+	std::cout << a << std::endl;
+	
+	std::cout << b << std::endl;
+	std::cout << Fixed::max( a, b ) << std::endl;
+
+	return 0;
 }

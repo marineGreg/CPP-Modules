@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   FragTrap.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/23 19:18:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 12:47:04 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/02/04 17:37:03 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/02/04 17:44:06 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Weapon.hpp"
-#include "HumanA.hpp"
-#include "HumanB.hpp"
+#ifndef FRAGTRAP_HPP
+# define FRAGTRAP_HPP
 
-int	main()
-{
-	{
-		Weapon	sword = Weapon("katana sword");
+#include "ClapTrap.hpp"
 
-		HumanA	alex("Alex", sword);
-		alex.attack();
-		sword.setType("regular sword");
-		alex.attack();
-	}
-	{
-		Weapon	sword = Weapon("katana sword");
-		HumanB	theo("Theo");
-		theo.setWeapon(sword);
-		theo.attack();
-		sword.setType("regular sword");
-		theo.attack();
-	}
-	return (0);
-}
+class FragTrap : public ClapTrap {
+	
+	public:
+    	FragTrap();
+    	FragTrap(std::string name);
+    	FragTrap(const FragTrap& other);
+    	FragTrap& operator=(const FragTrap& other);
+    	~FragTrap();
+
+		// Capacité spéciale unique à FragTrap
+    	void highFivesGuys(void);
+};
+
+#endif
