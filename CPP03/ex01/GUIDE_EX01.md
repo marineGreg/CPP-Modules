@@ -252,55 +252,51 @@ void ScavTrap::guardGate() {
 
 ### Vue d'ensemble des tests
 
-Le main.cpp contient **10 tests complets** qui démontrent l'héritage et comparent ClapTrap et ScavTrap :
+Le main.cpp contient **6 tests** qui démontrent l'héritage et comparent ClapTrap et ScavTrap :
 
-| Test | Objectif | Concepts testés |
-|------|----------|-----------------|
-| **1** | Construction comparée | ClapTrap vs ScavTrap côte à côte |
-| **2** | Comparaison attaques | Messages différents (override) |
-| **3** | Capacité spéciale | guardGate() multiple fois |
-| **4** | Constructeur de copie | Copie de ScavTrap |
-| **5** | Opérateur d'affectation | Affectation de ScavTrap |
-| **6** | Endurance ScavTrap | 52 attaques (50 energy max) |
-| **7** | Résistance ScavTrap | 105 dégâts (100 HP max) |
-| **8** | Combat comparatif | ClapTrap vs ScavTrap |
-| **9** | Réparations multiples | Série de 5 réparations |
-| **10** | Mode garde en combat | guardGate() pendant actions |
+| Test | Objectif |
+|------|----------|
+| **1** | Construction ClapTrap vs ScavTrap |
+| **2** | Comparaison des attaques (override) |
+| **3** | Capacité spéciale guardGate() |
+| **4** | Constructeur de copie |
+| **5** | Endurance (50 energy) |
+| **6** | Résistance (100 HP) |
 
-### Extraits clés du main
+### Code du main
 
 ```cpp
-// TEST 2: Comparaison des attaques
-std::cout << "ClapTrap attack:" << std::endl;
-clap.attack("enemy");  // Message normal, 0 dégâts
+int main() {
+    // TEST 1: Construction
+    ClapTrap clap("Basic");
+    ScavTrap scav("Guardian");
 
-std::cout << "\nScavTrap attack:" << std::endl;
-scav.attack("enemy");  // Message "savagely", 20 dégâts
+    // TEST 2: Comparaison attaques
+    clap.attack("enemy");  // Message normal
+    scav.attack("enemy");  // Message "savagely"
 
-// TEST 6: Endurance ScavTrap (50 energy)
-ScavTrap endurance("Marathon");
-for (int i = 0; i < 52; i++) {  // 50 max + 2 qui échouent
-    endurance.attack("dummy");
+    // TEST 3: Capacité spéciale
+    scav.guardGate();
+
+    // TEST 4: Constructeur de copie
+    ScavTrap copy(scav);
+    copy.attack("target");
+
+    // TEST 5: Endurance (50 energy)
+    ScavTrap marathon("Marathon");
+    for (int i = 0; i < 52; i++)
+        marathon.attack("dummy");
+
+    // TEST 6: Résistance (100 HP)
+    ScavTrap tank("Tank");
+    tank.takeDamage(105);
+    tank.attack("ghost");  // Ne peut plus attaquer
+
+    return 0;
 }
-
-// TEST 8: Combat ClapTrap vs ScavTrap
-ClapTrap weakling("Weakling");
-ScavTrap warrior("Warrior");
-weakling.attack("Warrior");
-warrior.takeDamage(0);
-warrior.attack("Weakling");
-weakling.takeDamage(20);  // ClapTrap meurt en un coup !
-
-// TEST 10: Mode Gate keeper pendant combat
-ScavTrap defender("Defender");
-defender.guardGate();
-defender.attack("attacker");
-defender.takeDamage(25);
-defender.beRepaired(15);
-defender.guardGate();  // Remet en mode garde
 ```
 
-### Aperçu de la sortie
+### Sortie attendue (extrait)
 
 ```
 === TEST 1: Construction ClapTrap vs ScavTrap ===
@@ -308,43 +304,34 @@ ClapTrap Name constructor called for Basic
 ClapTrap Name constructor called for Guardian
 ScavTrap Name constructor called for Guardian
 
-=== TEST 2: Comparaison des attaques ===
-ClapTrap attack:
+=== TEST 2: Comparaison attaques ===
 ClapTrap Basic attacks enemy, causing 0 points of damage!
-
-ScavTrap attack:
 ScavTrap Guardian savagely attacks enemy, causing 20 points of damage!
 
-=== TEST 3: Capacité spéciale ScavTrap ===
+=== TEST 3: Capacité spéciale ===
 ScavTrap Guardian is now in Gate keeper mode.
-ScavTrap Guardian is now in Gate keeper mode.
 
-=== TEST 6: Endurance ScavTrap (50 energy) ===
-Attaque 1: ScavTrap Marathon savagely attacks dummy...
-...
-Attaque 51: ScavTrap Marathon can't attack! (plus d'énergie)
+=== TEST 5: Endurance (50 energy) ===
+[50 attaques réussies...]
+ScavTrap Marathon can't attack! (énergie épuisée)
 
-=== TEST 8: Combat ClapTrap vs ScavTrap ===
-Tour 1 - ClapTrap attaque:
-ClapTrap Weakling attacks Warrior, causing 0 points of damage!
-Tour 2 - ScavTrap riposte:
-ScavTrap Warrior savagely attacks Weakling, causing 20 points of damage!
-ClapTrap Weakling took 20 points of damage! Remaining HP: 0
+=== TEST 6: Résistance (100 HP) ===
+ScavTrap Tank took 105 points of damage! Remaining HP: 0
+ScavTrap Tank can't attack! (mort)
 
-=== Destruction de tous les robots ===
+=== Destruction ===
 ScavTrap Destructor called
-ClapTrap Destructor called for [nom]
-...
+ClapTrap Destructor called for [noms]
 ```
 
 ### Points clés démontrés
 
-✅ **Override** : attack() de ScavTrap différent de ClapTrap  
-✅ **Héritage** : takeDamage() et beRepaired() fonctionnent sans redéfinition  
+✅ **Override** : attack() de ScavTrap affiche un message différent  
+✅ **Héritage** : takeDamage() et beRepaired() hérités sans modification  
 ✅ **Constructeurs** : Ordre parent → enfant  
 ✅ **Destructeurs** : Ordre enfant → parent (automatique)  
-✅ **Stats différentes** : HP=100, Energy=50, Damage=20 (vs 10/10/0)  
-✅ **Capacité unique** : guardGate() n'existe pas dans ClapTrap
+✅ **Stats** : HP=100, Energy=50, Damage=20 (vs 10/10/0 pour ClapTrap)  
+✅ **Capacité unique** : guardGate() spécifique à ScavTrap
 
 ---
 

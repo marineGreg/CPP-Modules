@@ -234,80 +234,68 @@ void ClapTrap::beRepaired(unsigned int amount) {
 
 ### Vue d'ensemble des tests
 
-Le main.cpp contient **11 tests complets** qui couvrent tous les aspects de la classe ClapTrap :
+Le main.cpp contient **4 tests essentiels** qui couvrent les aspects clés de la classe ClapTrap :
 
-| Test | Objectif | Concepts testés |
-|------|----------|-----------------|
-| **1** | Construction basique | Constructeur avec paramètre |
-| **2** | Actions de base | attack(), takeDamage(), beRepaired() |
-| **3** | Constructeur de copie | Copie d'objet |
-| **4** | Opérateur d'affectation | Affectation entre objets |
-| **5** | Épuisement d'énergie | Limite de 10 energy points |
-| **6** | Série de réparations | Multiples beRepaired() |
-| **7** | Combat simulé | Interaction entre 2 ClapTraps |
-| **8** | Dégâts progressifs | Accumulation de dégâts |
-| **9** | Tentatives après mort | Actions impossibles (HP=0) |
-| **10** | Mort instantanée | Dégâts > HP en un coup |
-| **11** | Multiple ClapTraps | Tableau d'objets |
+| Test | Objectif |
+|------|----------|
+| **1** | Construction et actions de base |
+| **2** | Constructeur de copie |
+| **3** | Épuisement d'énergie (12 actions, max = 10) |
+| **4** | Mort par dégâts excessifs |
 
-### Extrait du main (Tests clés)
+### Code du main
 
 ```cpp
-// TEST 3: Constructeur de copie
-ClapTrap copyClap(clap);
-copyClap.attack("dummy");
+int main() {
+    // TEST 1: Construction et actions
+    ClapTrap clap("Clappy");
+    clap.attack("enemy");
+    clap.takeDamage(3);
+    clap.beRepaired(5);
 
-// TEST 4: Opérateur d'affectation
-ClapTrap assignedClap("Temporary");
-assignedClap = clap;
+    // TEST 2: Constructeur de copie
+    ClapTrap copy(clap);
+    copy.attack("target");
 
-// TEST 5: Épuisement d'énergie (12 actions, max = 10)
-ClapTrap tired("Exhausted");
-for (int i = 0; i < 12; i++) {
-    tired.attack("training dummy");
+    // TEST 3: Épuisement d'énergie
+    ClapTrap tired("Exhausted");
+    for (int i = 0; i < 12; i++)
+        tired.attack("dummy");
+
+    // TEST 4: Mort par dégâts
+    ClapTrap victim("Victim");
+    victim.takeDamage(15);
+    victim.attack("ghost");  // Ne peut plus attaquer
+
+    return 0;
 }
-
-// TEST 8: Dégâts progressifs
-ClapTrap victim("Victim");
-victim.takeDamage(3);
-victim.takeDamage(4);
-victim.takeDamage(5);  // Total: 12 dégâts → mort
-
-// TEST 11: Multiple ClapTraps
-ClapTrap army[3] = {ClapTrap("Soldier1"), ClapTrap("Soldier2"), ClapTrap("Soldier3")};
 ```
 
-### Aperçu de la sortie
+### Sortie attendue (extrait)
 
 ```
-=== TEST 1: Construction basique ===
+=== TEST 1: Construction et actions ===
 ClapTrap Name constructor called for Clappy
-ClapTrap Name constructor called for Target
+ClapTrap Clappy attacks enemy, causing 0 points of damage!
+ClapTrap Clappy took 3 points of damage! Remaining HP: 7
+ClapTrap Clappy repairs itself by 5 points! Current HP: 12
 
-=== TEST 3: Constructeur de copie ===
+=== TEST 2: Constructeur de copie ===
 ClapTrap Copy constructor called
-ClapTrap Assignment operator called
-ClapTrap copyClap attacks dummy, causing 0 points of damage!
+ClapTrap copy attacks target, causing 0 points of damage!
 
-=== TEST 5: Épuisement d'énergie ===
-Action 1: ClapTrap Exhausted attacks training dummy...
-...
-Action 11: ClapTrap Exhausted is out of energy and cannot attack!
+=== TEST 3: Épuisement d'énergie ===
+ClapTrap Exhausted attacks dummy...
+[...10 attaques réussies...]
+ClapTrap Exhausted is out of energy and cannot attack!
 
-=== TEST 8: Dégâts progressifs ===
-ClapTrap Victim took 3 points of damage! Remaining HP: 7
-ClapTrap Victim took 4 points of damage! Remaining HP: 3
-ClapTrap Victim took 5 points of damage! Remaining HP: 0
-
-=== TEST 9: Tentative d'action après mort ===
+=== TEST 4: Mort par dégâts ===
+ClapTrap Victim took 15 points of damage! Remaining HP: 0
 ClapTrap Victim is dead and cannot attack!
-ClapTrap Victim is dead and cannot be repaired!
 
-=== Destruction de tous les ClapTraps ===
+=== Destruction ===
 ClapTrap Destructor called for [tous les ClapTraps]
 ```
-
-**Total :** Plus de 30 ClapTraps créés et testés dans différents scénarios !
 
 ---
 

@@ -213,48 +213,61 @@ DiamondTrap& DiamondTrap::operator=(const DiamondTrap& other) {
 
 ### Vue d'ensemble des tests
 
-Le main.cpp contient **14 tests complets** :
+Le main.cpp contient **7 tests** qui démontrent l'héritage multiple :
 
 | Test | Objectif |
 |------|----------|
 | **1** | Construction DiamondTrap |
-| **2** | whoAmI() et les deux noms |
-| **3** | Vérification héritage multiple |
-| **4** | attack() de ScavTrap |
-| **5** | Capacités spéciales (guardGate + highFivesGuys) |
-| **6** | Méthodes héritées (takeDamage, beRepaired) |
-| **7** | Constructeur par défaut |
-| **8** | Constructeur de copie |
-| **9** | Opérateur d'affectation |
-| **10** | Stats hybrides (100HP, 50Energy, 30Damage) |
-| **11** | Endurance énergétique (50 energy) |
-| **12** | Comparaison avec parents |
-| **13** | Multiple DiamondTraps |
-| **14** | Combat simulé |
+| **2** | whoAmI() (les deux noms) |
+| **3** | attack() de ScavTrap |
+| **4** | Capacités héritées des 3 parents |
+| **5** | Constructeur de copie |
+| **6** | Endurance (50 energy) |
+| **7** | Comparaison avec les 4 types |
 
-### Extraits clés du main
+### Code du main
 
 ```cpp
-// TEST 2: whoAmI()
-DiamondTrap diamond("Destroyer");
-diamond.whoAmI();
-// Sortie: "I am DiamondTrap: Destroyer and my ClapTrap name is: Destroyer_clap_name"
+int main() {
+    // TEST 1: Construction
+    DiamondTrap diamond("Monster");
 
-// TEST 4: Attack de ScavTrap
-diamond.attack("enemy");
-// Sortie: "ScavTrap Destroyer savagely attacks enemy, causing 30 points of damage!"
+    // TEST 2: whoAmI()
+    diamond.whoAmI();
+    // Sortie: "I am DiamondTrap: Monster and my ClapTrap name is: Monster_clap_name"
 
-// TEST 5: Capacités spéciales des deux parents
-diamond.highFivesGuys();  // De FragTrap
-diamond.guardGate();      // De ScavTrap
+    // TEST 3: Attack (de ScavTrap)
+    diamond.attack("enemy");
 
-// TEST 12: Comparaison complète
-ClapTrap clap("ClapBot");     // HP:10, E:10, D:0
-ScavTrap scav("ScavBot");     // HP:100, E:50, D:20
-FragTrap frag("FragBot");     // HP:100, E:100, D:30
-DiamondTrap diamond("UltimateBot"); // HP:100, E:50, D:30
+    // TEST 4: Capacités héritées
+    diamond.guardGate();       // De ScavTrap
+    diamond.highFivesGuys();   // De FragTrap
+    diamond.takeDamage(30);    // De ClapTrap
+    diamond.beRepaired(15);    // De ClapTrap
 
-// DiamondTrap combine le meilleur des deux !
+    // TEST 5: Constructeur de copie
+    DiamondTrap copy(diamond);
+    copy.whoAmI();
+
+    // TEST 6: Endurance (50 energy)
+    DiamondTrap marathon("Marathon");
+    for (int i = 0; i < 52; i++)
+        marathon.attack("dummy");
+
+    // TEST 7: Comparaison
+    ClapTrap clap("Clap");
+    ScavTrap scav("Scav");
+    FragTrap frag("Frag");
+    DiamondTrap ultimate("Ultimate");
+    
+    clap.attack("target");
+    scav.attack("target");
+    frag.attack("target");
+    ultimate.attack("target");
+    ultimate.whoAmI();
+
+    return 0;
+}
 ```
 
 ### Ordre de construction/destruction
@@ -263,21 +276,48 @@ DiamondTrap diamond("UltimateBot"); // HP:100, E:50, D:30
 Construction de DiamondTrap("Monster") :
     1. ClapTrap("Monster_clap_name")   ← Base
     2. FragTrap()                      ← Parent 1
-       └─> ClapTrap()                  ← (Oups, encore ClapTrap!)
+       └─> ClapTrap()                  ← (ClapTrap encore!)
     3. ScavTrap()                      ← Parent 2
        └─> ClapTrap()                  ← (Et encore!)
     4. DiamondTrap("Monster")          ← Enfant
 
 Destruction (ordre inverse) :
     1. DiamondTrap destructor
-    2. ScavTrap destructor
-       └─> ClapTrap destructor
-    3. FragTrap destructor
-       └─> ClapTrap destructor
+    2. ScavTrap destructor → ClapTrap destructor
+    3. FragTrap destructor → ClapTrap destructor
     4. ClapTrap destructor
 ```
 
-**⚠️ Sans virtual inheritance : ClapTrap est construit/détruit 3 fois !**
+**⚠️ Sans virtual inheritance : ClapTrap construit/détruit 3 fois !**
+
+### Sortie attendue (extrait)
+
+```
+=== TEST 1: Construction ===
+ClapTrap Name constructor called for Monster_clap_name
+FragTrap Default constructor called
+ScavTrap Default constructor called
+DiamondTrap Name constructor called for Monster
+
+=== TEST 2: whoAmI() ===
+I am DiamondTrap: Monster and my ClapTrap name is: Monster_clap_name
+
+=== TEST 3: Attack (de ScavTrap) ===
+ScavTrap Monster savagely attacks enemy, causing 30 points of damage!
+
+=== TEST 4: Capacités héritées ===
+ScavTrap Monster is now in Gate keeper mode.
+FragTrap Monster says: "High five, anyone?"
+ClapTrap Monster took 30 points of damage! Remaining HP: 70
+ClapTrap Monster repairs itself by 15 points! Current HP: 85
+
+=== TEST 7: Comparaison ===
+ClapTrap Clap attacks target, causing 0 points of damage!
+ScavTrap Scav savagely attacks target, causing 20 points of damage!
+ClapTrap Frag attacks target, causing 30 points of damage!
+ScavTrap Ultimate savagely attacks target, causing 30 points of damage!
+I am DiamondTrap: Ultimate and my ClapTrap name is: Ultimate_clap_name
+```
 
 ---
 

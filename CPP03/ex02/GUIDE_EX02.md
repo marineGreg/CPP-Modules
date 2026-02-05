@@ -164,132 +164,107 @@ frag.attack("enemy");
 
 ### Vue d'ensemble des tests
 
-Le main.cpp contient **10 tests exhaustifs** qui comparent et testent les 3 types de robots :
+Le main.cpp contient **6 tests** qui comparent et testent les 3 types de robots :
 
-| Test | Objectif | Robots testés |
-|------|----------|---------------|
-| **1** | Construction des 3 types | ClapTrap, ScavTrap, FragTrap |
-| **2** | Comparaison stats attaque | 0, 20, 30 dégâts |
-| **3** | Capacités spéciales | guardGate() + highFivesGuys() |
-| **4** | Endurance énergétique | 10 vs 50 vs 100 energy |
-| **5** | Résistance aux dégâts | 10 vs 100 vs 100 HP |
-| **6** | Constructeurs de copie | Copie des 3 types |
-| **7** | Opérateurs d'affectation | Affectation des 3 types |
-| **8** | Bataille royale | Combat entre les 3 types |
-| **9** | Scénario de siège | ScavTrap vs 2 FragTraps |
-| **10** | Armée de robots | 6 robots variés en action |
+| Test | Objectif |
+|------|----------|
+| **1** | Construction des 3 types |
+| **2** | Comparaison des attaques (0, 20, 30 dégâts) |
+| **3** | Capacités spéciales |
+| **4** | Endurance énergétique |
+| **5** | Résistance aux dégâts |
+| **6** | Constructeurs de copie |
 
-### Extraits clés du main
+### Code du main
 
 ```cpp
-// TEST 2: Comparaison des stats d'attaque
-std::cout << "ClapTrap (Damage: 0):" << std::endl;
-clap.attack("target");  // "ClapTrap Basic attacks..."
+int main() {
+    // TEST 1: Construction
+    ClapTrap clap("Basic");
+    ScavTrap scav("Guardian");
+    FragTrap frag("Destroyer");
 
-std::cout << "\nScavTrap (Damage: 20):" << std::endl;
-scav.attack("target");  // "ScavTrap Guardian savagely attacks..."
+    // TEST 2: Comparaison attaques
+    clap.attack("target");  // 0 dégâts
+    scav.attack("target");  // 20 dégâts
+    frag.attack("target");  // 30 dégâts
 
-std::cout << "\nFragTrap (Damage: 30):" << std::endl;
-frag.attack("target");  // "ClapTrap Destroyer attacks..." (pas override !)
+    // TEST 3: Capacités spéciales
+    scav.guardGate();
+    frag.highFivesGuys();
 
-// TEST 3: Capacités spéciales
-scav.guardGate();       // Mode gardien
-frag.highFivesGuys();   // High five
-frag.highFivesGuys();   // Peut être répété
+    // TEST 4: Endurance
+    ClapTrap tired1("Tired1");
+    for (int i = 0; i < 12; i++)
+        tired1.attack("dummy");
+    
+    FragTrap tired2("Tired2");
+    for (int i = 0; i < 102; i++)
+        tired2.attack("dummy");
 
-// TEST 4: Endurance énergétique comparative
-// ClapTrap: 10 energy → 12 attaques (2 échouent)
-// ScavTrap: 50 energy → 52 attaques (2 échouent)
-// FragTrap: 100 energy → 102 attaques (2 échouent)
+    // TEST 5: Résistance
+    clap.takeDamage(15);    // Meurt (10 HP)
+    scav.takeDamage(105);   // Meurt (100 HP)
+    frag.takeDamage(105);   // Meurt (100 HP)
 
-// TEST 9: Scénario de siège
-ScavTrap gatekeeper("Gatekeeper");
-FragTrap attacker1("Attacker1");
-FragTrap attacker2("Attacker2");
+    // TEST 6: Constructeurs de copie
+    ScavTrap scavCopy(scav);
+    FragTrap fragCopy(frag);
+    scavCopy.guardGate();
+    fragCopy.highFivesGuys();
 
-gatekeeper.guardGate();
-attacker1.attack("Gatekeeper");
-attacker2.attack("Gatekeeper");
-gatekeeper.takeDamage(60);  // 30+30, survit (100 HP)
-gatekeeper.attack("Attacker1");
-attacker1.takeDamage(20);   // Prend 20 dégâts
-
-// TEST 10: Armée de robots (6 robots)
-ClapTrap army1[2] = {ClapTrap("Scout1"), ClapTrap("Scout2")};
-ScavTrap army2[2] = {ScavTrap("Guard1"), ScavTrap("Guard2")};
-FragTrap army3[2] = {FragTrap("Heavy1"), FragTrap("Heavy2")};
+    return 0;
+}
 ```
 
-### Aperçu de la sortie
+### Sortie attendue (extrait)
 
 ```
-=== TEST 1: Construction des 3 types ===
+=== TEST 1: Construction ===
 ClapTrap Name constructor called for Basic
 ClapTrap Name constructor called for Guardian
 ScavTrap Name constructor called for Guardian
 ClapTrap Name constructor called for Destroyer
 FragTrap Name constructor called for Destroyer
 
-=== TEST 2: Comparaison des stats d'attaque ===
-ClapTrap (Damage: 0):
+=== TEST 2: Comparaison attaques ===
 ClapTrap Basic attacks target, causing 0 points of damage!
-
-ScavTrap (Damage: 20):
 ScavTrap Guardian savagely attacks target, causing 20 points of damage!
-
-FragTrap (Damage: 30):
 ClapTrap Destroyer attacks target, causing 30 points of damage!
-                    ^^^^^^^^ Utilise la méthode de ClapTrap !
+         ^^^^^^^^ FragTrap utilise attack() de ClapTrap !
 
 === TEST 3: Capacités spéciales ===
-ScavTrap - Gate keeper mode:
 ScavTrap Guardian is now in Gate keeper mode.
-
-FragTrap - High five request:
-FragTrap Destroyer says: "High five, anyone?"
 FragTrap Destroyer says: "High five, anyone?"
 
-=== TEST 4: Endurance énergétique ===
-ClapTrap (10 energy): ...épuisé après 10 attaques
-ScavTrap (50 energy): ...épuisé après 50 attaques
-FragTrap (100 energy): ...épuisé après 100 attaques
+=== TEST 4: Endurance ===
+[ClapTrap épuisé après 10 attaques]
+[FragTrap épuisé après 100 attaques]
 
-=== TEST 9: Scénario de siège ===
-Le gardien active son mode:
-ScavTrap Gatekeeper is now in Gate keeper mode.
+=== TEST 5: Résistance ===
+ClapTrap Basic took 15 points of damage! Remaining HP: 0
+ScavTrap Guardian took 105 points of damage! Remaining HP: 0
+FragTrap Destroyer took 105 points of damage! Remaining HP: 0
 
-Les attaquants frappent:
-ClapTrap Attacker1 attacks Gatekeeper, causing 30 points of damage!
-ClapTrap Attacker2 attacks Gatekeeper, causing 30 points of damage!
-ClapTrap Gatekeeper took 60 points of damage! Remaining HP: 40
-
-Le gardien riposte:
-ScavTrap Gatekeeper savagely attacks Attacker1, causing 20 points of damage!
-
-=== Destruction de tous les robots ===
-[30+ destructeurs appelés dans l'ordre LIFO]
+=== Destruction ===
+[Tous les destructeurs en ordre LIFO]
 ```
 
-### Tableau récapitulatif démontré
+### Tableau récapitulatif
 
-| Caractéristique | ClapTrap | ScavTrap | FragTrap |
-|-----------------|----------|----------|----------|
-| **HP** | 10 (meurt vite) | 100 (résistant) | 100 (résistant) |
-| **Energy** | 10 (10 actions) | 50 (50 actions) | **100 (champion)** |
-| **Damage** | 0 (inoffensif) | 20 (moyen) | **30 (le plus fort)** |
-| **Message attack()** | "attacks" | "savagely attacks" | "attacks" |
-| **Capacité spéciale** | ❌ | guardGate() | highFivesGuys() |
+| Robot | HP | Energy | Damage | Capacité spéciale |
+|-------|-----|--------|--------|-------------------|
+| **ClapTrap** | 10 | 10 | 0 | ❌ |
+| **ScavTrap** | 100 | 50 | 20 | guardGate() |
+| **FragTrap** | 100 | 100 | 30 | highFivesGuys() |
 
 ### Points clés démontrés
 
-✅ **Hiérarchie complète** : 3 types de robots avec des spécialisations  
-✅ **Override sélectif** : ScavTrap override attack(), FragTrap non  
-✅ **Héritage** : takeDamage() et beRepaired() fonctionnent partout  
-✅ **Capacités uniques** : Chaque type dérivé a sa spécialité  
-✅ **Stats différenciées** : Équilibre entre HP, Energy et Damage  
-✅ **Scénarios complexes** : Combats, sièges, armées  
-
-**Total :** Plus de 30 robots testés dans des situations variées !
+✅ **Hiérarchie** : 3 types de robots avec spécialisations  
+✅ **Override** : ScavTrap redéfinit attack(), FragTrap non  
+✅ **Héritage** : takeDamage() et beRepaired() hérités  
+✅ **Capacités uniques** : Chaque dérivé a sa spécialité  
+✅ **Stats différenciées** : Équilibre HP/Energy/Damage
 
 ---
 
