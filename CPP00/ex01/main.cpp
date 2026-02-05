@@ -6,12 +6,11 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:36:16 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/23 16:32:23 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/05 12:52:21 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PhoneBook.hpp"
-#include <iostream>
 
 # define PB_LINE " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
 # define PB_TITLE "/             My Awesome PhoneBook            /\n"
@@ -41,5 +40,5 @@ int main()
             std::cout << "Invalid command !" << std::endl;
     }
     
-    return (0);
+    return 0;
 }

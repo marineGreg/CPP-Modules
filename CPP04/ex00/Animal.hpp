@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   megaphone.cpp                                      :+:      :+:    :+:   */
+/*   Animal.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 12:36:05 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/05 12:49:03 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/02/05 15:08:02 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/02/05 16:21:02 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <cctype>
+#ifndef ANIMAL_HPP
+#define ANIMAL_HPP
 
-int	main(int ac, char **av)
-{
-	if (ac == 1)
-	{
-		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
-		return 0;
-	}
-	for (int i = 1; i < ac; i++)
-	{
-		for (int j = 0; av[i][j]; j++)
-			std::cout << (char)std::toupper(av[i][j]);
-	}
-	std::cout << std::endl;
-	return 0;
-}
+#include <iostream>
+#include <string>
+
+class Animal {
+
+	protected:
+    	std::string type;
+
+	public:
+    	Animal();
+    	Animal(const Animal& other);
+    	Animal& operator=(const Animal& other);
+    	virtual ~Animal(); // Virtuel pour permettre la destruction des classes dérivées
+
+    	virtual void makeSound() const;
+    	std::string getType() const;
+};
+
+#endif

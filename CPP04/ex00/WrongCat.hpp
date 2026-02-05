@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   megaphone.cpp                                      :+:      :+:    :+:   */
+/*   WrongCat.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 12:36:05 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/05 12:49:03 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/02/05 16:36:39 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/02/05 16:48:45 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <cctype>
+#ifndef WRONGCAT_HPP
+#define WRONGCAT_HPP
 
-int	main(int ac, char **av)
-{
-	if (ac == 1)
-	{
-		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
-		return 0;
-	}
-	for (int i = 1; i < ac; i++)
-	{
-		for (int j = 0; av[i][j]; j++)
-			std::cout << (char)std::toupper(av[i][j]);
-	}
-	std::cout << std::endl;
-	return 0;
-}
+#include "WrongAnimal.hpp"
+
+class WrongCat : public WrongAnimal {
+
+	public:
+    	WrongCat();
+    	WrongCat(const WrongCat& other);
+    	WrongCat& operator=(const WrongCat& other);
+    	~WrongCat();
+
+    	void makeSound() const;
+};
+
+#endif

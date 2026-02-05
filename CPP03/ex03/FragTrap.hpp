@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 17:37:03 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 17:44:06 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/05 12:19:31 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "ClapTrap.hpp"
 
-class FragTrap : public ClapTrap {
+class FragTrap : virtual public ClapTrap {
 	
 	public:
     	FragTrap();

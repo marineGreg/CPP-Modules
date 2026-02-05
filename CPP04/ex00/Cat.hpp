@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ScavTrap.hpp                                       :+:      :+:    :+:   */
+/*   Cat.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/04 17:15:46 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/05 12:19:34 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/02/05 15:08:13 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/02/05 16:20:30 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCAVTRAP_HPP
-#define SCAVTRAP_HPP
+#ifndef CAT_HPP
+#define CAT_HPP
+#include "Animal.hpp"
 
-#include "ClapTrap.hpp"
-
-class ScavTrap : virtual public ClapTrap {
+class Cat : public Animal {
 
 	public:
-    	ScavTrap();
-    	ScavTrap(std::string name);
-    	ScavTrap(const ScavTrap& other);
-    	ScavTrap& operator=(const ScavTrap& other);
-    	~ScavTrap();
+    	Cat();
+    	Cat(const Cat& other);
+    	Cat& operator=(const Cat& other);
+    	~Cat();
 
-    	// Redéfinition de l'attaque (message différent)
-    	void attack(const std::string& target);
-    
-    	// Capacité spéciale
-    	void guardGate();
+    	void makeSound() const;
 };
 
 #endif
