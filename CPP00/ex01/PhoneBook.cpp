@@ -12,18 +12,14 @@
 
 #include "PhoneBook.hpp"
 
-PhoneBook::PhoneBook()
-{
+PhoneBook::PhoneBook() {
 	this->_contactCount = 0;
     this->_index = 0;
 }
 
-PhoneBook::~PhoneBook()
-{
-}
+PhoneBook::~PhoneBook() {}
 
-void PhoneBook::_printColumn(std::string str) const
-{
+void PhoneBook::_printColumn(std::string str) const {
     if (str.length() > 10) {
         std::cout << str.substr(0, 9) << ".|";
     } else {
@@ -31,8 +27,7 @@ void PhoneBook::_printColumn(std::string str) const
     }
 }
 
-void PhoneBook::addContact()
-{
+void PhoneBook::addContact() {
     std::string fields[5] = {"First Name", "Last Name", "Nickname", "Phone Number", "Darkest Secret"};
     std::string inputs[5];
 
@@ -59,8 +54,7 @@ void PhoneBook::addContact()
     std::cout << "Contact added successfully!" << std::endl;
 }
 
-void PhoneBook::searchContact() const
-{
+void PhoneBook::searchContact() const {
     if (_contactCount == 0) {
         std::cout << "Phonebook is empty!" << std::endl;
         return;

@@ -17,8 +17,8 @@
 
 int main()
 {
-    PhoneBook phoneBook;
-    std::string command;
+    PhoneBook       phoneBook;
+    std::string     command;
     
 	std::cout << PB_LINE << PB_TITLE << PB_LINE;
     while (true)
