@@ -246,10 +246,10 @@ std::cout << "b is " << b << std::endl;
 std::cout << "c is " << c << std::endl;
 std::cout << "d is " << d << std::endl;
 
-std::cout << "a is " << a.toInt() << " as integer" << std::endl;
-std::cout << "b is " << b.toInt() << " as integer" << std::endl;
-std::cout << "c is " << c.toInt() << " as integer" << std::endl;
-std::cout << "d is " << d.toInt() << " as integer" << std::endl;
+std::cout << "a is " << a.toInt() << " as an integer" << std::endl;
+std::cout << "b is " << b.toInt() << " as an integer" << std::endl;
+std::cout << "c is " << c.toInt() << " as an integer" << std::endl;
+std::cout << "d is " << d.toInt() << " as an integer" << std::endl;
 ```
 
 **Sortie attendue** :
@@ -265,10 +265,10 @@ a is 1234.43
 b is 10
 c is 42.4219
 d is 10
-a is 1234 as integer
-b is 10 as integer
-c is 42 as integer
-d is 10 as integer
+a is 1234 as an integer
+b is 10 as an integer
+c is 42 as an integer
+d is 10 as an integer
 Destructor called
 Destructor called
 Destructor called

@@ -105,7 +105,7 @@ N'oublie pas d'implémenter :
 ```cpp
 ClapTrap::ClapTrap(std::string name) 
     : _name(name), _hitPoints(10), _energyPoints(10), _attackDamage(0) {
-    std::cout << "ClapTrap " << _name << " is born!" << std::endl;
+    std::cout << "ClapTrap Name constructor called for " << _name << std::endl;
 }
 ```
 
@@ -204,7 +204,7 @@ ScavTrap::ScavTrap(std::string name) : ClapTrap(name) {
     _hitPoints = 100;
     _energyPoints = 50;
     _attackDamage = 20;
-    std::cout << "ScavTrap " << _name << " is constructed!" << std::endl;
+    std::cout << "ScavTrap Name constructor called for " << name << std::endl;
 }
 ```
 
@@ -217,7 +217,7 @@ ScavTrap::ScavTrap(std::string name) : ClapTrap(name) {
 
 ```cpp
 ScavTrap::~ScavTrap() {
-    std::cout << "ScavTrap " << _name << " is destructed!" << std::endl;
+    std::cout << "ScavTrap Destructor called" << std::endl;
 }
 ```
 
@@ -227,8 +227,8 @@ ScavTrap::~ScavTrap() {
 
 **Sortie attendue** :
 ```
-ScavTrap X is destructed!
-ClapTrap X is destructed!
+ScavTrap Destructor called
+ClapTrap Destructor called for X
 ```
 
 #### 4. **Redéfinition de méthode (Overriding)**
@@ -236,11 +236,11 @@ ClapTrap X is destructed!
 ```cpp
 void ScavTrap::attack(const std::string& target) {
     if (_energyPoints == 0 || _hitPoints == 0) {
-        // Gestion d'erreur
+        std::cout << "ScavTrap " << _name << " can't attack!" << std::endl;
         return;
     }
     _energyPoints--;
-    std::cout << "ScavTrap " << _name << " fiercely attacks " << target 
+    std::cout << "ScavTrap " << _name << " savagely attacks " << target 
               << ", causing " << _attackDamage << " points of damage!" << std::endl;
 }
 ```
@@ -253,7 +253,7 @@ void ScavTrap::attack(const std::string& target) {
 
 ```cpp
 void ScavTrap::guardGate() {
-    std::cout << "ScavTrap " << _name << " is now in Gate keeper mode!" << std::endl;
+    std::cout << "ScavTrap " << _name << " is now in Gate keeper mode." << std::endl;
 }
 ```
 
@@ -372,7 +372,7 @@ public:
 
 ```cpp
 void FragTrap::highFivesGuys(void) {
-    std::cout << "FragTrap " << _name << " requests a high five! ✋" << std::endl;
+    std::cout << "FragTrap " << _name << " says: \"High five, anyone?\"" << std::endl;
 }
 ```
 
@@ -490,11 +490,12 @@ class FragTrap : virtual public ClapTrap { ... };
 
 ```cpp
 DiamondTrap::DiamondTrap(std::string name) 
-    : ClapTrap(name + "_clap_name"), ScavTrap(name), FragTrap(name), _name(name) {
-    _hitPoints = FragTrap::_hitPoints;      // 100
-    _energyPoints = ScavTrap::_energyPoints; // 50
-    _attackDamage = FragTrap::_attackDamage; // 30
-    std::cout << "DiamondTrap " << _name << " is forged!" << std::endl;
+    : ClapTrap(name + "_clap_name"), FragTrap(), ScavTrap() {
+    this->_name = name;
+    this->_hitPoints = 100;      // Provient de FragTrap
+    this->_energyPoints = 50;    // Provient de ScavTrap
+    this->_attackDamage = 30;    // Provient de FragTrap
+    std::cout << "DiamondTrap Name constructor called for " << name << std::endl;
 }
 ```
 
@@ -508,8 +509,8 @@ DiamondTrap::DiamondTrap(std::string name)
 
 ```cpp
 void DiamondTrap::whoAmI() {
-    std::cout << "I am " << _name 
-              << " and my ClapTrap name is " << ClapTrap::_name << std::endl;
+    std::cout << "I am DiamondTrap: " << this->_name 
+              << " and my ClapTrap name is: " << ClapTrap::_name << std::endl;
 }
 ```
 
@@ -534,18 +535,17 @@ Sans cette ligne, appeler `diamond.attack()` serait ambigu (ScavTrap ou FragTrap
 ```cpp
 DiamondTrap diamond("Diamond");
 // Sortie:
-// ClapTrap Diamond_clap_name is born!
-// ScavTrap Diamond is constructed!
-// ClapTrap Diamond_clap_name is born!
-// FragTrap Diamond is constructed!
-// DiamondTrap Diamond is forged!
+// ClapTrap Name constructor called for Diamond_clap_name
+// FragTrap Default constructor called
+// ScavTrap Default constructor called
+// DiamondTrap Name constructor called for Diamond
 ```
 
 **Test 2 : whoAmI()**
 ```cpp
 DiamondTrap diamond("Ultron");
 diamond.whoAmI();
-// Sortie: I am Ultron and my ClapTrap name is Ultron_clap_name
+// Sortie: I am DiamondTrap: Ultron and my ClapTrap name is: Ultron_clap_name
 ```
 
 **Test 3 : Attack de ScavTrap**
@@ -576,11 +576,10 @@ ultimate.attack("target");  // 30 dégâts, message ScavTrap
     DiamondTrap diamond("Temp");
 }
 // Sortie (ordre inverse de construction):
-// DiamondTrap Temp is destructed!
-// FragTrap Temp is destructed!
-// ClapTrap Temp_clap_name is destructed!
-// ScavTrap Temp is destructed!
-// ClapTrap Temp_clap_name is destructed!
+// DiamondTrap Destructor called
+// ScavTrap Destructor called
+// FragTrap Destructor called
+// ClapTrap Destructor called for Temp_clap_name
 ```
 
 ### ⚠️ Erreurs courantes

@@ -259,14 +259,30 @@ Implémente deux classes : `Weapon` et `HumanA` / `HumanB`.
 ./violence
 ```
 
-**Ce que tu dois montrer** :
-1. HumanA attaque avec son arme initiale
-2. Changement du type d'arme → HumanA attaque avec la nouvelle arme
-3. HumanB commence (potentiellement) sans arme
-4. HumanB reçoit une arme avec `setWeapon()`
-5. HumanB attaque avec son arme
+**Ce que tu dois montrer** (basé sur le main du sujet) :
 
-**Sortie attendue** (selon le sujet) :
+**Bloc 1 : HumanA**
+```cpp
+Weapon club = Weapon("crude spiked club");
+
+HumanA bob("Bob", club);
+bob.attack();  // Bob attacks with their crude spiked club
+club.setType("some other type of club");
+bob.attack();  // Bob attacks with their some other type of club
+```
+
+**Bloc 2 : HumanB**
+```cpp
+Weapon club = Weapon("crude spiked club");
+
+HumanB jim("Jim");
+jim.setWeapon(club);  // Jim reçoit l'arme
+jim.attack();  // Jim attacks with their crude spiked club
+club.setType("some other type of club");
+jim.attack();  // Jim attacks with their some other type of club
+```
+
+**Sortie attendue** :
 ```
 Bob attacks with their crude spiked club
 Bob attacks with their some other type of club
