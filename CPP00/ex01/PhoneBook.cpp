@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:36:23 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 12:44:39 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/10 13:08:28 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void PhoneBook::addContact() {
         while (true) {
             std::cout << fields[i] << ": ";
             if (!std::getline(std::cin, inputs[i]))
-                return; 
+                return;
             if (!inputs[i].empty())
                 break;
             std::cout << "Field cannot be empty!" << std::endl;

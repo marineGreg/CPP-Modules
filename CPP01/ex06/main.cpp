@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 00:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/03 00:00:00 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/10 17:37:45 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,10 @@ int	main(int ac, char **av)
 	{
 		case 0:
 			harl.complain("DEBUG");
-			// fall through
 		case 1:
 			harl.complain("INFO");
-			// fall through
 		case 2:
 			harl.complain("WARNING");
-			// fall through
 		case 3:
 			harl.complain("ERROR");
 			break;
