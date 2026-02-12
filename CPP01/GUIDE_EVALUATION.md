@@ -192,11 +192,15 @@ std::string& stringREF = str;
 
 **Sortie attendue** :
 ```
-Memory address of str: 0x...
-Memory address in stringPTR: 0x...  (même adresse)
-Memory address of stringREF: 0x...  (même adresse)
-Value via stringPTR: HI THIS IS BRAIN
-Value via stringREF: HI THIS IS BRAIN
+--- ADRESSES ---
+Adresse de &str :	0x...
+Adresse de strPTR :	0x...  (même adresse)
+Adresse de &strRef :	0x...  (même adresse)
+
+--- VALEURS ---
+Valeur de str : HI THIS IS BRAIN
+Valeur via *strPTR : HI THIS IS BRAIN
+Valeur via strREF : HI THIS IS BRAIN
 ```
 
 ### ⚠️ Erreurs courantes
