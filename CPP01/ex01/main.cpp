@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 10:18:29 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/10 13:56:27 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/12 17:39:48 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int main() {
     int N = 5;
-    Zombie* maHorde = zombieHorde(N, "Soldat");
+    Zombie* maHorde = zombieHorde(N, "Zoldat");
 
     for (int i = 0; i < N; i++) {
         maHorde[i].announce();
     }
 
-    delete[] maHorde; 
+    delete[] maHorde;
 
     return 0;
 }
