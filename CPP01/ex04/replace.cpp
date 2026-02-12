@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:35:50 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/10 17:06:16 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/12 16:50:24 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,19 @@ void	run_replace(std::string filename, std::string s1, std::string s2)
 	std::ifstream	input(filename.c_str());
 	if (!input.is_open())
 	{
-		std::cerr << "Could not open file" << std::endl;
+		std::cerr << "Error: Could not open file" << std::endl;
 		return ;
 	}
-
+	if (input.peek() == std::ifstream::traits_type::eof())
+	{
+		std::cerr << "Error: The input file is empty" << std::endl;
+		input.close();
+		return ;
+	}
 	std::ofstream	output((filename + ".replace").c_str());
 	if (!output.is_open())
 	{
-		std::cerr << "Error: could not create output file" << std::endl;
+		std::cerr << "Error: Could not create output file" << std::endl;
 		input.close();
 		return ;
 	}
