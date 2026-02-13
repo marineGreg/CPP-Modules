@@ -6,40 +6,35 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:25 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 16:08:29 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/13 17:12:33 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
 
-// --- Constructeurs & Destructeur ---
-
 Fixed::Fixed() : _value(0) {}
 
-Fixed::Fixed(const int n) {
-    this->_value = n << _bits; // Conversion : n * 256
-}
-
-Fixed::Fixed(const float n) {
-    this->_value = roundf(n * (1 << _bits)); // Conversion : n * 256 avec arrondi
-}
-
-Fixed::Fixed(const Fixed &src) {
-    *this = src;
-}
-
-Fixed::~Fixed() {
-}
-
-// --- Opérateurs ---
+Fixed::Fixed(const Fixed &src) { *this = src; }
 
 Fixed &Fixed::operator=(const Fixed &rhs) {
-    if (this != &rhs)
-        this->_value = rhs.getRawBits();
+	if (this != &rhs)
+	this->_value = rhs.getRawBits();
     return *this;
 }
 
-// --- Conversions ---
+Fixed::~Fixed() {}
+
+Fixed::Fixed(const int n) { this->_value = n << _bits; }
+
+Fixed::Fixed(const float n) { this->_value = roundf(n * (1 << _bits)); }
+
+int Fixed::getRawBits(void) const {
+	return this->_value;
+}
+
+void Fixed::setRawBits(int const raw) {
+	this->_value = raw;
+}
 
 float Fixed::toFloat(void) const {
     return (float)this->_value / (1 << _bits); // Division par 256.0
@@ -47,16 +42,6 @@ float Fixed::toFloat(void) const {
 
 int Fixed::toInt(void) const {
     return this->_value >> _bits; // Division entière par 256
-}
-
-// --- Get/Set ---
-
-int Fixed::getRawBits(void) const {
-    return this->_value;
-}
-
-void Fixed::setRawBits(int const raw) {
-    this->_value = raw;
 }
 
 // --- Comparaisons ---

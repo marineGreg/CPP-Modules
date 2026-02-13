@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:31 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 14:36:58 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/13 16:53:14 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,16 @@ class Fixed {
     	static const int    _bits = 8;
 
 	public:
+		// --- Forme Canonique Orthodoxe ---
     	Fixed();
     	Fixed(const Fixed &src);
     	Fixed &operator=(const Fixed &rhs);
     	~Fixed();
-
+		
+		// --- Constructeurs de conversion ---
     	Fixed(const int n);
     	Fixed(const float n);
-
-    // Fonctions membres
+		
     	int     getRawBits(void) const;
     	void    setRawBits(int const raw);
     
@@ -38,7 +39,7 @@ class Fixed {
     	int     toInt(void) const;
 };
 
-// Surcharge de l'opérateur d'insertion (hors de la classe)
+// --- Surcharge de l'opérateur d'insertion
 std::ostream &operator<<(std::ostream &o, Fixed const &i);
 
 #endif
