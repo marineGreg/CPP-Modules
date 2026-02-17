@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:31 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/13 16:53:14 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/17 18:35:33 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,11 @@ class Fixed {
 	public:
 		// --- Forme Canonique Orthodoxe ---
     	Fixed();
+    	Fixed(const int n);
+    	Fixed(const float n);
     	Fixed(const Fixed &src);
     	Fixed &operator=(const Fixed &rhs);
     	~Fixed();
-		
-		// --- Constructeurs de conversion ---
-    	Fixed(const int n);
-    	Fixed(const float n);
 		
     	int     getRawBits(void) const;
     	void    setRawBits(int const raw);

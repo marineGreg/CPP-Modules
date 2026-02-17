@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:25 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/13 18:01:07 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/17 18:38:00 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 
 Fixed::Fixed() : _value(0) {
     std::cout << "Default constructor called" << std::endl;
+}
+
+Fixed::Fixed(const int n) {
+	std::cout << "Int constructor called" << std::endl;
+	this->_value = n << _bits; // Conversion : n * 256
+}
+
+Fixed::Fixed(const float n) {
+	std::cout << "Float constructor called" << std::endl;
+	this->_value = roundf(n * (1 << _bits)); // Conversion : n * 256 avec arrondi
 }
 
 Fixed::Fixed(const Fixed &src) {
@@ -30,16 +40,6 @@ Fixed &Fixed::operator=(const Fixed &rhs) {
 
 Fixed::~Fixed() {
 	std::cout << "Destructor called" << std::endl;
-}
-
-Fixed::Fixed(const int n) {
-	std::cout << "Int constructor called" << std::endl;
-	this->_value = n << _bits; // Conversion : n * 256
-}
-
-Fixed::Fixed(const float n) {
-	std::cout << "Float constructor called" << std::endl;
-	this->_value = roundf(n * (1 << _bits)); // Conversion : n * 256 avec arrondi
 }
 
 float Fixed::toFloat(void) const {
