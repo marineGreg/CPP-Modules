@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:25 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/13 17:12:33 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/17 18:07:39 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 Fixed::Fixed() : _value(0) {}
 
+Fixed::Fixed(const int n) { this->_value = n << _bits; }
+
+Fixed::Fixed(const float n) { this->_value = roundf(n * (1 << _bits)); }
+
 Fixed::Fixed(const Fixed &src) { *this = src; }
 
 Fixed &Fixed::operator=(const Fixed &rhs) {
 	if (this != &rhs)
-	this->_value = rhs.getRawBits();
+		this->_value = rhs.getRawBits();
     return *this;
 }
 
 Fixed::~Fixed() {}
-
-Fixed::Fixed(const int n) { this->_value = n << _bits; }
-
-Fixed::Fixed(const float n) { this->_value = roundf(n * (1 << _bits)); }
 
 int Fixed::getRawBits(void) const {
 	return this->_value;
