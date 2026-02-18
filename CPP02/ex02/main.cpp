@@ -26,19 +26,36 @@ int	main(void)
 	std::cout << b << std::endl;
 	std::cout << Fixed::max( a, b ) << std::endl;
 
+	// --- Tests supplémentaires pour toutes les fonctionnalités ---
+	std::cout << "\n=== Tests arithmétiques ===" << std::endl;
 	Fixed		c( 12.42f );
 	Fixed const	d( 5 );
-	std::cout << c << std::endl;
-	c = c - d;
-	std::cout << c << std::endl;
-	c = c + d;
-	std::cout << c << std::endl;
-	c = c / d;
-	std::cout << c << std::endl;
-	c = c * d;
-	std::cout << c << std::endl;
-	std::cout << d << std::endl;
-	std::cout << Fixed::min( c, d ) << std::endl;
+	std::cout << "c = " << c << std::endl;
+	std::cout << "d = " << d << std::endl;
+	std::cout << "c - d = " << (c - d) << std::endl;
+	std::cout << "c + d = " << (c + d) << std::endl;
+	std::cout << "c * d = " << (c * d) << std::endl;
+	std::cout << "c / d = " << (c / d) << std::endl;
+	
+	std::cout << "\n=== Tests de comparaison ===" << std::endl;
+	std::cout << "c > d: " << (c > d) << std::endl;
+	std::cout << "c < d: " << (c < d) << std::endl;
+	std::cout << "c >= d: " << (c >= d) << std::endl;
+	std::cout << "c <= d: " << (c <= d) << std::endl;
+	std::cout << "c == d: " << (c == d) << std::endl;
+	std::cout << "c != d: " << (c != d) << std::endl;
+	
+	std::cout << "\n=== Tests de décrémentation ===" << std::endl;
+	Fixed e( 10.5f );
+	std::cout << "e = " << e << std::endl;
+	std::cout << "--e = " << --e << std::endl;
+	std::cout << "e = " << e << std::endl;
+	std::cout << "e-- = " << e-- << std::endl;
+	std::cout << "e = " << e << std::endl;
+	
+	std::cout << "\n=== Tests min/max ===" << std::endl;
+	std::cout << "min(c, d) = " << Fixed::min( c, d ) << std::endl;
+	std::cout << "max(c, d) = " << Fixed::max( c, d ) << std::endl;
 	
 	return 0;
 }

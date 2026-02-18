@@ -29,8 +29,8 @@ Implémente une classe `Fixed` représentant un **nombre à virgule fixe** (fixe
 ```cpp
 class Fixed {
 private:
-    int _rawBits;                    // Valeur brute (entier)
-    static const int _fractionalBits = 8;  // Nombre de bits pour la fraction
+    int _value;                  // Valeur brute (entier)
+    static const int _bits = 8;  // Nombre de bits pour la fraction
 };
 ```
 
@@ -59,7 +59,7 @@ public:
 
 **Constructeur par défaut** :
 ```cpp
-Fixed::Fixed() : _rawBits(0) {
+Fixed::Fixed() : _value(0) {
     std::cout << "Default constructor called" << std::endl;
 }
 ```
@@ -69,7 +69,7 @@ Fixed::Fixed() : _rawBits(0) {
 Fixed::Fixed(const Fixed& other) {
     std::cout << "Copy constructor called" << std::endl;
     *this = other;  // Utilise l'opérateur d'assignation
-    // OU : this->_rawBits = other.getRawBits();
+    // OU : this->_value = other.getRawBits();
 }
 ```
 
@@ -78,7 +78,7 @@ Fixed::Fixed(const Fixed& other) {
 Fixed& Fixed::operator=(const Fixed& other) {
     std::cout << "Copy assignment operator called" << std::endl;
     if (this != &other) {  // Protection contre l'auto-assignation
-        this->_rawBits = other.getRawBits();
+        this->_value = other.getRawBits();
     }
     return *this;  // Retourne *this pour permettre a = b = c
 }
@@ -163,7 +163,7 @@ Ajoute des **constructeurs de conversion** et des **méthodes de conversion** à
 ```cpp
 Fixed::Fixed(const int value) {
     std::cout << "Int constructor called" << std::endl;
-    _rawBits = value << _fractionalBits;  // Décalage de 8 bits vers la gauche
+    _value = value << _bits;  // Décalage de 8 bits vers la gauche
 }
 ```
 
@@ -177,7 +177,7 @@ Fixed::Fixed(const int value) {
 ```cpp
 Fixed::Fixed(const float value) {
     std::cout << "Float constructor called" << std::endl;
-    _rawBits = roundf(value * (1 << _fractionalBits));  // Multiplication par 2^8
+    _value = roundf(value * (1 << _bits));  // Multiplication par 2^8
 }
 ```
 
@@ -191,7 +191,7 @@ Fixed::Fixed(const float value) {
 
 ```cpp
 int Fixed::toInt(void) const {
-    return _rawBits >> _fractionalBits;  // Décalage de 8 bits vers la droite
+    return _value >> _bits;  // Décalage de 8 bits vers la droite
 }
 ```
 
@@ -204,7 +204,7 @@ int Fixed::toInt(void) const {
 
 ```cpp
 float Fixed::toFloat(void) const {
-    return (float)_rawBits / (1 << _fractionalBits);  // Division par 2^8
+    return (float)_value / (1 << _bits);  // Division par 2^8
 }
 ```
 
@@ -246,10 +246,10 @@ std::cout << "b is " << b << std::endl;
 std::cout << "c is " << c << std::endl;
 std::cout << "d is " << d << std::endl;
 
-std::cout << "a is " << a.toInt() << " as an integer" << std::endl;
-std::cout << "b is " << b.toInt() << " as an integer" << std::endl;
-std::cout << "c is " << c.toInt() << " as an integer" << std::endl;
-std::cout << "d is " << d.toInt() << " as an integer" << std::endl;
+std::cout << "a is " << a.toInt() << " as integer" << std::endl;
+std::cout << "b is " << b.toInt() << " as integer" << std::endl;
+std::cout << "c is " << c.toInt() << " as integer" << std::endl;
+std::cout << "d is " << d.toInt() << " as integer" << std::endl;
 ```
 
 **Sortie attendue** :
@@ -260,15 +260,16 @@ Float constructor called
 Copy constructor called
 Copy assignment operator called
 Float constructor called
+Copy assignment operator called
 Destructor called
 a is 1234.43
 b is 10
 c is 42.4219
 d is 10
-a is 1234 as an integer
-b is 10 as an integer
-c is 42 as an integer
-d is 10 as an integer
+a is 1234 as integer
+b is 10 as integer
+c is 42 as integer
+d is 10 as integer
 Destructor called
 Destructor called
 Destructor called
@@ -311,31 +312,31 @@ Ajoute une **surcharge complète des opérateurs** à la classe `Fixed`.
 
 ```cpp
 bool Fixed::operator>(const Fixed& other) const {
-    return this->_rawBits > other._rawBits;
+    return this->_value > other._value;
 }
 
 bool Fixed::operator<(const Fixed& other) const {
-    return this->_rawBits < other._rawBits;
+    return this->_value < other._value;
 }
 
 bool Fixed::operator>=(const Fixed& other) const {
-    return this->_rawBits >= other._rawBits;
+    return this->_value >= other._value;
 }
 
 bool Fixed::operator<=(const Fixed& other) const {
-    return this->_rawBits <= other._rawBits;
+    return this->_value <= other._value;
 }
 
 bool Fixed::operator==(const Fixed& other) const {
-    return this->_rawBits == other._rawBits;
+    return this->_value == other._value;
 }
 
 bool Fixed::operator!=(const Fixed& other) const {
-    return this->_rawBits != other._rawBits;
+    return this->_value != other._value;
 }
 ```
 
-**Astuce** : On compare directement `_rawBits` (pas besoin de convertir en float)
+**Astuce** : On compare directement `_value` (pas besoin de convertir en float)
 
 #### 2. **Opérateurs arithmétiques**
 
@@ -371,7 +372,7 @@ Fixed Fixed::operator/(const Fixed& other) const {
 ```cpp
 Fixed Fixed::operator+(const Fixed& other) const {
     Fixed result;
-    result.setRawBits(this->_rawBits + other._rawBits);
+    result.setRawBits(this->_value + other._value);
     return result;
 }
 ```
@@ -381,7 +382,7 @@ Fixed Fixed::operator+(const Fixed& other) const {
 **Pré-incrémentation** (`++a`) :
 ```cpp
 Fixed& Fixed::operator++() {
-    this->_rawBits++;  // Incrémente de 1/256 (plus petite valeur représentable)
+    this->_value++;  // Incrémente de 1/256 (plus petite valeur représentable)
     return *this;      // Retourne la nouvelle valeur
 }
 ```
@@ -390,7 +391,7 @@ Fixed& Fixed::operator++() {
 ```cpp
 Fixed Fixed::operator++(int) {  // Le 'int' est un dummy parameter
     Fixed temp(*this);  // Copie de la valeur actuelle
-    this->_rawBits++;   // Incrémentation
+    this->_value++;   // Incrémentation
     return temp;        // Retourne l'ancienne valeur
 }
 ```
