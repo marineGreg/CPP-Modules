@@ -19,7 +19,7 @@ int main() {
     std::cout << "\n=== TEST 4: Mort par dégâts ===" << std::endl;
     ClapTrap victim("Victim");
     victim.takeDamage(15);
-    victim.attack("ghost");  // Ne peut plus attaquer
+    victim.attack("ghost");
 
     std::cout << "\n=== Destruction ===" << std::endl;
     return 0;

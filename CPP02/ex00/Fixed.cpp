@@ -6,24 +6,24 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:25 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/18 11:28:48 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 16:06:45 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
 
-// Constructeur par défaut : initialise la valeur à 0
+// Constructeur par defaut : initialise la valeur a 0
 Fixed::Fixed() : _value(0) {
     std::cout << "Default constructor called" << std::endl;
 }
 
-// Constructeur de recopie : appelle l'opérateur d'affectation pour copier la donnée
+// Constructeur de recopie : appelle l'operateur d'affectation pour copier la donnee
 Fixed::Fixed(const Fixed &other) {
     std::cout << "Copy constructor called" << std::endl;
     *this = other;
 }
 
-// Opérateur d'affectation : vérifie l'auto-affectation et copie la valeur
+// Operateur d'affectation : verifie l'auto-affectation et copie la valeur
 Fixed &Fixed::operator=(const Fixed &other) {
     std::cout << "Copy assignment operator called" << std::endl;
     if (this != &other)

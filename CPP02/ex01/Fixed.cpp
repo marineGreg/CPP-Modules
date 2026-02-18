@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:25 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/18 11:30:25 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 16:11:46 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,6 @@
 
 Fixed::Fixed() : _value(0) {
     std::cout << "Default constructor called" << std::endl;
-}
-
-Fixed::Fixed(const int n) {
-	std::cout << "Int constructor called" << std::endl;
-	this->_value = n << _bits; // Conversion : n * 256
-}
-
-Fixed::Fixed(const float n) {
-	std::cout << "Float constructor called" << std::endl;
-	this->_value = roundf(n * (1 << _bits)); // Conversion : n * 256 avec arrondi
 }
 
 Fixed::Fixed(const Fixed &other) {
@@ -42,12 +32,22 @@ Fixed::~Fixed() {
 	std::cout << "Destructor called" << std::endl;
 }
 
+Fixed::Fixed(const int n) {
+	std::cout << "Int constructor called" << std::endl;
+	this->_value = n << _bits; // Conversion : n * 256
+}
+
+Fixed::Fixed(const float n) {
+	std::cout << "Float constructor called" << std::endl;
+	this->_value = roundf(n * (1 << _bits)); // Conversion : n * 256 avec arrondi
+}
+
 float Fixed::toFloat(void) const {
 	return (float)this->_value / (1 << _bits); // Division par 256.0
 }
 
 int Fixed::toInt(void) const {
-    return this->_value >> _bits; // Division entière par 256
+    return this->_value >> _bits; // Division par 256
 }
 
 int Fixed::getRawBits(void) const {

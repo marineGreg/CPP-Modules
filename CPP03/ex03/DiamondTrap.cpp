@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 12:17:56 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/05 12:19:38 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 17:58:50 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ DiamondTrap::DiamondTrap() : ClapTrap("Default_clap_name"), FragTrap(), ScavTrap
 
 DiamondTrap::DiamondTrap(std::string name) : ClapTrap(name + "_clap_name"), FragTrap(), ScavTrap() {
     this->_name = name;
-    // On prend les stats des parents comme demandé
     this->_hitPoints = 100;    // Provient de FragTrap
     this->_energyPoints = 50;  // Provient de ScavTrap
     this->_attackDamage = 30;  // Provient de FragTrap

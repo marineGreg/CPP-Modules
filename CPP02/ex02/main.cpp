@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:27:19 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/17 18:24:55 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 16:05:47 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ int	main(void)
 	std::cout << b << std::endl;
 	std::cout << Fixed::max( a, b ) << std::endl;
 
-	// --- Tests supplémentaires pour toutes les fonctionnalités ---
-	std::cout << "\n=== Tests arithmétiques ===" << std::endl;
+	std::cout << "\n=== Tests arithmetiques ===" << std::endl;
 	Fixed		c( 12.42f );
 	Fixed const	d( 5 );
 	std::cout << "c = " << c << std::endl;
@@ -45,8 +44,8 @@ int	main(void)
 	std::cout << "c == d: " << (c == d) << std::endl;
 	std::cout << "c != d: " << (c != d) << std::endl;
 	
-	std::cout << "\n=== Tests de décrémentation ===" << std::endl;
-	Fixed e( 10.5f );
+	std::cout << "\n=== Tests de decrementation ===" << std::endl;
+	Fixed e( 1.1f );
 	std::cout << "e = " << e << std::endl;
 	std::cout << "--e = " << --e << std::endl;
 	std::cout << "e = " << e << std::endl;

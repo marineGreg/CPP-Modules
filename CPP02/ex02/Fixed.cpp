@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:25 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/18 11:34:06 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 15:58:03 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ float Fixed::toFloat(void) const {
 }
 
 int Fixed::toInt(void) const {
-    return this->_value >> _bits; // Division entière par 256
+    return this->_value >> _bits; // Division par 256
 }
 
 // --- Comparaisons ---
@@ -52,24 +52,24 @@ bool Fixed::operator<=(const Fixed &other) const { return this->_value <= other.
 bool Fixed::operator==(const Fixed &other) const { return this->_value == other._value; }
 bool Fixed::operator!=(const Fixed &other) const { return this->_value != other._value; }
 
-// --- Arithmétiques ---
-// Pour la précision, on convertit en float, on fait le calcul, et on recrée un Fixed
+// --- Arithmetiques ---
+// Pour la precision, on convertit en float, on fait le calcul, et on recree un Fixed
 Fixed Fixed::operator+(const Fixed &other) const { return Fixed(this->toFloat() + other.toFloat()); }
 Fixed Fixed::operator-(const Fixed &other) const { return Fixed(this->toFloat() - other.toFloat()); }
 Fixed Fixed::operator*(const Fixed &other) const { return Fixed(this->toFloat() * other.toFloat()); }
 Fixed Fixed::operator/(const Fixed &other) const { return Fixed(this->toFloat() / other.toFloat()); }
 
-// --- Incrément / Décrément ---
-// Pré-incrément : ++a
+// --- Increment / Decrement ---
+// Pre-increment : ++a
 Fixed &Fixed::operator++(void) {
     this->_value++;
     return *this;
 }
 
-// Post-incrément : a++
+// Post-increment : a++
 Fixed Fixed::operator++(int) {
-    Fixed tmp(*this); // On fait une copie de l'état actuel
-    this->_value++;   // On incrémente l'original
+    Fixed tmp(*this); // On fait une copie de l'etat actuel
+    this->_value++;   // On incremente l'original
     return tmp;       // On retourne la copie (l'ancienne valeur)
 }
 
@@ -116,7 +116,6 @@ const Fixed &Fixed::max(const Fixed &a, const Fixed &b) {
     }
 }
 
-// Surcharge de << pour afficher le float
 std::ostream &operator<<(std::ostream &o, Fixed const &i) {
     o << i.toFloat();
     return o;

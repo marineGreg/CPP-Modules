@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 17:15:58 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 17:25:22 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 17:42:21 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,12 @@ class ClapTrap {
     	unsigned int    _attackDamage;
 
 	public:
-    	ClapTrap();                                  // Constructeur par défaut
-    	ClapTrap(std::string name);                  // Constructeur avec nom
-    	ClapTrap(const ClapTrap& other);             // Constructeur de recopie
-    	ClapTrap& operator=(const ClapTrap& other);  // Opérateur d'affectation
-    	~ClapTrap();                                 // Destructeur
+    	ClapTrap();
+    	ClapTrap(std::string name);
+    	ClapTrap(const ClapTrap& other);
+    	ClapTrap& operator=(const ClapTrap& other);
+    	~ClapTrap();
 
-    	// Méthodes membres
     	void attack(const std::string& target);
     	void takeDamage(unsigned int amount);
     	void beRepaired(unsigned int amount);

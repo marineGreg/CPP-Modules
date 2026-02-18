@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 17:15:46 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 17:24:09 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 17:45:40 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,8 @@ class ScavTrap : public ClapTrap {
     	ScavTrap& operator=(const ScavTrap& other);
     	~ScavTrap();
 
-    	// Redéfinition de l'attaque (message différent)
     	void attack(const std::string& target);
     
-    	// Capacité spéciale
     	void guardGate();
 };
 

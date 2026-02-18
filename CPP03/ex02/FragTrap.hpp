@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 17:37:03 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 17:44:06 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 17:43:23 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ class FragTrap : public ClapTrap {
     	FragTrap& operator=(const FragTrap& other);
     	~FragTrap();
 
-		// Capacité spéciale unique à FragTrap
     	void highFivesGuys(void);
 };
 

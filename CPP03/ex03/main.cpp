@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 17:45:13 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 22:00:00 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 18:06:54 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int main() {
     std::cout << "\n=== TEST 3: Attack (de ScavTrap) ===" << std::endl;
     diamond.attack("enemy");
 
-    std::cout << "\n=== TEST 4: Capacités héritées ===" << std::endl;
+    std::cout << "\n=== TEST 4: Capacites heritees ===" << std::endl;
     diamond.guardGate();       // De ScavTrap
     diamond.highFivesGuys();   // De FragTrap
     diamond.takeDamage(30);    // De ClapTrap
