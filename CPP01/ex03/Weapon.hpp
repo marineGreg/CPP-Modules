@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 18:36:57 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/27 12:32:13 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 12:28:27 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class Weapon {
 		Weapon(std::string type);
 		~Weapon();
 		
-		const 	std::string& getType() const;
+		const std::string& getType() const;
 		void	setType(const std::string& newType);
 
 };

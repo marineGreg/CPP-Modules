@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:25 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/17 18:38:00 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 11:30:25 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ Fixed::Fixed(const float n) {
 	this->_value = roundf(n * (1 << _bits)); // Conversion : n * 256 avec arrondi
 }
 
-Fixed::Fixed(const Fixed &src) {
+Fixed::Fixed(const Fixed &other) {
 	std::cout << "Copy constructor called" << std::endl;
-    *this = src;
+    *this = other;
 }
 
-Fixed &Fixed::operator=(const Fixed &rhs) {
+Fixed &Fixed::operator=(const Fixed &other) {
 	std::cout << "Copy assignment operator called" << std::endl;
-    if (this != &rhs)
-		this->_value = rhs.getRawBits();
+    if (this != &other)
+		this->_value = other.getRawBits();
     return *this;
 }
 

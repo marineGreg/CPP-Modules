@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:25 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/17 14:34:09 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 11:28:48 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@ Fixed::Fixed() : _value(0) {
 }
 
 // Constructeur de recopie : appelle l'opérateur d'affectation pour copier la donnée
-Fixed::Fixed(const Fixed &src) {
+Fixed::Fixed(const Fixed &other) {
     std::cout << "Copy constructor called" << std::endl;
-    *this = src;
+    *this = other;
 }
 
 // Opérateur d'affectation : vérifie l'auto-affectation et copie la valeur
-Fixed &Fixed::operator=(const Fixed &rhs) {
+Fixed &Fixed::operator=(const Fixed &other) {
     std::cout << "Copy assignment operator called" << std::endl;
-    if (this != &rhs)
-        this->_value = rhs.getRawBits();
+    if (this != &other)
+        this->_value = other.getRawBits();
     return *this;
 }
 

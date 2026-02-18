@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:25 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/17 18:07:39 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 11:34:06 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ Fixed::Fixed(const int n) { this->_value = n << _bits; }
 
 Fixed::Fixed(const float n) { this->_value = roundf(n * (1 << _bits)); }
 
-Fixed::Fixed(const Fixed &src) { *this = src; }
+Fixed::Fixed(const Fixed &other) { *this = other; }
 
-Fixed &Fixed::operator=(const Fixed &rhs) {
-	if (this != &rhs)
-		this->_value = rhs.getRawBits();
+Fixed &Fixed::operator=(const Fixed &other) {
+	if (this != &other)
+		this->_value = other.getRawBits();
     return *this;
 }
 
@@ -45,19 +45,19 @@ int Fixed::toInt(void) const {
 }
 
 // --- Comparaisons ---
-bool Fixed::operator>(const Fixed &rhs) const  { return this->_value > rhs._value; }
-bool Fixed::operator<(const Fixed &rhs) const  { return this->_value < rhs._value; }
-bool Fixed::operator>=(const Fixed &rhs) const { return this->_value >= rhs._value; }
-bool Fixed::operator<=(const Fixed &rhs) const { return this->_value <= rhs._value; }
-bool Fixed::operator==(const Fixed &rhs) const { return this->_value == rhs._value; }
-bool Fixed::operator!=(const Fixed &rhs) const { return this->_value != rhs._value; }
+bool Fixed::operator>(const Fixed &other) const  { return this->_value > other._value; }
+bool Fixed::operator<(const Fixed &other) const  { return this->_value < other._value; }
+bool Fixed::operator>=(const Fixed &other) const { return this->_value >= other._value; }
+bool Fixed::operator<=(const Fixed &other) const { return this->_value <= other._value; }
+bool Fixed::operator==(const Fixed &other) const { return this->_value == other._value; }
+bool Fixed::operator!=(const Fixed &other) const { return this->_value != other._value; }
 
 // --- Arithmétiques ---
 // Pour la précision, on convertit en float, on fait le calcul, et on recrée un Fixed
-Fixed Fixed::operator+(const Fixed &rhs) const { return Fixed(this->toFloat() + rhs.toFloat()); }
-Fixed Fixed::operator-(const Fixed &rhs) const { return Fixed(this->toFloat() - rhs.toFloat()); }
-Fixed Fixed::operator*(const Fixed &rhs) const { return Fixed(this->toFloat() * rhs.toFloat()); }
-Fixed Fixed::operator/(const Fixed &rhs) const { return Fixed(this->toFloat() / rhs.toFloat()); }
+Fixed Fixed::operator+(const Fixed &other) const { return Fixed(this->toFloat() + other.toFloat()); }
+Fixed Fixed::operator-(const Fixed &other) const { return Fixed(this->toFloat() - other.toFloat()); }
+Fixed Fixed::operator*(const Fixed &other) const { return Fixed(this->toFloat() * other.toFloat()); }
+Fixed Fixed::operator/(const Fixed &other) const { return Fixed(this->toFloat() / other.toFloat()); }
 
 // --- Incrément / Décrément ---
 // Pré-incrément : ++a

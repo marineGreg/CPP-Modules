@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:31 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 14:20:17 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 11:28:34 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ class Fixed
 	public:
     	// --- Forme Canonique Orthodoxe ---
     	Fixed();                            // Constructeur par défaut
-    	Fixed(const Fixed &src);            // Constructeur de recopie
-    	Fixed &operator=(const Fixed &rhs); // Surcharge de l'opérateur d'affectation
+    	Fixed(const Fixed &other);            // Constructeur de recopie
+    	Fixed &operator=(const Fixed &other); // Surcharge de l'opérateur d'affectation
     	~Fixed();                           // Destructeur
 
     	// --- Fonctions membres ---

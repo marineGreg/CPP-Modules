@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:31 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/17 16:50:52 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 11:32:56 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ public:
     Fixed();
     Fixed(const int n);
     Fixed(const float n);
-    Fixed(const Fixed &src);
-    Fixed &operator=(const Fixed &rhs);
+    Fixed(const Fixed &other);
+    Fixed &operator=(const Fixed &other);
     ~Fixed();
 
     int     getRawBits(void) const;
@@ -35,18 +35,18 @@ public:
     int     toInt(void) const;
 
     // --- Comparaisons ---
-    bool operator>(const Fixed &rhs) const;
-    bool operator<(const Fixed &rhs) const;
-    bool operator>=(const Fixed &rhs) const;
-    bool operator<=(const Fixed &rhs) const;
-    bool operator==(const Fixed &rhs) const;
-    bool operator!=(const Fixed &rhs) const;
+    bool operator>(const Fixed &other) const;
+    bool operator<(const Fixed &other) const;
+    bool operator>=(const Fixed &other) const;
+    bool operator<=(const Fixed &other) const;
+    bool operator==(const Fixed &other) const;
+    bool operator!=(const Fixed &other) const;
 
     // --- Arithmétiques ---
-    Fixed operator+(const Fixed &rhs) const;
-    Fixed operator-(const Fixed &rhs) const;
-    Fixed operator*(const Fixed &rhs) const;
-    Fixed operator/(const Fixed &rhs) const;
+    Fixed operator+(const Fixed &other) const;
+    Fixed operator-(const Fixed &other) const;
+    Fixed operator*(const Fixed &other) const;
+    Fixed operator/(const Fixed &other) const;
 
     // --- Incrément / Décrément ---
     Fixed &operator++(void);       // Pré-incrément

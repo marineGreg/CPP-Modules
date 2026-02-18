@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 19:18:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/10 17:11:46 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/18 13:05:08 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,6 @@ int	main()
 	harl.complain("UNKNOWN");
 	harl.complain("CRITICAL");
 	harl.complain("");
-
-	std::cout << "\n=== Test 6: Harl ne s'arrête jamais de se plaindre ===" << std::endl;
-	std::string levels[] = { "DEBUG", "INFO", "WARNING", "ERROR" };
-	for (int i = 0; i < 10; i++)
-		harl.complain(levels[i % 4]);
 
 	return (0);
 }
