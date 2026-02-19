@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 19:18:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/18 13:05:08 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/19 12:50:39 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,27 @@ int	main()
 {
 	Harl harl;
 
-	std::cout << "=== Test 1: Tous les niveaux ===" << std::endl;
+	std::cout << "=== Test 1: All level ===" << std::endl;
 	harl.complain("DEBUG");
 	harl.complain("INFO");
 	harl.complain("WARNING");
 	harl.complain("ERROR");
 
-	std::cout << "\n=== Test 2: Harl se plaint beaucoup de DEBUG ===" << std::endl;
+	std::cout << "\n=== Test 2: Harl complains about DEBUG ===" << std::endl;
 	for (int i = 0; i < 3; i++)
 		harl.complain("DEBUG");
 
-	std::cout << "\n=== Test 3: Harl est vraiment énervé (ERROR) ===" << std::endl;
+	std::cout << "\n=== Test 3: Harl is really angry (ERROR) ===" << std::endl;
 	for (int i = 0; i < 5; i++)
 		harl.complain("ERROR");
 
-	std::cout << "\n=== Test 4: Mélange de plaintes ===" << std::endl;
+	std::cout << "\n=== Test 4: Several complains ===" << std::endl;
 	harl.complain("INFO");
 	harl.complain("WARNING");
 	harl.complain("DEBUG");
 	harl.complain("ERROR");
 	harl.complain("INFO");
 	harl.complain("WARNING");
-
-	std::cout << "\n=== Test 5: Niveau invalide ===" << std::endl;
-	harl.complain("UNKNOWN");
-	harl.complain("CRITICAL");
-	harl.complain("");
 
 	return (0);
 }

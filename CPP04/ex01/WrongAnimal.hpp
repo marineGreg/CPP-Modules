@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Dog copy.hpp                                       :+:      :+:    :+:   */
+/*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/05 15:08:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/19 17:33:05 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/02/05 16:17:40 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/02/05 16:46:31 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DOG_HPP
-#define DOG_HPP
-#include "Animal.hpp"
-#include "Brain.hpp"
+#ifndef WRONGANIMAL_HPP
+#define WRONGANIMAL_HPP
 
-class Dog : public Animal {
-	
-	private:
-    	Brain* _brain; // Attribut privé
-	
+#include <iostream>
+#include <string>
+
+class WrongAnimal {
+
+	protected:
+    	std::string type;
+
 	public:
-    	Dog();
-    	Dog(const Dog& other);
-    	Dog& operator=(const Dog& other);
-    	~Dog();
+    	WrongAnimal();
+    	WrongAnimal(const WrongAnimal& other);
+    	WrongAnimal& operator=(const WrongAnimal& other);
+    	~WrongAnimal(); // PAS de virtual ici
 
-    	void makeSound() const;
+    	void makeSound() const; // PAS de virtual ici
+    	std::string getType() const;
 };
 
 #endif

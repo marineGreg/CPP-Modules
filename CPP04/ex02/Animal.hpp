@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Dog copy.hpp                                       :+:      :+:    :+:   */
+/*   Animal.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/05 15:08:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/19 17:33:05 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/02/05 15:08:02 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/02/05 16:21:02 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DOG_HPP
-#define DOG_HPP
-#include "Animal.hpp"
-#include "Brain.hpp"
+#ifndef ANIMAL_HPP
+#define ANIMAL_HPP
 
-class Dog : public Animal {
-	
-	private:
-    	Brain* _brain; // Attribut privé
-	
+#include <iostream>
+#include <string>
+
+class Animal {
+
+	protected:
+    	std::string type;
+
 	public:
-    	Dog();
-    	Dog(const Dog& other);
-    	Dog& operator=(const Dog& other);
-    	~Dog();
+    	Animal();
+    	Animal(const Animal& other);
+    	Animal& operator=(const Animal& other);
+    	virtual ~Animal(); // Virtuel pour permettre la destruction des classes dérivées
 
-    	void makeSound() const;
+    	virtual void makeSound() const;
+    	std::string getType() const;
 };
 
 #endif
