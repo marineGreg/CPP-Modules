@@ -169,100 +169,129 @@ ptr->makeSound();  // Appelle WrongAnimal::makeSound() au lieu de WrongCat::make
 
 ## 🧪 Tests et analyse du main
 
-### Test 1 : Polymorphisme de base (du sujet)
+Le `main.cpp` contient 3 sections de tests :
+
+### Test 1 : Polymorphisme de base (Tests du sujet)
 
 ```cpp
+std::cout << "\n=== TESTS DU SUJET ===" << std::endl;
 const Animal* meta = new Animal();
 const Animal* j = new Dog();
 const Animal* i = new Cat();
 
-i->makeSound(); // "Meoowww !" (polymorphisme fonctionne)
-j->makeSound(); // "Woooof !" (polymorphisme fonctionne)
+std::cout << j->getType() << " " << std::endl;  // "Dog "
+std::cout << i->getType() << " " << std::endl;  // "Cat "
+
+i->makeSound();    // "Meoowww !" (polymorphisme fonctionne)
+j->makeSound();    // "Woooof !" (polymorphisme fonctionne)
 meta->makeSound(); // "Generic Animal sound..."
+
+delete meta;
+delete j;
+delete i;
 ```
 
-**Résultat attendu :** Chaque animal fait son propre son grâce au `virtual`.
-
-### Test 2 : WrongAnimal (sans virtual)
-
-```cpp
-const WrongAnimal* wrongCat = new WrongCat();
-wrongCat->makeSound(); // "WrongAnimal generic sound (shhh...)"
+**Sortie attendue :**
 ```
-
-**Résultat :** Le son de `WrongAnimal` est joué au lieu de celui de `WrongCat` car `makeSound()` n'est **pas virtuel**.
-
-### Test 3 : Constructeur de copie
-
-```cpp
-Dog originalDog;
-Dog copiedDog(originalDog);
-```
-
-**Affichage :**
-```
+=== TESTS DU SUJET ===
+Animal default constructor called
 Animal default constructor called
 Dog constructor called
+Animal default constructor called
+Cat constructor called
+Dog 
+Cat 
+Meoowww !
+Woooof !
+Generic Animal sound...
+Animal destructor called
+Dog destructor called
+Animal destructor called
+Cat destructor called
+Animal destructor called
+```
+
+**Ce que tu dois expliquer :**
+- Les pointeurs `Animal*` pointent vers des objets `Dog` et `Cat`
+- Grâce à `virtual`, `makeSound()` appelle la bonne méthode pour chaque type
+- Les destructeurs sont appelés dans le bon ordre : Dog/Cat → Animal (grâce à `virtual ~Animal()`)
+
+### Test 2 : Allocation sur la pile & Constructeur de copie
+
+```cpp
+std::cout << "\n=== TESTS SUPPLÉMENTAIRES (Stack & Copy) ===" << std::endl;
+
+Dog originalDog;
+std::cout << "Type de originalDog : " << originalDog.getType() << std::endl;
+
+Dog copyDog(originalDog);  // Constructeur de copie
+std::cout << "Type de copyDog : " << copyDog.getType() << std::endl;
+copyDog.makeSound();
+
+Cat stackCat;
+stackCat.makeSound();
+```
+
+**Sortie attendue :**
+```
+=== TESTS SUPPLÉMENTAIRES (Stack & Copy) ===
+Animal default constructor called
+Dog constructor called
+Type de originalDog : Dog
 Animal copy constructor called
 Animal assignment operator called
 Dog copy constructor called
+Type de copyDog : Dog
+Woooof !
+Animal default constructor called
+Cat constructor called
+Meoowww !
 ```
 
-**Analyse :** Le constructeur de copie de `Dog` appelle d'abord le constructeur de copie d'`Animal`.
+**Ce que tu dois expliquer :**
+- Les objets peuvent être créés sur la pile (pas seulement avec `new`)
+- Le constructeur de copie de `Dog` appelle celui d'`Animal`
+- L'ordre de construction : Animal → Dog
+- L'ordre de destruction (à la fin) : Dog → Animal puis Cat → Animal
 
-### Test 4 : Opérateur d'assignation
+### Test 3 : WrongAnimal - Démonstration sans virtual
 
 ```cpp
-Cat cat1;
-Cat cat2;
-cat2 = cat1;
-```
+std::cout << "\n=== TESTS WRONG ANIMAL (Pas de polymorphisme) ===" << std::endl;
 
-**Affichage :**
-```
-Cat assignment operator called
-Animal assignment operator called
-```
-
-**Analyse :** L'opérateur d'assignation de `Cat` délègue à `Animal::operator=`.
-
-### Test 5 : Tableau d'animaux polymorphe
-
-```cpp
-const Animal* animals[4];
-animals[0] = new Dog();
-animals[1] = new Cat();
-animals[2] = new Dog();
-animals[3] = new Cat();
-
-for (int idx = 0; idx < 4; idx++) {
-    animals[idx]->makeSound();  // Chaque animal fait son propre son
-}
-```
-
-**Résultat :**
-```
-Animal 0 est un Dog qui fait: Woooof !
-Animal 1 est un Cat qui fait: Meoowww !
-Animal 2 est un Dog qui fait: Woooof !
-Animal 3 est un Cat qui fait: Meoowww !
-```
-
-**Analyse :** Le polymorphisme permet de traiter différents types d'animaux de manière uniforme tout en conservant leur comportement spécifique.
-
-### Test 6 : Comparaison directe
-
-```cpp
-// Avec virtual
-const Animal* cat = new Cat();
-cat->makeSound();  // "Meoowww !"
-
-// Sans virtual
+const WrongAnimal* wrongMeta = new WrongAnimal();
 const WrongAnimal* wrongCat = new WrongCat();
-wrongCat->makeSound();  // "WrongAnimal generic sound (shhh...)"
+
+std::cout << "Type : " << wrongCat->getType() << std::endl;  // "WrongCat"
+
+// Malgré que ce soit un WrongCat, appelle WrongAnimal::makeSound()
+wrongCat->makeSound();   // "WrongAnimal generic sound (shhh...)"
+wrongMeta->makeSound();  // "WrongAnimal generic sound (shhh...)"
+
+delete wrongMeta;
+delete wrongCat;  // N'appellera PAS le destructeur de WrongCat !
 ```
 
-**Analyse :** Démontre clairement la différence entre polymorphisme avec et sans `virtual`.
+**Sortie attendue :**
+```
+=== TESTS WRONG ANIMAL (Pas de polymorphisme) ===
+WrongAnimal default constructor called
+WrongAnimal default constructor called
+WrongCat constructor called
+Type : WrongCat
+WrongAnimal generic sound (shhh...)
+WrongAnimal generic sound (shhh...)
+WrongAnimal destructor called
+WrongAnimal destructor called
+```
+
+**⚠️ POINT CRITIQUE : Remarque que `WrongCat destructor called` n'apparaît JAMAIS !**
+
+**Ce que tu dois expliquer :**
+- Sans `virtual`, c'est le **type du pointeur** qui détermine la méthode appelée
+- `wrongCat` est un `WrongAnimal*` → appelle `WrongAnimal::makeSound()` (pas `WrongCat::makeSound()`)
+- Le destructeur de `WrongCat` n'est **jamais appelé** → risque de memory leak
+- C'est une **démonstration volontaire d'un mauvais design**
 
 ## 📊 Schéma du polymorphisme
 

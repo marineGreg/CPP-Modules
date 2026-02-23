@@ -112,39 +112,97 @@ ClapTrap::ClapTrap(std::string name)
 ### 🧪 Tests à démontrer
 
 ```bash
+cd ex00
+make
 ./claptrap
 ```
 
-**Test 1 : Actions basiques**
+Le main contient **4 tests** qui correspondent exactement au code :
+
+**Test 1 : Construction et actions**
 ```cpp
 ClapTrap clap("Clappy");
-clap.attack("Target Dummy");  // 9 energy left
-clap.takeDamage(5);            // 5 HP left
-clap.beRepaired(3);            // 8 HP, 8 energy left
+clap.attack("enemy");
+clap.takeDamage(3);
+clap.beRepaired(5);
 ```
 
-**Test 2 : Épuisement d'énergie**
-```cpp
-ClapTrap tired("Exhausted");
-for (int i = 0; i < 12; i++) {
-    tired.attack("dummy");  // Après 10 attaques, plus d'énergie
-}
+**Sortie attendue** :
+```
+=== TEST 1: Construction et actions ===
+ClapTrap Name constructor called for Clappy
+ClapTrap Clappy attacks enemy, causing 0 points of damage!
+ClapTrap Clappy took 3 points of damage! Remaining HP: 7
+ClapTrap Clappy repairs itself by 5 points! Current HP: 12
 ```
 
-**Test 3 : Mort par dégâts**
-```cpp
-ClapTrap victim("Victim");
-victim.takeDamage(10);      // Meurt
-victim.attack("someone");   // Ne peut plus attaquer
-victim.beRepaired(5);       // Ne peut plus se réparer
-```
+**Ce que tu dois expliquer** :
+- Le constructeur initialise : HP=10, Energy=10, Damage=0
+- `attack()` coûte 1 énergie (il reste 9)
+- `takeDamage(3)` réduit les HP de 10 à 7
+- `beRepaired(5)` coûte 1 énergie et ajoute 5 HP (12 HP total)
 
-**Test 4 : Constructeur de copie**
+**Test 2 : Constructeur de copie**
 ```cpp
-ClapTrap original("Original");
-ClapTrap copy(original);
+ClapTrap copy(clap);
 copy.attack("target");
 ```
+
+**Sortie attendue** :
+```
+=== TEST 2: Constructeur de copie ===
+ClapTrap Copy constructor called
+ClapTrap Assignment operator called
+ClapTrap Clappy attacks target, causing 0 points of damage!
+```
+
+**Ce que tu dois expliquer** :
+- Le constructeur de copie délègue à l'opérateur d'assignation
+- `copy` est une copie indépendante de `clap`
+- Les deux objets peuvent agir séparément
+
+**Test 3 : Épuisement d'énergie**
+```cpp
+ClapTrap tired("Exhausted");
+for (int i = 0; i < 12; i++)
+    tired.attack("dummy");
+```
+
+**Sortie attendue** :
+```
+=== TEST 3: Épuisement d'énergie ===
+ClapTrap Name constructor called for Exhausted
+ClapTrap Exhausted attacks dummy, causing 0 points of damage!
+[... 9 fois de plus ...]
+ClapTrap Exhausted is out of energy and cannot attack!
+ClapTrap Exhausted is out of energy and cannot attack!
+```
+
+**Ce que tu dois expliquer** :
+- ClapTrap commence avec 10 points d'énergie
+- Chaque attaque coûte 1 énergie
+- Après 10 attaques, plus d'énergie
+- Les attaques 11 et 12 échouent
+
+**Test 4 : Mort par dégâts**
+```cpp
+ClapTrap victim("Victim");
+victim.takeDamage(15);
+victim.attack("ghost");
+```
+
+**Sortie attendue** :
+```
+=== TEST 4: Mort par dégâts ===
+ClapTrap Name constructor called for Victim
+ClapTrap Victim took 15 points of damage! Remaining HP: 0
+ClapTrap Victim is dead and cannot attack!
+```
+
+**Ce que tu dois expliquer** :
+- ClapTrap commence avec 10 HP
+- `takeDamage(15)` met les HP à 0 (pas négatif car `unsigned int`)
+- Un ClapTrap mort ne peut plus agir
 
 ### ⚠️ Erreurs courantes
 
@@ -260,7 +318,9 @@ void ScavTrap::guardGate() {
 ### 🧪 Tests à démontrer
 
 ```bash
-./scavtrap
+cd ex01
+make
+./claptrap
 ```
 
 **Test 1 : Construction**
@@ -379,7 +439,9 @@ void FragTrap::highFivesGuys(void) {
 ### 🧪 Tests à démontrer
 
 ```bash
-./fragtrap
+cd ex02
+make
+./claptrap
 ```
 
 **Test 1 : Construction des 3 types**
@@ -528,7 +590,9 @@ Sans cette ligne, appeler `diamond.attack()` serait ambigu (ScavTrap ou FragTrap
 ### 🧪 Tests à démontrer
 
 ```bash
-./diamondtrap
+cd ex03
+make
+./claptrap
 ```
 
 **Test 1 : Construction**

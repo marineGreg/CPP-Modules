@@ -32,9 +32,7 @@ Animal::~Animal() {
     std::cout << "Animal destructor called" << std::endl;
 }
 
-void Animal::makeSound() const {
-    std::cout << "Generic Animal sound..." << std::endl;
-}
+// makeSound() n'est plus défini car c'est une fonction virtuelle pure
 
 std::string Animal::getType() const {
     return this->type;

@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Animal.hpp                                         :+:      :+:    :+:   */
+/*   ICharacter.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/05 15:08:02 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/05 16:21:02 by mgregoir         ###   ########.fr       */
+/*   Created: 2026/02/23 15:00:00 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/02/23 15:00:00 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ANIMAL_HPP
-#define ANIMAL_HPP
+#ifndef ICHARACTER_HPP
+#define ICHARACTER_HPP
 
-#include <iostream>
 #include <string>
 
-class Animal {
+class AMateria; // Forward declaration
 
-	protected:
-    	std::string type;
+class ICharacter {
 
 	public:
-    	Animal();
-    	Animal(const Animal& other);
-    	Animal& operator=(const Animal& other);
-    	virtual ~Animal(); // Virtuel pour permettre la destruction des classes dérivées
-
-    	virtual void makeSound() const = 0; // Fonction virtuelle pure -> Classe abstraite
-    	std::string getType() const;
+		virtual ~ICharacter() {}
+		
+		virtual std::string const & getName() const = 0;
+		virtual void equip(AMateria* m) = 0;
+		virtual void unequip(int idx) = 0;
+		virtual void use(int idx, ICharacter& target) = 0;
 };
 
 #endif

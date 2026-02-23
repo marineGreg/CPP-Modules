@@ -41,5 +41,11 @@ int main() {
     
     std::cout << "Basic dog is still alive!" << std::endl;
 
+    // 4. Test de la classe abstraite (ne compile pas si on décommente)
+    std::cout << "\n=== NOTE: Animal is now an abstract class ===" << std::endl;
+    std::cout << "You cannot instantiate Animal directly anymore:" << std::endl;
+    std::cout << "// Animal animal; <-- This would cause a compilation error!" << std::endl;
+    std::cout << "Only Dog and Cat (concrete classes) can be instantiated." << std::endl;
+
     return 0;
 }
