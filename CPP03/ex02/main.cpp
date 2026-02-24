@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 17:45:13 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 21:00:00 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/24 16:54:04 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int main() {
     FragTrap frag("Destroyer");
 
     std::cout << "\n=== TEST 2: Comparaison attaques ===" << std::endl;
-    clap.attack("target");  // 0 dégâts
-    scav.attack("target");  // 20 dégâts
-    frag.attack("target");  // 30 dégâts
+    clap.attack("target");  // 0 degats
+    scav.attack("target");  // 20 degats
+    frag.attack("target");  // 30 degats
 
     std::cout << "\n=== TEST 3: Capacités spéciales ===" << std::endl;
     scav.guardGate();
@@ -47,7 +47,9 @@ int main() {
     FragTrap fragCopy(frag);
     scavCopy.guardGate();
     fragCopy.highFivesGuys();
-
+	
+	ClapTrap* scavy = new ScavTrap("Scavy");
     std::cout << "\n=== Destruction ===" << std::endl;
+	delete scavy;
     return 0;
 }
