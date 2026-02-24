@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/24 14:19:43 by mgregoir          #+#    #+#             */
+/*   Updated: 2026/02/24 14:19:44 by mgregoir         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ClapTrap.hpp"
 
 int main() {
@@ -10,6 +22,7 @@ int main() {
     std::cout << "\n=== TEST 2: Constructeur de copie ===" << std::endl;
     ClapTrap copy(clap);
     copy.attack("target");
+	copy.takeDamage(12);
 
     std::cout << "\n=== TEST 3: Épuisement d'énergie ===" << std::endl;
     ClapTrap tired("Exhausted");

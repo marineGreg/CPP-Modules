@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:31 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/18 15:58:25 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/24 14:13:34 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ class Fixed {
 
 	public:
 		// --- Forme Canonique Orthodoxe ---
-    	Fixed();
-    	Fixed(const Fixed &other);
-    	Fixed &operator=(const Fixed &other);
-    	~Fixed();
+    	Fixed();								// Constructeur par defaut
+    	Fixed(const Fixed &other);				// Constructeur de copie
+    	Fixed &operator=(const Fixed &other);	// Operateur d'affectation
+    	~Fixed();								// Destructeur
 		
     	Fixed(const int n);
     	Fixed(const float n);

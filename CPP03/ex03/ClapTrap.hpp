@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 17:15:58 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/04 17:25:22 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/24 15:11:17 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@ class ClapTrap {
 	protected:
     	std::string     _name;
     	unsigned int    _hitPoints;
-    	unsigned int    _energyPoints;
-    	unsigned int    _attackDamage;
+    	unsigned int    _nrgPoints;
+    	unsigned int    _aDamage;
 
 	public:
     	ClapTrap();                                  // Constructeur par défaut
     	ClapTrap(std::string name);                  // Constructeur avec nom
     	ClapTrap(const ClapTrap& other);             // Constructeur de recopie
     	ClapTrap& operator=(const ClapTrap& other);  // Opérateur d'affectation
-    	~ClapTrap();                                 // Destructeur
+    	virtual ~ClapTrap();                         // Destructeur
 
     	// Méthodes membres
     	void attack(const std::string& target);
