@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 14:19:56 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/24 16:12:02 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/25 14:38:24 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class ClapTrap {
 	public:
     	ClapTrap();                                  // Constructeur par defaut
     	ClapTrap(std::string name);                  // Constructeur avec nom
-    	ClapTrap(const ClapTrap& other);             // Constructeur de recopie
+    	ClapTrap(const ClapTrap& other);             // Constructeur de copie
     	ClapTrap& operator=(const ClapTrap& other);  // Operateur d'affectation
     	~ClapTrap();                                 // Destructeur
 
