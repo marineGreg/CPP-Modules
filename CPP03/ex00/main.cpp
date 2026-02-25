@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 14:19:43 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/24 14:19:44 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/25 13:06:38 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int main() {
     copy.attack("target");
 	copy.takeDamage(12);
 
-    std::cout << "\n=== TEST 3: Épuisement d'énergie ===" << std::endl;
+    std::cout << "\n=== TEST 3: Epuisement d'energie ===" << std::endl;
     ClapTrap tired("Exhausted");
     for (int i = 0; i < 12; i++)
         tired.attack("dummy");
 
-    std::cout << "\n=== TEST 4: Mort par dégâts ===" << std::endl;
+    std::cout << "\n=== TEST 4: Mort par degats ===" << std::endl;
     ClapTrap victim("Victim");
     victim.takeDamage(15);
     victim.attack("ghost");

@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 17:45:13 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/24 16:54:04 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/02/25 13:30:08 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int main() {
     scav.attack("target");  // 20 degats
     frag.attack("target");  // 30 degats
 
-    std::cout << "\n=== TEST 3: Capacités spéciales ===" << std::endl;
+    std::cout << "\n=== TEST 3: Capacites speciales ===" << std::endl;
     scav.guardGate();
     frag.highFivesGuys();
 
@@ -37,7 +37,7 @@ int main() {
     for (int i = 0; i < 102; i++)
         tired2.attack("dummy");
 
-    std::cout << "\n=== TEST 5: Résistance ===" << std::endl;
+    std::cout << "\n=== TEST 5: Resistance ===" << std::endl;
     clap.takeDamage(15);    // Meurt (10 HP)
     scav.takeDamage(105);   // Meurt (100 HP)
     frag.takeDamage(105);   // Meurt (100 HP)
@@ -48,7 +48,9 @@ int main() {
     scavCopy.guardGate();
     fragCopy.highFivesGuys();
 	
+	std::cout << "\n=== TEST 7: Destructeur virtuel ===" << std::endl;
 	ClapTrap* scavy = new ScavTrap("Scavy");
+	
     std::cout << "\n=== Destruction ===" << std::endl;
 	delete scavy;
     return 0;
