@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   WrongCat.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 16:36:36 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/11 18:03:11 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/03/05 15:03:47 by amber            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,5 @@ WrongCat::~WrongCat() {
 }
 
 void WrongCat::makeSound() const {
-    std::cout << "WrongCat sound: Meow? (But you won't hear me via a pointer)" << std::endl;
+    std::cout << "WrongCat sound: Meow? (But you won't hear me)" << std::endl;
 }

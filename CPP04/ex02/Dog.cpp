@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Dog.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 17:36:27 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/19 17:45:14 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/03/05 18:07:46 by amber            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ Dog::~Dog() {
 }
 
 // CONSTRUCTEUR DE RECOPIE (Deep Copy)
-Dog::Dog(const Dog& other) : Animal(other) {
+Dog::Dog(const Dog& other) : AAnimal(other) {
     std::cout << "Dog copy constructor called" << std::endl;
     this->_brain = new Brain(*other._brain); // On crée un NOUVEAU cerveau
 }

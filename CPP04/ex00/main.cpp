@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 16:26:26 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/05 16:26:27 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/03/05 18:07:46 by amber            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@
 int main() {
     // --- 1. TESTS DU SUJET (Polymorphisme avec pointeurs) ---
     std::cout << "\n=== TESTS DU SUJET ===" << std::endl;
-    const Animal* meta = new Animal();
-    const Animal* j = new Dog();
-    const Animal* i = new Cat();
+    const AAnimal* meta = new AAnimal();
+    const AAnimal* j = new Dog();
+    const AAnimal* i = new Cat();
 
-    std::cout << j->getType() << " " << std::endl;
-    std::cout << i->getType() << " " << std::endl;
+    std::cout << "Type of meta : " << meta->getType() << std::endl;
+    std::cout << "Type of j : " << j->getType() << std::endl;
+    std::cout << "Type of i " << i->getType() << std::endl;
     
     i->makeSound(); // Sortie attendue : Meow!
     j->makeSound(); // Sortie attendue : Woof!
@@ -38,13 +39,14 @@ int main() {
     std::cout << "\n=== TESTS SUPPLÉMENTAIRES (Stack & Copy) ===" << std::endl;
     
     Dog originalDog;
-    std::cout << "Type de originalDog : " << originalDog.getType() << std::endl;
+    std::cout << "Type of originalDog : " << originalDog.getType() << std::endl;
     
     Dog copyDog(originalDog); // Test du constructeur de recopie
-    std::cout << "Type de copyDog : " << copyDog.getType() << std::endl;
+    std::cout << "Type of copyDog : " << copyDog.getType() << std::endl;
     copyDog.makeSound();
 
     Cat stackCat;
+    std::cout << "Type of stackCat : " << stackCat.getType() << std::endl;
     stackCat.makeSound();
 
     // --- 3. TESTS DU CAS "WRONG" (Preuve par l'erreur) ---
@@ -55,7 +57,7 @@ int main() {
 
     std::cout << "Type : " << wrongCat->getType() << std::endl;
     
-    // Ici, malgré que ce soit un WrongCat, il va faire le son du WrongAnimal 
+    // Ici, malgre que ce soit un WrongCat, il va faire le son du WrongAnimal 
     // car la methode n'est pas 'virtual' dans la classe parente.
     wrongCat->makeSound(); 
     wrongMeta->makeSound();

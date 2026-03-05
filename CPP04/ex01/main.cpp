@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 17:37:19 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/19 19:23:48 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/03/05 18:07:46 by amber            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 
 int main() {
     const int count = 4;
-    Animal* animals[count];
+    AAnimal* animals[count];
 
-    // 1. Remplissage du tableau
     std::cout << "=== CREATING ANIMALS ===" << std::endl;
     for (int i = 0; i < count; i++) {
         if (i < count / 2)
@@ -25,21 +24,21 @@ int main() {
         else
             animals[i] = new Cat();
     }
-
-    // 2. Suppression (doit appeler les destructeurs Dog/Cat et Brain !)
+    
     std::cout << "\n=== DELETING ANIMALS ===" << std::endl;
     for (int i = 0; i < count; i++) {
         delete animals[i];
     }
 
-    // 3. Test de la Deep Copy (Copie profonde)
+    // 3. Test de la Deep Copy
     std::cout << "\n=== DEEP COPY TEST ===" << std::endl;
     Dog basic;
     {
-        Dog tmp = basic; // Appel du constructeur de recopie
-    } // tmp est détruit ici. Si c'est une shallow copy, basic.brain est détruit aussi -> Crash.
+        Dog tmp = basic; // Appel du constructeur de copie
+    } // tmp est detruit ici. Si c'est une shallow copy, basic.brain est detruit aussi -> Crash.
     
     std::cout << "Basic dog is still alive!" << std::endl;
-
+    basic.makeSound();
+    
     return 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 17:37:19 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/19 17:49:05 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/03/05 18:24:10 by amber            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int main() {
     const int count = 4;
-    Animal* animals[count];
+    AAnimal* animals[count];
 
     // 1. Remplissage du tableau
     std::cout << "=== CREATING ANIMALS ===" << std::endl;
@@ -36,16 +36,13 @@ int main() {
     std::cout << "\n=== DEEP COPY TEST ===" << std::endl;
     Dog basic;
     {
-        Dog tmp = basic; // Appel du constructeur de recopie
-    } // tmp est détruit ici. Si c'est une shallow copy, basic.brain est détruit aussi -> Crash.
+        Dog tmp = basic; 
+    }
     
     std::cout << "Basic dog is still alive!" << std::endl;
 
     // 4. Test de la classe abstraite (ne compile pas si on décommente)
-    std::cout << "\n=== NOTE: Animal is now an abstract class ===" << std::endl;
-    std::cout << "You cannot instantiate Animal directly anymore:" << std::endl;
-    std::cout << "// Animal animal; <-- This would cause a compilation error!" << std::endl;
-    std::cout << "Only Dog and Cat (concrete classes) can be instantiated." << std::endl;
+    //AAnimal test;
 
     return 0;
 }

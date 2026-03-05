@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cat.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 15:08:13 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/05 16:20:30 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/03/05 18:07:46 by amber            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define CAT_HPP
 #include "Animal.hpp"
 
-class Cat : public Animal {
+class Cat : public AAnimal {
 
 	public:
     	Cat();

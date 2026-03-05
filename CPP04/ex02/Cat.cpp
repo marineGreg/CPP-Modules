@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cat.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 16:14:53 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/19 17:47:23 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/03/05 18:07:46 by amber            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ Cat::~Cat() {
 	delete this->_brain;
 }
 
-Cat::Cat(const Cat& other) : Animal(other) {
+Cat::Cat(const Cat& other) : AAnimal(other) {
     std::cout << "Cat copy constructor called" << std::endl;
 	this->_brain = new Brain(*other._brain);
 }
