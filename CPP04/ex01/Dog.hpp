@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Dog.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 15:08:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/03/05 18:07:46 by amber            ###   ########.fr       */
+/*   Updated: 2026/03/06 14:17:22 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 #include "Animal.hpp"
 #include "Brain.hpp"
 
-class Dog : public AAnimal {
+class Dog : public Animal {
 	
 	private:
-    	Brain* _brain; // Attribut privé
+    	Brain* _brain; // Attribut prive
 	
 	public:
     	Dog();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cat.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 15:08:13 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/03/05 18:10:19 by amber            ###   ########.fr       */
+/*   Updated: 2026/03/06 15:49:17 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 class Cat : public AAnimal {
 
 	private:
-    	Brain* _brain; // Attribut privé
+    	Brain* _brain;
 		
 	public:
     	Cat();

@@ -3,39 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   Animal.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 16:12:33 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/03/05 18:07:46 by amber            ###   ########.fr       */
+/*   Updated: 2026/03/06 13:44:24 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Animal.hpp"
 
-AAnimal::AAnimal() : type("Animal") {
+Animal::Animal() : type("Animal") {
     std::cout << "Animal default constructor called" << std::endl;
 }
 
-AAnimal::AAnimal(const AAnimal& other) {
+Animal::Animal(const Animal& other) {
     std::cout << "Animal copy constructor called" << std::endl;
     *this = other;
 }
 
-AAnimal& AAnimal::operator=(const AAnimal& other) {
+Animal& Animal::operator=(const Animal& other) {
     std::cout << "Animal assignment operator called" << std::endl;
     if (this != &other)
         this->type = other.type;
     return *this;
 }
 
-AAnimal::~AAnimal() {
+Animal::~Animal() {
     std::cout << "Animal destructor called" << std::endl;
 }
 
-void AAnimal::makeSound() const {
+void Animal::makeSound() const {
     std::cout << "Generic Animal sound..." << std::endl;
 }
 
-std::string AAnimal::getType() const {
+std::string Animal::getType() const {
     return this->type;
 }

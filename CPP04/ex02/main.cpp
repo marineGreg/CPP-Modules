@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 17:37:19 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/03/05 18:24:10 by amber            ###   ########.fr       */
+/*   Updated: 2026/03/06 15:36:42 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 #include "Cat.hpp"
 
 int main() {
+
+	//std::cout << "=== TEST INSTANCIATION IMPOSSIBLE ===" << std::endl;
+	//AAnimal test; // DECOMMENTER CETTE LIGNE DOIT PROVOQUER UNE ERREUR DE COMPILATION
+	//AAnimal* test2 = new AAnimal(); // CELLE-CI AUSSI
+	
     const int count = 4;
     AAnimal* animals[count];
 
-    // 1. Remplissage du tableau
-    std::cout << "=== CREATING ANIMALS ===" << std::endl;
+    std::cout << "=== 1. CREATION DU TABLEAU ===" << std::endl;
     for (int i = 0; i < count; i++) {
         if (i < count / 2)
             animals[i] = new Dog();
@@ -26,23 +30,20 @@ int main() {
             animals[i] = new Cat();
     }
 
-    // 2. Suppression (doit appeler les destructeurs Dog/Cat et Brain !)
-    std::cout << "\n=== DELETING ANIMALS ===" << std::endl;
+    std::cout << "\n=== 2. DESTRUCTION DU TABLEAU ===" << std::endl;
     for (int i = 0; i < count; i++) {
         delete animals[i];
     }
 
-    // 3. Test de la Deep Copy (Copie profonde)
-    std::cout << "\n=== DEEP COPY TEST ===" << std::endl;
-    Dog basic;
+    std::cout << "\n=== 3. TEST DEEP COPY ===" << std::endl;
+    Dog original;
     {
-        Dog tmp = basic; 
-    }
-    
-    std::cout << "Basic dog is still alive!" << std::endl;
-
-    // 4. Test de la classe abstraite (ne compile pas si on décommente)
-    //AAnimal test;
+        std::cout << "    (Creation de la copie dans un scope temporaire)" << std::endl;
+        Dog copy = original;
+        std::cout << "    (Fin du scope, la copie va etre detruite)" << std::endl;
+    } 
+    std::cout << "Original is still alive !" << std::endl;
+	original.makeSound();
 
     return 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AAnimal.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 16:12:33 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/03/05 18:10:32 by amber            ###   ########.fr       */
+/*   Updated: 2026/03/06 11:06:49 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ AAnimal::~AAnimal() {
     std::cout << "Animal destructor called" << std::endl;
 }
 
-// makeSound() n'est plus défini car c'est une fonction virtuelle pure
+// makeSound() n'est plus defini car c'est une methode virtuelle pure
 
 std::string AAnimal::getType() const {
     return this->type;

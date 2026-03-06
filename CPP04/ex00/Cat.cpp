@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cat.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 16:14:53 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/03/05 18:07:46 by amber            ###   ########.fr       */
+/*   Updated: 2026/03/06 13:44:24 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ Cat::Cat() {
     std::cout << "Cat constructor called" << std::endl;
 }
 
-Cat::Cat(const Cat& other) : AAnimal(other) {
+Cat::Cat(const Cat& other) : Animal(other) {
     std::cout << "Cat copy constructor called" << std::endl;
 }
 
 Cat& Cat::operator=(const Cat& other) {
     std::cout << "Cat assignment operator called" << std::endl;
     if (this != &other)
-        AAnimal::operator=(other);
+        Animal::operator=(other);
     return *this;
 }
 
