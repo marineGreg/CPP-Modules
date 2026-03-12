@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 16:26:26 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/03/06 15:29:10 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/03/12 15:20:40 by amber            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,17 @@ int main() {
     delete j;
     delete i;
 
-    std::cout << "\n=== 2. TESTS SUR LA PILE (Stack) ===" << std::endl;
-    Dog dog;
-    Cat cat;
-    dog.makeSound();
-    cat.makeSound();
+    std::cout << "\n=== 2. TESTS SUPPLÉMENTAIRES (Stack & Copy) ===" << std::endl;
+
+    Dog originalDog;
+    std::cout << "Type de originalDog : " << originalDog.getType() << std::endl;
+
+    Dog copyDog(originalDog);
+    std::cout << "Type de copyDog : " << copyDog.getType() << std::endl;
+    copyDog.makeSound();
+
+    Cat stackCat;
+    stackCat.makeSound();
 
     std::cout << "\n=== 3. TESTS WRONG ANIMAL (Pas de virtual) ===" << std::endl;
     const WrongAnimal* wrongMeta = new WrongAnimal();
