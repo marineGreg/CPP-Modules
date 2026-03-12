@@ -6,44 +6,38 @@
 /*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 17:37:19 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/03/12 14:51:10 by amber            ###   ########.fr       */
+/*   Updated: 2026/03/12 16:45:20 by amber            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "AAnimal.hpp"
 #include "Dog.hpp"
 #include "Cat.hpp"
 
 int main() {
+    // std::cout << "=== TEST INSTANCIATION IMPOSSIBLE ===" << std::endl;
+    // AAnimal test; // DECOMMENTER CETTE LIGNE DOIT PROVOQUER UNE ERREUR DE COMPILATION
+    // AAnimal* test2 = new AAnimal(); // CELLE-CI AUSSI
 
-	//std::cout << "=== TEST INSTANCIATION IMPOSSIBLE ===" << std::endl;
-	//AAnimal test; // DECOMMENTER CETTE LIGNE DOIT PROVOQUER UNE ERREUR DE COMPILATION
-	//AAnimal* test2 = new AAnimal(); // CELLE-CI AUSSI
-	
-    const int count = 4;
-    AAnimal* animals[count];
+    std::cout << "=== TEST POLYMORPHISME (Classe Abstraite) ===" << std::endl;
+    const AAnimal* j = new Dog();
+    const AAnimal* i = new Cat();
 
-    std::cout << "=== 1. CREATION DU TABLEAU ===" << std::endl;
-    for (int i = 0; i < count; i++) {
-        if (i < count / 2)
-            animals[i] = new Dog();
-        else
-            animals[i] = new Cat();
-    }
+    std::cout << "Type de j: " << j->getType() << std::endl;
+    std::cout << "Type de i: " << i->getType() << std::endl;
 
-    std::cout << "\n=== 2. DESTRUCTION DU TABLEAU ===" << std::endl;
-    for (int i = 0; i < count; i++) {
-        delete animals[i];
-    }
+    j->makeSound();
+    i->makeSound();
 
-    std::cout << "\n=== 3. TEST DEEP COPY ===" << std::endl;
+    delete j;
+    delete i;
+
+    std::cout << "\n=== TEST DEEP COPY SUR CHIEN ABSTRAIT ===" << std::endl;
     Dog original;
-    {
-        std::cout << "    (Creation de la copie dans un scope temporaire)" << std::endl;
-        Dog copy = original;
-        std::cout << "    (Fin du scope, la copie va etre detruite)" << std::endl;
-    } 
-    std::cout << "Original is still alive !" << std::endl;
-	original.makeSound();
+    Dog copy(original);
+    
+    std::cout << "Type Original: " << original.getType() << std::endl;
+    std::cout << "Type Copy: " << copy.getType() << std::endl;
 
     return 0;
 }
