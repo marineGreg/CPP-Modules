@@ -6,7 +6,7 @@
 /*   By: amber <amber@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 16:26:26 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/03/12 15:20:40 by amber            ###   ########.fr       */
+/*   Updated: 2026/03/12 16:09:30 by amber            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int main() {
     const WrongAnimal* wrongCat = new WrongCat();
 
     std::cout << "Type: " << wrongCat->getType() << std::endl;
-    wrongCat->makeSound(); // Affiche le son du WrongAnimal car pas de virtual
+    wrongCat->makeSound();
     wrongMeta->makeSound();
 
     delete wrongMeta;
