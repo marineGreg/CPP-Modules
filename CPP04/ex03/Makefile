@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/02/23 15:00:00 by mgregoir          #+#    #+#              #
-#    Updated: 2026/02/23 15:00:00 by mgregoir         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = materia
 
 SRCS = main.cpp AMateria.cpp Ice.cpp Cure.cpp Character.cpp MateriaSource.cpp

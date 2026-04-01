@@ -1,6 +1,6 @@
 NAME        = accounts
-CXX          = c++
-CXXFLAGS       = -Wall -Wextra -Werror -std=c++98
+CXX         = c++
+CXXFLAGS    = -Wall -Wextra -Werror -std=c++98
 SRCS        = Account.cpp tests.cpp
 OBJS        = $(SRCS:.cpp=.o)
 
