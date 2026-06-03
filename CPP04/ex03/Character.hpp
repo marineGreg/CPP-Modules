@@ -6,12 +6,11 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/23 15:00:00 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/03 19:15:16 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CHARACTER_HPP
-#define CHARACTER_HPP
+#pragma once
 
 #include "ICharacter.hpp"
 #include "AMateria.hpp"
@@ -36,5 +35,3 @@ class Character : public ICharacter {
 		void unequip(int idx);
 		void use(int idx, ICharacter& target);
 };
-
-#endif

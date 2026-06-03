@@ -6,13 +6,11 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/23 15:00:00 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/03 19:15:07 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AMATERIA_HPP
-#define AMATERIA_HPP
-
+#pragma once
 #include <iostream>
 #include <string>
 
@@ -36,4 +34,3 @@ class AMateria {
 		virtual void use(ICharacter& target); // Behavior peut être overridé
 };
 
-#endif

@@ -6,13 +6,11 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 17:38:48 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/19 17:38:49 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/03 19:12:57 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BRAIN_HPP
-#define BRAIN_HPP
-
+#pragma once
 #include <iostream>
 #include <string>
 
@@ -25,5 +23,3 @@ class Brain {
     	Brain& operator=(const Brain& other);
     	~Brain();
 };
-
-#endif

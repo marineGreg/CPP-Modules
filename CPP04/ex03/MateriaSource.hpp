@@ -6,12 +6,11 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/23 15:00:00 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/03 19:15:57 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MATERIASOURCE_HPP
-#define MATERIASOURCE_HPP
+#pragma once
 
 #include "IMateriaSource.hpp"
 
@@ -30,4 +29,3 @@ class MateriaSource : public IMateriaSource {
 		AMateria* createMateria(std::string const & type);
 };
 
-#endif

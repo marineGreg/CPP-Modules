@@ -6,12 +6,11 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 15:08:18 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/03/06 13:44:24 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/03 19:13:43 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DOG_HPP
-#define DOG_HPP
+#pragma once
 #include "Animal.hpp"
 
 class Dog : public Animal {
@@ -25,4 +24,3 @@ class Dog : public Animal {
     	void makeSound() const;
 };
 
-#endif

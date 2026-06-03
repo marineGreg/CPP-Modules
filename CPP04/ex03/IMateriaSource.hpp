@@ -6,13 +6,11 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/23 15:00:00 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/03 19:15:50 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IMATERIASOURCE_HPP
-#define IMATERIASOURCE_HPP
-
+#pragma once
 #include "AMateria.hpp"
 
 class IMateriaSource {
@@ -24,4 +22,3 @@ class IMateriaSource {
 		virtual AMateria* createMateria(std::string const & type) = 0;
 };
 
-#endif

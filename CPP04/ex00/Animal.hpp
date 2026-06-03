@@ -6,12 +6,11 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 15:08:02 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/03/06 13:44:24 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/03 19:13:33 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ANIMAL_HPP
-#define ANIMAL_HPP
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -30,5 +29,3 @@ class Animal {
     	virtual void makeSound() const;
     	std::string getType() const;
 };
-
-#endif

@@ -6,13 +6,11 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/23 15:00:00 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/03 19:15:43 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ICHARACTER_HPP
-#define ICHARACTER_HPP
-
+#pragma once
 #include <string>
 
 class AMateria; // Forward declaration
@@ -28,4 +26,3 @@ class ICharacter {
 		virtual void use(int idx, ICharacter& target) = 0;
 };
 
-#endif

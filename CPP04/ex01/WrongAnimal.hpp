@@ -6,12 +6,11 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 16:17:40 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/05 16:46:31 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/03 19:12:27 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WRONGANIMAL_HPP
-#define WRONGANIMAL_HPP
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -30,5 +29,3 @@ class WrongAnimal {
     	void makeSound() const; // PAS de virtual ici
     	std::string getType() const;
 };
-
-#endif
