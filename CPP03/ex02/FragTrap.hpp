@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 17:37:03 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/18 17:43:23 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/10 14:39:39 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,16 @@
 
 #include "ClapTrap.hpp"
 
+/**
+ * CONCEPTS C++ :
+ * - Extension de la hiérarchie : Création d'une seconde classe dérivée (FragTrap) 
+ *   partageant la même base (ClapTrap) pour illustrer la réutilisabilité du code.
+ * - Spécialisation : Ajout de fonctionnalités spécifiques (highFivesGuys) et 
+ *   ajustement des statistiques pour différencier le rôle de chaque classe enfant.
+ * - Consolidation de l'héritage : Renforcement de la maîtrise du chaînage des 
+ *   constructeurs et de la gestion des attributs protégés au sein d'une structure 
+ *   à plusieurs branches.
+ */
 class FragTrap : public ClapTrap {
 	
 	public:

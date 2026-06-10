@@ -6,12 +6,40 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 12:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/05 14:36:48 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/10 13:26:46 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Account.hpp"
 #include <iostream>
+
+/*
+  CONCEPTS C++ :
+
+    - L'exercice demande de reproduire exactement un comportement à partir 
+      de fichiers de logs. C'est un exercice de rétro-ingénierie (comprendre 
+      le code interne juste en regardant les résultats en sortie).
+	  
+    - Membres Statiques (Attributs statiques):
+      Les variables marquées 'static' (ex: _nbAccounts) n'appartiennent pas 
+      à un objet précis, mais à la CLASSE entière. 
+      Il n'en existe qu'une seule copie pour TOUS les comptes. 
+      C'est le "coffre-fort global" de la banque.
+
+    - Méthodes Statiques (Fonctions statiques):
+      Une fonction 'static' peut être appelée sans avoir besoin d'un objet.
+      (Ex: Account::displayAccountsInfos()).
+      Elle ne peut accéder qu'aux variables statiques. Elle n'a pas 
+      accès à 'this' (elle ne sait pas quel compte individuel elle regarde).
+
+    - Initialisation Hors-Classe:
+      En C++, les attributs statiques doivent être initialisés obligatoirement 
+      dans le fichier .cpp, en dehors de toute fonction.
+
+    - Typedef:
+      'typedef Account t;' crée un alias. 't' devient un synonyme de 'Account'.
+      C'est une pratique courante pour raccourcir les noms de types complexes.
+*/
 
 // --- Initialisation des membres statiques ---
 int Account::_nbAccounts = 0;

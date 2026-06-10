@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:31 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/24 14:13:34 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/10 13:37:25 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,25 @@
 # include <iostream>
 # include <cmath>
 
+/*
+ * CONCEPTS APPLIQUÉS :
+ * 
+ * 1. CONVERSIONS SCALAIRES :
+ *    Implémentation de constructeurs convertissant des 'int' et 'float' vers 
+ *    le format virgule fixe en utilisant le facteur de zoom (2^8 = 256).
+ * 
+ * 2. MATHÉMATIQUES BINAIRES :
+ *    - Utilisation du décalage de bits (<<) pour multiplier rapidement un entier.
+ *    - Utilisation de roundf() pour arrondir précisément les nombres flottants.
+ * 
+ * 3. DÉ-ZOOMAGE (LOGIQUE DE SORTIE) :
+ *    Méthodes toInt() et toFloat() pour extraire la valeur réelle stockée
+ *    en inversant l'opération de zoom (division par 256).
+ * 
+ * 4. SURCHARGE DE L'OPÉRATEUR D'INSERTION (<<) :
+ *    Surcharge externe permettant d'envoyer l'objet directement dans std::cout
+ *    pour afficher sa représentation flottante.
+ */
 class Fixed {
 	private:
     	int                 _value;

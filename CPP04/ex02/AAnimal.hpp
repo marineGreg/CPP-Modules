@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 15:08:02 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/06/03 19:14:13 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/10 15:06:20 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,17 @@
 #include <iostream>
 #include <string>
 
+/**
+ * CONCEPTS C++ :
+ * - Classes Abstraites : Classes représentant des concepts génériques qui ne 
+ *   peuvent pas être instanciées directement (impossibilité de faire 'new Animal').
+ * - Fonctions Virtuelles Pures : Utilisation de la syntaxe '= 0' pour définir 
+ *   des méthodes sans implémentation, forçant ainsi les classes enfants à les définir.
+ * - Contrat d'Interface : Obligation pour toute classe dérivée concrète de fournir 
+ *   une implémentation de 'makeSound()' pour être compilable.
+ * - Sécurité de Conception : Protection contre la création d'objets "incomplets" 
+ *   qui n'auraient pas de comportement spécifique défini.
+ */
 class AAnimal {
 
 	protected:

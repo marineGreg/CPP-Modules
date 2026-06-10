@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 12:35:56 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/01/21 14:26:44 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/10 13:12:47 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,23 @@
 
 # include <string>
 
+/*
+  CONCEPTS C++ :
+
+    - Encapsulation (Hiding data):
+      Les informations du contact (nom, secret, etc.) sont en 'private'.
+      Personne à l'extérieur ne peut les modifier directement.
+      On utilise des "Setters" (pour écrire) et des "Getters" (pour lire).
+
+    - std::string:
+      Contrairement au char* du C, la std::string est un objet qui gère 
+      sa propre mémoire. On peut la comparer avec '==' et connaître 
+      sa taille avec '.length()'.
+
+    - Const-correctness:
+      Les fonctions 'get' sont marquées 'const' car elles ne modifient 
+      pas l'objet. C'est une garantie de sécurité en C++.
+*/
 class Contact {
 	private:
 		std::string _firstName;

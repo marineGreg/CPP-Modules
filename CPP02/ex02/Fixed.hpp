@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:31 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/24 14:14:55 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/10 13:40:44 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,23 @@
 # include <iostream>
 # include <cmath>
 
+/*
+ * CONCEPTS APPLIQUÉS :
+ * 
+ * 1. SURCHARGE D'OPÉRATEURS COMPLÈTE :
+ *    Permet à la classe Fixed de se comporter comme un type numérique natif :
+ *    - Comparaisons : Logic sur les valeurs brutes (raw bits).
+ *    - Arithmétique : +, -, *, / avec conservation de la précision.
+ * 
+ * 2. PRÉ-INCRÉMENT VS POST-INCRÉMENT (++a / a++) :
+ *    - Pré-incrément : Modifie et renvoie une référence (performant).
+ *    - Post-incrément : Prend une copie (photo), modifie, et renvoie la copie.
+ *    - Incrément minimal : 1 bit de valeur brute = 1 graduation (0.0039).
+ * 
+ * 3. FONCTIONS MEMBRES STATIQUES (min / max) :
+ *    Outils utilitaires partagés par la classe, acceptant et renvoyant des 
+ *    références pour éviter des copies inutiles, avec versions 'const'.
+ */
 class Fixed {
 	private:
     	int                 _value;

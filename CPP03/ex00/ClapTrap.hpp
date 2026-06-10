@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 14:19:56 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/25 14:38:24 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/10 13:47:21 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@
 #include <iostream>
 #include <string>
 
+/**
+ * CONCEPTS :
+ * - Forme Canonique Orthodoxe : Implémentation rigoureuse des constructeurs 
+ *   (défaut/recopie), de l'opérateur d'affectation et du destructeur.
+ * - Encapsulation : Protection des données internes via des attributs privés 
+ *   et accès contrôlé par des méthodes publiques.
+ * - Logique d'état : Gestion des ressources (Points de Vie et Énergie) 
+ *   conditionnant la capacité de l'objet à effectuer des actions.
+ */
 class ClapTrap {
 	private:
     	std::string     _name;

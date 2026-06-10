@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 15:08:13 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/06/03 19:13:29 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/10 11:38:30 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,3 @@ class Cat : public Animal {
 
     	void makeSound() const;
 };
-
