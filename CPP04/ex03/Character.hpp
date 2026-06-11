@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/06/03 19:15:16 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/11 17:21:19 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 #include "ICharacter.hpp"
 #include "AMateria.hpp"
 
+/**
+ * CONCEPT : GESTION D'INVENTAIRE ET DEEP COPY
+ * - Implémentation concrète de l'interface ICharacter.
+ * - Deep Copy de l'inventaire : Lors d'une copie, on doit delete l'ancien inventaire 
+ *   et appeler clone() sur chaque Materia de l'autre personnage.
+ * - Gestion du NULL : Initialisation et nettoyage rigoureux des 4 slots d'inventaire.
+ */
 class Character : public ICharacter {
 
 	private:

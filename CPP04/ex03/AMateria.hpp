@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/06/11 15:14:44 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/11 17:20:24 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 
 class ICharacter; // Forward declaration
 
+/**
+ * CONCEPT : CLASSE ABSTRAITE AVEC DONNÉES
+ * - Abstraction : Contient un attribut 'type' commun à toutes les Materias.
+ * - Pattern Prototype : Définit la méthode virtuelle pure clone() qui sera 
+ *   implémentée par Ice et Cure pour s'auto-dupliquer.
+ */
 class AMateria {
 
 	protected:

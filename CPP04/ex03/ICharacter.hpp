@@ -6,12 +6,9 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/06/11 15:15:36 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/11 17:23:52 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#pragma once
-#include <string>
 
 /**
  * CONCEPTS C++ :
@@ -29,8 +26,18 @@
  *   delete la Materia, obligeant à une gestion externe des adresses pour éviter les fuites.
  */
 
+#pragma once
+#include <string>
+
 class AMateria; // Forward declaration
 
+/**
+ * CONCEPT : INTERFACE (CONTRAT)
+ * - En C++98, une interface est une classe sans attributs et avec uniquement 
+ *   des méthodes virtuelles pures.
+ * - Elle définit un "Contrat" : toute classe héritant de ICharacter s'engage 
+ *   légalement à implémenter equip(), unequip(), use(), etc.
+ */
 class ICharacter {
 
 	public:

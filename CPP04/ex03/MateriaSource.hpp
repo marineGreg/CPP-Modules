@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/06/03 19:15:57 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/11 17:22:05 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 #include "IMateriaSource.hpp"
 
+/**
+ * CONCEPT : PATTERN SOURCE / TEMPLATE
+ * - Stocke des exemplaires "modèles" de Materias.
+ * - createMateria() utilise le polymorphisme (clone()) pour générer de nouveaux
+ *   objets sans connaître leur type exact (Ice ou Cure).
+ */
 class MateriaSource : public IMateriaSource {
 
 	private:

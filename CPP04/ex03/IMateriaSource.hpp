@@ -6,13 +6,18 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 15:00:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/06/03 19:15:50 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/11 17:21:33 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include "AMateria.hpp"
 
+/**
+ * CONCEPT : INTERFACE DE GÉNÉRATION (FACTORY)
+ * - Définit le contrat pour une classe capable d'apprendre des modèles de Materias
+ *   et de les cloner sur demande via leur nom.
+ */
 class IMateriaSource {
 
 	public:
