@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 17:15:58 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/24 15:11:17 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/11 15:00:11 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@
 #include <iostream>
 #include <string>
 
+/**
+ * CONCEPTS C++ :
+ * - Héritage Multiple : Création d'une classe (DiamondTrap) héritant simultanément 
+ *   de ScavTrap et FragTrap pour combiner leurs fonctionnalités.
+ * - Héritage Virtuel : Utilisation du mot-clé 'virtual' pour résoudre le "Problème 
+ *   du Diamant", garantissant une instance unique de la classe de base (ClapTrap).
+ * - Gestion du "Shadowing" : Résolution des conflits de noms d'attributs entre 
+ *   la classe enfant et ses parents via la portée explicite (this->name vs ClapTrap::name).
+ * - Composition hybride : Sélection sélective des statistiques et méthodes 
+ *   provenant de parents différents (HP de FragTrap, Energy de ScavTrap, etc.).
+ */
 class ClapTrap {
 	protected:
     	std::string     _name;

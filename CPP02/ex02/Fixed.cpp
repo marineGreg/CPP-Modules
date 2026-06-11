@@ -6,7 +6,7 @@
 /*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:49:25 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/02/18 15:58:03 by mgregoir         ###   ########.fr       */
+/*   Updated: 2026/06/11 14:07:25 by mgregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 Fixed::Fixed() : _value(0) {}
 
-Fixed::Fixed(const int n) { this->_value = n << _bits; }
+Fixed::Fixed(const int n) { this->_value = n << _bits; } // Conversion : n * 256
 
-Fixed::Fixed(const float n) { this->_value = roundf(n * (1 << _bits)); }
+Fixed::Fixed(const float n) { this->_value = roundf(n * (1 << _bits)); } // Conversion : n * 256 avec arrondi
 
 Fixed::Fixed(const Fixed &other) { *this = other; }
 
@@ -28,21 +28,13 @@ Fixed &Fixed::operator=(const Fixed &other) {
 
 Fixed::~Fixed() {}
 
-int Fixed::getRawBits(void) const {
-	return this->_value;
-}
+int Fixed::getRawBits(void) const { return this->_value; }
 
-void Fixed::setRawBits(int const raw) {
-	this->_value = raw;
-}
+void Fixed::setRawBits(int const raw) { this->_value = raw; }
 
-float Fixed::toFloat(void) const {
-    return (float)this->_value / (1 << _bits); // Division par 256.0
-}
+float Fixed::toFloat(void) const { return (float)this->_value / (1 << _bits); } // Division par 256.0
 
-int Fixed::toInt(void) const {
-    return this->_value >> _bits; // Division par 256
-}
+int Fixed::toInt(void) const { return this->_value >> _bits; } // Division par 256
 
 // --- Comparaisons ---
 bool Fixed::operator>(const Fixed &other) const  { return this->_value > other._value; }
