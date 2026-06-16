@@ -1,17 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   DiamondTrap.hpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mgregoir <mgregoir@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/05 12:18:00 by mgregoir          #+#    #+#             */
-/*   Updated: 2026/06/11 15:00:01 by mgregoir         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef DIAMONDTRAP_HPP
-#define DIAMONDTRAP_HPP
+# define DIAMONDTRAP_HPP
 
 #include "ScavTrap.hpp"
 #include "FragTrap.hpp"
