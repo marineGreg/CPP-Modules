@@ -6,6 +6,8 @@
 #include <string>
 #include <exception>
 
+class Form;
+
 class Bureaucrat
 {
 	private:
@@ -15,35 +17,32 @@ class Bureaucrat
 	public:
 		// Constructors and Deconstructor
 		Bureaucrat();
-		Bureaucrat(std::string name, int grade);
-		Bureaucrat(const Bureaucrat& src);
-		Bureaucrat& operator=(const Bureaucrat& other);
+		Bureaucrat(const std::string &name, int grade);
+		Bureaucrat(const Bureaucrat &src);
+		Bureaucrat &operator=(const Bureaucrat &other);
 		~Bureaucrat();
 
 		std::string	getName() const;
 		int			getGrade() const;
 
 		// Fonctions membres
-    	void	incrementGrade(); // Fait grade--
-    	void	decrementGrade(); // Fait grade++
+    	void	upGrade(); // Fait grade--
+    	void	downGrade(); // Fait grade++
+		void	signForm(Form &form);
 
 		// Exceptions
 		class GradeTooHighException : public std::exception
 		{
     		public:
-        		virtual const char* what() const throw() {
-					return "Grade is too high (must be >= 1)";
-				}
+        		virtual const char *what() const throw();
 		};
 		class GradeTooLowException : public std::exception
 		{
     		public:
-        		virtual const char* what() const throw() {
-					return "Grade is too low (must be <= 150)";
-				}
+        		virtual const char *what() const throw();
 		};
 };
 
-std::ostream& operator<<(std::ostream& out, const Bureaucrat& other);
+std::ostream &operator<<(std::ostream &out, const Bureaucrat &bureaucrat);
 
 #endif

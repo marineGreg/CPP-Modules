@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 #include <exception>
-#include "Form.hpp"
 
 class Bureaucrat
 {
@@ -16,32 +15,31 @@ class Bureaucrat
 	public:
 		// Constructors and Deconstructor
 		Bureaucrat();
-		Bureaucrat(std::string name, int grade);
-		Bureaucrat(const Bureaucrat& src);
-		Bureaucrat& operator=(const Bureaucrat& other);
+		Bureaucrat(const std::string &name, int grade);
+		Bureaucrat(const Bureaucrat &src);
+		Bureaucrat &operator=(const Bureaucrat &other);
 		~Bureaucrat();
 
 		std::string	getName() const;
 		int			getGrade() const;
 
 		// Fonctions membres
-    	void	incrementGrade(); // Fait grade--
-    	void	decrementGrade(); // Fait grade++
-		void	signForm(Form& Form) const;
+    	void	upGrade(); // Fait grade--
+    	void	downGrade(); // Fait grade++
 
 		// Exceptions
 		class GradeTooHighException : public std::exception
 		{
     		public:
-        		virtual const char* what() const throw();
+        		virtual const char *what() const throw();
 		};
 		class GradeTooLowException : public std::exception
 		{
     		public:
-        		virtual const char* what() const throw();
+        		virtual const char *what() const throw();
 		};
 };
 
-std::ostream& operator<<(std::ostream& out, const Bureaucrat& bureaucrat);
+std::ostream &operator<<(std::ostream &out, const Bureaucrat &bureaucrat);
 
 #endif
