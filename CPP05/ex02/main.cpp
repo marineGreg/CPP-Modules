@@ -11,9 +11,9 @@ int	main()
 			std::cout << boss << std::endl;
 			std::cout << contract << std::endl;
 
-			boss.signForm(contract); // Doit réussir car 10 <= 20
+			boss.signForm(contract);
 
-			std::cout << contract << std::endl; // Doit être "signed: yes"
+			std::cout << contract << std::endl;
 	}
 	catch (std::exception &e) {
 			std::cout << "Error: " << e.what() << std::endl;
@@ -27,7 +27,7 @@ int	main()
 			std::cout << intern << std::endl;
 			std::cout << topSecret << std::endl;
 
-			intern.signForm(topSecret); // Doit échouer car 120 > 50
+			intern.signForm(topSecret);
 	}
 	catch (std::exception &e) {
 			std::cout << "Error: " << e.what() << std::endl;
@@ -35,7 +35,7 @@ int	main()
 
 	std::cout << "\n===== TEST 3: Invalid Form Creation (Too High) =====" << std::endl;
 	try {
-			AForm illegal("Illegal Form", 0, 50); // Grade 0 est interdit
+			AForm illegal("Illegal Form", 0, 50);
 	}
 	catch (std::exception &e) {
 			std::cout << "Caught expected error: " << e.what() << std::endl;
@@ -43,7 +43,7 @@ int	main()
 
 	std::cout << "\n===== TEST 4: Invalid Form Creation (Too Low) =====" << std::endl;
 	try {
-			AForm illegal("Illegal Form", 151, 50); // Grade 151 est interdit
+			AForm illegal("Illegal Form", 151, 50);
 	}
 	catch (std::exception &e) {
 			std::cout << "Caught expected error: " << e.what() << std::endl;

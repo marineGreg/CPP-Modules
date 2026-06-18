@@ -2,7 +2,7 @@
 
 int	main()
 {
-	std::cout << "--- Test 1: Normal usage ---" << std::endl;
+	std::cout << "===== TEST 1: Normal usage =====" << std::endl;
 	try
 	{
 		Bureaucrat jim("Jim Conrad", 2);
@@ -17,7 +17,7 @@ int	main()
 		std::cerr << "Exception caught: " << e.what() << std::endl;
 	}
 
-	std::cout << "\n--- Test 2: Invalid creation (too low) ---" << std::endl;
+	std::cout << "\n===== TEST 2: Invalid creation (too low) =====" << std::endl;
 	try
 	{
 		Bureaucrat slave("Slave", 160);
@@ -27,7 +27,7 @@ int	main()
 		std::cerr << "Exception caught: " << e.what() << std::endl;
 	}
 
-	std::cout << "\n--- Test 3: Invalid creation (too high) ---" << std::endl;
+	std::cout << "\n===== TEST 3: Invalid creation (too high) =====" << std::endl;
 	try {
 		Bureaucrat god("God", 0);
 	}
@@ -35,7 +35,7 @@ int	main()
 		std::cerr << "Exception caught: " << e.what() << std::endl;
 	}
 
-	std::cout << "\n--- Test 4: Limits of downGrade ---" << std::endl;
+	std::cout << "\n===== TEST 4: Limits of downGrade =====" << std::endl;
 	try
 	{
 		Bureaucrat bob("Bob", 149);
