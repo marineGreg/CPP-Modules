@@ -43,13 +43,11 @@ void Bureaucrat::downGrade() {
 	this->_grade++;
 }
 
-const char *Bureaucrat::GradeTooHighException::what() const throw()
-{
+const char *Bureaucrat::GradeTooHighException::what() const throw() {
 	return "Grade is too high (Minimum value is 1)";
 }
 
-const char *Bureaucrat::GradeTooLowException::what() const throw()
-{
+const char *Bureaucrat::GradeTooLowException::what() const throw() {
 	return "Grade is too low (Maximum value is 150)";
 }
 

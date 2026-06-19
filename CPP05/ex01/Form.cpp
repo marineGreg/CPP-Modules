@@ -29,7 +29,7 @@ Form& Form::operator=(const Form& other) {
 Form::~Form() {}
 
 std::string	Form::getName(void) const { return _name; }
-bool	Form::getIsSigned(void) const { return _is_signed; }
+bool Form::getIsSigned(void) const { return _is_signed; }
 int	Form::getGradeToSign(void) const { return _grade_to_sign; }
 int	Form::getGradeToExec(void) const { return _grade_to_exec; }
 
@@ -41,18 +41,15 @@ void Form::beSigned(const Bureaucrat& bureaucrat) {
 	_is_signed = true;
 }
 
-const char *Form::GradeTooHighException::what() const throw()
-{
+const char *Form::GradeTooHighException::what() const throw() {
 	return "Grade is too high";
 }
 
-const char *Form::GradeTooLowException::what() const throw()
-{
+const char *Form::GradeTooLowException::what() const throw() {
 	return "Grade is too low";
 }
 
-const char *Form::AlreadySignedException::what() const throw()
-{
+const char *Form::AlreadySignedException::what() const throw() {
 	return "Form is already signed";
 }
 

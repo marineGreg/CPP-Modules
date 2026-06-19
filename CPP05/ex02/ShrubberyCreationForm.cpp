@@ -1,6 +1,5 @@
 
 #include "ShrubberyCreationForm.hpp"
-#include <fstream>
 
 ShrubberyCreationForm::ShrubberyCreationForm() :
 	AForm("ShrubberyCreationForm", 145, 137), _target("default") {}
@@ -22,11 +21,8 @@ ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationF
 ShrubberyCreationForm::~ShrubberyCreationForm() {}
 
 void ShrubberyCreationForm::execute(const Bureaucrat &executor) const {
-    // 1. Vérifier si l'exécution est possible (doit être fait dans AForm normalement)
-    // On suppose que tu as créé checkExec() dans AForm :
     this->checkExec(executor); 
 
-    // 2. Action spécifique : Créer le fichier et écrire l'ASCII Art
     std::string filename = this->_target + "_shrubbery";
     std::ofstream outfile(filename.c_str());
 
@@ -34,6 +30,17 @@ void ShrubberyCreationForm::execute(const Bureaucrat &executor) const {
         std::cerr << "Error: could not create file " << filename << std::endl;
         return;
     }
-	outfile << "        # o        " << std::endl;
-	outfile << "       o # o        " << std::endl;
+	outfile << "               ,@@@@@@@," << std::endl;
+	outfile << "       ,,,.   ,@@@@@@/@@,  .oo8888o." << std::endl;
+	outfile << "    ,&%%&%&&%,@@@@@/@@@@@@,8888\\\\88/8o" << std::endl;
+	outfile << "   ,%&\\\\%&&%&&%,@@@\\\\@@@/@@@88\\\\88888/88'" << std::endl;
+	outfile << "   %&&%&%&/%&&%@@\\\\@@/ /@@@88888\\\\88888'" << std::endl;
+	outfile << "   %&&%/ %&%%&&@@\\\\ V /@@' `88\\\\8 `/88'" << std::endl;
+	outfile << "   `&%\\\\ `/%&'    |.|        \\\\ '|8'" << std::endl;
+	outfile << "       |o|        | |         | |" << std::endl;
+	outfile << "       |.|        | |         | |" << std::endl;
+	outfile << " _\\/_\\\\/ ._\\//_/__/  ,\\_//__\\\\/.  \\_//__/" << std::endl;
+
+	outfile.close();
+	std::cout << "Shrubbery file created: " << filename << std::endl;
 }

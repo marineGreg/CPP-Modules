@@ -1,63 +1,86 @@
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include <ctime>
 
 int	main()
 {
-	std::cout << "===== TEST 1: Successful Signing =====" << std::endl;
+	std::srand(std::time(NULL));
+
+	std::cout << "===== TEST 1: Presidential Pardon =====" << std::endl;
 	try {
-			Bureaucrat boss("The Boss", 10);
-			AForm contract("Important contract", 20, 45);
+			Bureaucrat president("President", 6);
+			PresidentialPardonForm pardon("Collin");
 
-			std::cout << boss << std::endl;
-			std::cout << contract << std::endl;
+			std::cout << president << std::endl;
+			std::cout << pardon << std::endl;
 
-			boss.signForm(contract);
+			president.signForm(pardon);
 
-			std::cout << contract << std::endl;
+			std::cout << "\nAttempting execution with grade 6..." << std::endl;
+			president.executeForm(pardon);
+
+			std::cout << "\nPromoting president..." << std::endl;
+			president.upGrade();
+			std::cout << president << std::endl;
+
+			president.executeForm(pardon);
 	}
 	catch (std::exception &e) {
 			std::cout << "Error: " << e.what() << std::endl;
 	}
 
-	std::cout << "\n===== TEST 2: Failed Signing (Grade too low) =====" << std::endl;
+	std::cout << "\n===== TEST 2: Robotomy Request =====" << std::endl;
 	try {
-			Bureaucrat intern("Intern", 120);
-			AForm topSecret("Top Secret Document", 50, 10);
+			Bureaucrat musk("Elon Musk", 46);
+			RobotomyRequestForm	neuralink("Human Brain");
 
-			std::cout << intern << std::endl;
-			std::cout << topSecret << std::endl;
+			std::cout << musk << std::endl;
+			std::cout << neuralink << std::endl;
 
-			intern.signForm(topSecret);
+			musk.signForm(neuralink);
+
+			std::cout << "\nAttempting execution with grade 46..." << std::endl;
+			musk.executeForm(neuralink);
+
+			std::cout << "\nMusk buys some more XP..." << std::endl;
+			musk.upGrade();
+			std::cout << musk << std::endl;
+
+			std::cout << "\nAttempting robotomy again..." << std::endl;
+			for (int i = 0; i < 5; i++){
+				std::cout << "Attempt #" << i + 1 << ":" << std::endl;
+				musk.executeForm(neuralink);
+				std::cout << "---" << std::endl;
+			}
 	}
-	catch (std::exception &e) {
-			std::cout << "Error: " << e.what() << std::endl;
+	catch (std::exception &e){
+		std::cout << "Musky Error: " << e.what() << std::endl;
 	}
 
-	std::cout << "\n===== TEST 3: Invalid Form Creation (Too High) =====" << std::endl;
+	std::cout << "\n===== TEST 3: Shrubbery Creation =====" << std::endl;
 	try {
-			AForm illegal("Illegal Form", 0, 50);
-	}
-	catch (std::exception &e) {
-			std::cout << "Caught expected error: " << e.what() << std::endl;
-	}
+			
+			Bureaucrat arthur("King Arthur", 138); // Grade requis : Signer 145, Executer 137
+			ShrubberyCreationForm forest("camelot"); // Un point trop bas pour exécuter
 
-	std::cout << "\n===== TEST 4: Invalid Form Creation (Too Low) =====" << std::endl;
-	try {
-			AForm illegal("Illegal Form", 151, 50);
-	}
-	catch (std::exception &e) {
-			std::cout << "Caught expected error: " << e.what() << std::endl;
-	}
-	
-	std::cout << "\n===== TEST 5: Already Signed Check =====" << std::endl;
-	try {
-			Bureaucrat boss("The Boss", 1);
-			AForm paper("Plain Paper", 100, 100);
+			std::cout << arthur << std::endl;
+			std::cout << forest << std::endl;
 
-			boss.signForm(paper);
-			boss.signForm(paper);
+			// 1. Arthur essaie de signer (138 < 145, ça passe !)
+			arthur.signForm(forest);
+
+			std::cout << "\nArthur tries to plant the shrubbery..." << std::endl;
+			arthur.executeForm(forest);
+			arthur.upGrade();
+			std::cout << arthur << std::endl;
+			arthur.executeForm(forest);
+			std::cout << "\nCheck in your folder for a file named 'camelot_shrubbery'!" << std::endl;
 	}
-	catch (std::exception &e) {
-		std::cout << "Note: " << e.what() << std::endl;
+	catch (std::exception &e)
+	{
+		std::cerr << "Error: " << e.what() << std::endl;
 	}
+	return 0;
 }

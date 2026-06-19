@@ -5,8 +5,13 @@ NAME        =	bureaucrats
 CXX         =	c++
 CXXFLAGS    =	-Wall -Wextra -Werror -std=c++98
 
-# Fichiers sources (à adapter selon l'exercice)
-SRCS        =	main.cpp Bureaucrat.cpp Form.cpp
+# Fichiers sources
+SRCS        =	main.cpp \
+				AForm.cpp \
+				Bureaucrat.cpp \
+				PresidentialPardonForm.cpp \
+				RobotomyRequestForm.cpp \
+				ShrubberyCreationForm.cpp
 
 # Transformation des .cpp en .o
 OBJS        = $(SRCS:.cpp=.o)

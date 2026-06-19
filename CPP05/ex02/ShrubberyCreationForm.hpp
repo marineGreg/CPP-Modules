@@ -2,6 +2,7 @@
 #ifndef SHRUBBERY_CREATION_FORM_HPP
 #define SHRUBBERY_CREATION_FORM_HPP
 
+#include <fstream>
 #include "AForm.hpp"
 
 class ShrubberyCreationForm : public AForm
@@ -14,9 +15,9 @@ class ShrubberyCreationForm : public AForm
 		ShrubberyCreationForm(std::string target);
 		ShrubberyCreationForm(const ShrubberyCreationForm &src);
 		ShrubberyCreationForm &operator=(const ShrubberyCreationForm &other);
-		~ShrubberyCreationForm();
+		virtual ~ShrubberyCreationForm();
 
-		void	execute(const Bureaucrat &executor) const;
+		virtual void	execute(const Bureaucrat &executor) const;
 };
 
 #endif

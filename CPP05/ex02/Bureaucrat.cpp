@@ -1,6 +1,6 @@
 
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "AForm.hpp"
 
 Bureaucrat::Bureaucrat() : _name("Anonymous"), _grade(150) {}
 
@@ -44,7 +44,7 @@ void Bureaucrat::downGrade() {
 	this->_grade++;
 }
 
-void Bureaucrat::signForm(AForm &form){
+void Bureaucrat::signForm(AForm &form) {
 	try{
 		form.beSigned(*this);
 		std::cout << _name << " signed " << form.getName() << std::endl;
@@ -55,13 +55,22 @@ void Bureaucrat::signForm(AForm &form){
 	}
 }
 
-const char *Bureaucrat::GradeTooHighException::what() const throw()
-{
+void Bureaucrat::executeForm(const AForm &form) {
+	try {
+		form.execute(*this);
+		std::cout << _name << " executed " << form.getName() << std::endl; 
+	}
+	catch (std::exception &e) {
+		std::cout << _name << " couldn't execute " << form.getName()
+				  << " because " << e.what() << std::endl;
+	}
+}
+
+const char *Bureaucrat::GradeTooHighException::what() const throw() {
 	return "Grade is too high (Minimum value is 1)";
 }
 
-const char *Bureaucrat::GradeTooLowException::what() const throw()
-{
+const char *Bureaucrat::GradeTooLowException::what() const throw() {
 	return "Grade is too low (Maximum value is 150)";
 }
 
