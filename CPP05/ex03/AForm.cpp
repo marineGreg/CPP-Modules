@@ -33,10 +33,10 @@ bool	AForm::getIsSigned(void) const { return _is_signed; }
 int	AForm::getGradeToSign(void) const { return _grade_to_sign; }
 int	AForm::getGradeToExec(void) const { return _grade_to_exec; }
 
-void AForm::beSigned(const Bureaucrat &bureaucrat) {
-	if (this->getIsSigned())
+void AForm::beSigned(const Bureaucrat& bureaucrat) {
+	if (_is_signed)
 		throw AForm::AlreadySignedException();
-	if (bureaucrat.getGrade() > this->getGradeToSign())
+	if (bureaucrat.getGrade() > _grade_to_sign)
 		throw AForm::GradeTooLowException();
 	_is_signed = true;
 }
