@@ -1,3 +1,4 @@
+*This project has been created as part of the 42 curriculum by mgregoir*
 
 # CPP Module 02 - Tout comprendre sur la Virgule Fixe
 

@@ -1,4 +1,4 @@
-
+*This project has been created as part of the 42 curriculum by mgregoir*
 
 # C++ - Module 00 : Introduction à la POO
 
@@ -92,12 +92,3 @@ Utilisé pour l'exercice `PhoneBook` afin d'afficher des colonnes propres.
 5. [ ] Utilisation du `const` sur les fonctions de lecture.
 6. [ ] Pas de `using namespace std;`.
 ```
-
----
-
-### Comment l'utiliser ?
-1. Crée un fichier nommé `README.md` dans ton dossier `cpp00`.
-2. Colle le texte ci-dessus dedans.
-3. Si tu as un éditeur comme VS Code, tu peux faire un clic droit sur le fichier et choisir "Open Preview" pour le voir avec une jolie mise en forme.
-
-C'est ton "kit de survie" pour la soutenance. Si tu as compris tout ce qui est écrit là, tu es parée ! Bon courage pour les derniers détails.

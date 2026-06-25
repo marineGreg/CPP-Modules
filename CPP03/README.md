@@ -1,8 +1,10 @@
+*This project has been created as part of the 42 curriculum by mgregoir*
+
 # C++ Module 03 - Inheritance (Héritage)
 
 Ce module est une introduction aux concepts fondamentaux de l'**Héritage** en Programmation Orientée Objet (POO) avec le standard C++98.
 
-## 📌 Objectifs du Module
+## Objectifs du Module
 - Comprendre la hiérarchie des classes (relation "Est un").
 - Apprendre à réutiliser du code sans le dupliquer.
 - Maîtriser les spécificateurs d'accès (`private` vs `protected`).
@@ -10,7 +12,7 @@ Ce module est une introduction aux concepts fondamentaux de l'**Héritage** en P
 
 ---
 
-## 🛠 Concepts Clés
+## Concepts Clés
 
 ### 1. L'Héritage (Inheritance)
 L'héritage permet à une classe (enfant) de récupérer les attributs et les méthodes d'une autre classe (parent).
@@ -40,7 +42,7 @@ Si une classe est destinée à être héritée, son destructeur doit être `virt
 
 ---
 
-## 💎 Le Problème du Diamant (Exercice 03)
+## Le Problème du Diamant (Exercice 03)
 
 L'exercice 03 introduit le cas où une classe `DiamondTrap` hérite de `ScavTrap` et `FragTrap`, qui eux-mêmes héritent de `ClapTrap`.
 
@@ -56,7 +58,7 @@ En utilisant `class ScavTrap : virtual public ClapTrap`, on indique au compilate
 
 ---
 
-## 📋 Résumé des Exercices
+## Résumé des Exercices
 
 | Exercice | Classe | Concept Principal |
 | :--- | :--- | :--- |
@@ -67,7 +69,7 @@ En utilisant `class ScavTrap : virtual public ClapTrap`, on indique au compilate
 
 ---
 
-## ⚠️ Checklist pour l'Évaluation
+## Checklist pour l'Évaluation
 
 1. **Forme Canonique :** Chaque classe a-t-elle son constructeur par défaut, de recopie, son opérateur `=` et son destructeur ?
 2. **Messages de Log :** Chaque constructeur/destructeur affiche-t-il un message unique pour prouver l'ordre d'appel ?

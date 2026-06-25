@@ -1,5 +1,6 @@
+*This project has been created as part of the 42 curriculum by mgregoir*
 
-# 🧠 C++ Module 01 - Guide de Survie
+# C++ Module 01 - Guide de Survie
 
 Ce module se concentre sur trois piliers du C++ : la gestion de la mémoire (**Stack vs Heap**), la différence entre **Pointeurs et Références**, et l'utilisation des **Pointeurs sur fonctions membres**.
 
@@ -86,6 +87,3 @@ Le `switch` ne fonctionne que sur des entiers ou des caractères en C++. Pour fi
 4.  **Initialisation :** Utilise les **listes d'initialisation** dans tes constructeurs :
     `HumanA::HumanA(string name) : _name(name) {}` (C'est plus efficace et obligatoire pour les références).
 5.  **Pas de `using namespace std;`** : C'est une mauvaise pratique qui pollue l'espace de nom. Utilise toujours le préfixe `std::`.
-
----
-*Guide réalisé pour le projet C++ - 42 School*

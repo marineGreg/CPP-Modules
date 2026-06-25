@@ -1,12 +1,13 @@
+*This project has been created as part of the 42 curriculum by mgregoir*
 
 # C++ - Module 04 : Polymorphisme, Classes Abstraites et Interfaces
 
-## 📝 Présentation
+## Présentation
 Ce module marque une étape cruciale dans l'apprentissage de la Programmation Orientée Objet (POO) en C++. L'objectif est de comprendre comment rendre un code **flexible**, **évolutif** et **sécurisé** en utilisant le polymorphisme de sous-type.
 
 ---
 
-## 🚀 Concepts Clés
+## Concepts Clés
 
 ### 1. Le Polymorphisme de sous-type
 C'est la capacité de manipuler des objets de classes différentes (ex: `Dog`, `Cat`) via un pointeur de leur classe parente (`Animal*`).
@@ -28,7 +29,7 @@ Dans l'exercice 01, on manipule des pointeurs internes (`Brain*`).
 
 ---
 
-## 📂 Structure des Exercices
+## Structure des Exercices
 
 ### Exercice 00 : Polymorphisme de base
 - **But :** Découvrir le mot-clé `virtual`.
@@ -49,7 +50,7 @@ Dans l'exercice 01, on manipule des pointeurs internes (`Brain*`).
 
 ---
 
-## 🛠 Forme Canonique d'Orthodox (OCF)
+## Forme Canonique d'Orthodox (OCF)
 Chaque classe doit implémenter :
 1. **Constructeur par défaut**
 2. **Constructeur de recopie** (gérant la Deep Copy si nécessaire)
@@ -58,7 +59,7 @@ Chaque classe doit implémenter :
 
 ---
 
-## 💡 "Cheat Sheet" pour l'Évaluation
+## "Cheat Sheet" pour l'Évaluation
 
 | Question possible | Réponse courte |
 | :--- | :--- |
@@ -67,6 +68,3 @@ Chaque classe doit implémenter :
 | **Différence Deep vs Shallow Copy ?** | Deep copie le contenu, Shallow copie juste l'adresse mémoire. |
 | **Pourquoi `this != &other` ?** | Pour éviter l'auto-affectation qui pourrait supprimer la mémoire qu'on veut copier. |
 | **C'est quoi une Interface ?** | Une classe qui définit "ce qu'un objet fait" sans dire "comment il le fait". |
-
----
-*Projet réalisé dans le cadre du cursus 42.*

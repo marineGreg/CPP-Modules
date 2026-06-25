@@ -1,12 +1,13 @@
+*This project has been created as part of the 42 curriculum by mgregoir*
 
 # C++ - Module 05 : Repetition and Exceptions
 
-## 📌 Présentation
+## Présentation
 Ce module marque une transition majeure dans l'apprentissage du C++. L'objectif est d'abandonner la gestion d'erreurs "à la C" (codes de retour `-1` ou pointeurs `NULL`) pour adopter le mécanisme robuste des **Exceptions**. Il introduit également les notions de **Classes Abstraites** et de **Design Patterns** (Factory).
 
 ---
 
-## 🛠 Concepts Clés
+## Concepts Clés
 
 ### 1. Le mécanisme Try / Throw / Catch
 C'est le cœur du module.
@@ -21,7 +22,7 @@ Toutes nos exceptions personnalisées héritent de `public std::exception`.
 
 ---
 
-## 📂 Détail des Exercices
+## Détail des Exercices
 
 ### Exercice 00 : Mommy, when I grow up, I want to be a bureaucrat!
 **Objectif :** Créer une classe de base et gérer ses limites de création.
@@ -67,7 +68,7 @@ Toutes nos exceptions personnalisées héritent de `public std::exception`.
 
 ---
 
-## ❓ Questions fréquentes en Soutenance
+##  Questions fréquentes en Soutenance
 
 1. **Pourquoi hériter de `std::exception` ?**
    *Réponse* : Pour pouvoir attraper toutes nos exceptions personnalisées via un seul `catch (std::exception &e)`. C'est le principe de l'interopérabilité.
@@ -80,6 +81,3 @@ Toutes nos exceptions personnalisées héritent de `public std::exception`.
 
 4. **Pourquoi l'Interne retourne-t-il un pointeur ?**
    *Réponse* : Parce qu'on ne peut pas retourner une classe abstraite par valeur, et le polymorphisme ne fonctionne qu'avec des pointeurs ou des références.
-
----
-*Ce module a été réalisé dans le respect de la norme C++98.*
