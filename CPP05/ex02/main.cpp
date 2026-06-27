@@ -6,81 +6,71 @@
 
 int	main()
 {
+	// Initialisation de l'aléatoire pour la Robotomie
 	std::srand(std::time(NULL));
 
-	std::cout << "===== TEST 1: Presidential Pardon =====" << std::endl;
-	try {
-			Bureaucrat president("President", 6);
-			PresidentialPardonForm pardon("Collin");
+	std::cout << "===== Section 1: Planet Express Staffing =====" << std::endl;
+	Bureaucrat zapp("Zapp Brannigan", 1);        // Le "général" (Grade maximum)
+	Bureaucrat hermes("Hermes Conrad", 37);     // Le bureaucrate pro (Grade moyen)
+	Bureaucrat fry("Philip J. Fry", 150);       // Le livreur (Grade minimum)
 
-			std::cout << president << std::endl;
-			std::cout << pardon << std::endl;
+	std::cout << zapp << std::endl;
+	std::cout << hermes << std::endl;
+	std::cout << fry << std::endl;
 
-			president.signForm(pardon);
 
-			std::cout << "\nAttempting execution with grade 6..." << std::endl;
-			president.executeForm(pardon);
+	std::cout << "\n===== Section 2: Galactic Paperwork =====" << std::endl;
+	ShrubberyCreationForm marsForest("Mars");
+	RobotomyRequestForm unit22("Unit 22");
+	PresidentialPardonForm criminal("Calculon");
 
-			std::cout << "\nPromoting president..." << std::endl;
-			president.upGrade();
-			std::cout << president << std::endl;
+	std::cout << marsForest << std::endl;
+	std::cout << unit22 << std::endl;
+	std::cout << criminal << std::endl;
 
-			president.executeForm(pardon);
-	}
-	catch (std::exception &e) {
-			std::cout << "Error: " << e.what() << std::endl;
-	}
 
-	std::cout << "\n===== TEST 2: Robotomy Request =====" << std::endl;
-	try {
-			Bureaucrat musk("Elon Musk", 46);
-			RobotomyRequestForm	neuralink("Human Brain");
+	std::cout << "\n===== Section 3: The Delivery Boy attempts to work =====" << std::endl;
+	// Fry est grade 150. Il ne peut rien faire.
+	fry.signForm(marsForest);
+	fry.executeForm(marsForest);
 
-			std::cout << musk << std::endl;
-			std::cout << neuralink << std::endl;
 
-			musk.signForm(neuralink);
+	std::cout << "\n===== Section 4: Zapp Signs Everything (Authority check) =====" << std::endl;
+	// Zapp signe tout car il a le grade 1, mais il n'exécute rien par paresse
+	zapp.signForm(marsForest);
+	zapp.signForm(unit22);
+	zapp.signForm(criminal);
 
-			std::cout << "\nAttempting execution with grade 46..." << std::endl;
-			musk.executeForm(neuralink);
 
-			std::cout << "\nMusk buys some more XP..." << std::endl;
-			musk.upGrade();
-			std::cout << musk << std::endl;
+	std::cout << "\n===== Section 5: Hermes performs his duties =====" << std::endl;
+	// Hermes est grade 37. 
+	// Shrubbery (exec 137) -> OK
+	// Robotomy (exec 45) -> OK
+	// Presidential (exec 5) -> Fails
+	
+	std::cout << "--- Shrubbery execution ---" << std::endl;
+	hermes.executeForm(marsForest);
 
-			std::cout << "\nAttempting robotomy again..." << std::endl;
-			for (int i = 0; i < 5; i++){
-				std::cout << "Attempt #" << i + 1 << ":" << std::endl;
-				musk.executeForm(neuralink);
-				std::cout << "---" << std::endl;
-			}
-	}
-	catch (std::exception &e){
-		std::cout << "Musky Error: " << e.what() << std::endl;
+	std::cout << "\n--- Multiple Robotomy attempts (50/50 chance) ---" << std::endl;
+	for (int i = 0; i < 5; i++){
+		std::cout << "Attempt #" << i + 1 << ":" << std::endl;
+		hermes.executeForm(unit22);
+		std::cout << "---" << std::endl;
 	}
 
-	std::cout << "\n===== TEST 3: Shrubbery Creation =====" << std::endl;
-	try {
-			
-			Bureaucrat arthur("King Arthur", 138); // Grade requis : Signer 145, Executer 137
-			ShrubberyCreationForm forest("camelot"); // Un point trop bas pour exécuter
+	std::cout << "\n--- Presidential Pardon attempt ---" << std::endl;
+	hermes.executeForm(criminal); // Devrait échouer car Hermes est 37 et il faut 5.
 
-			std::cout << arthur << std::endl;
-			std::cout << forest << std::endl;
 
-			// 1. Arthur essaie de signer (138 < 145, ça passe !)
-			arthur.signForm(forest);
+	std::cout << "\n===== Section 6: The Ultimate Pardon =====" << std::endl;
+	// Zapp doit s'en occuper lui-même
+	zapp.executeForm(criminal);
 
-			std::cout << "\nArthur tries to plant the shrubbery..." << std::endl;
-			arthur.executeForm(forest);
-			arthur.upGrade();
-			std::cout << arthur << std::endl;
-			arthur.executeForm(forest);
-			std::cout << "\nCheck in your folder for a file named 'camelot_shrubbery'!" << std::endl;
-	}
-	catch (std::exception &e)
-	{
-		std::cerr << "Error: " << e.what() << std::endl;
-	}
+
+	std::cout << "\n===== Section 7: Unsigned Form execution test =====" << std::endl;
+	// On crée un nouveau formulaire non signé
+	ShrubberyCreationForm unsignedForm("Void");
+	zapp.executeForm(unsignedForm); // Devrait échouer car non signé
+
 	return 0;
 }
