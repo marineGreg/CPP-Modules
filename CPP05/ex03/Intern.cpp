@@ -34,6 +34,6 @@ AForm *Intern::makeForm(std::string name, std::string target) {
     }
 
     // 4. Si rien n'est trouvé
-    std::cout << "Error: Intern cannot create form '" << name << "' (unknown name). " << std::endl;
+    std::cout << "Error: Intern cannot create form '" << name << "' because it does not exist." << std::endl;
     return NULL;
 }

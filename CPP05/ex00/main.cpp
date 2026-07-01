@@ -5,12 +5,12 @@ int	main()
 	std::cout << "===== TEST 1: Normal usage =====" << std::endl;
 	try
 	{
-		Bureaucrat jim("Jim Conrad", 2);
-		std::cout << jim << std::endl;
-		jim.upGrade(); // Devient grade 1
-		std::cout << "After upGrade: " << jim << std::endl;
+		Bureaucrat ceo("The CEO", 2);
+		std::cout << ceo << std::endl;
+		ceo.upGrade(); // Devient grade 1
+		std::cout << "After upGrade: " << ceo << std::endl;
 		// Tentative de monter trop haut
-		jim.upGrade();
+		ceo.upGrade();
 	}
 	catch (std::exception &e)
 	{

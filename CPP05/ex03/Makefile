@@ -23,7 +23,7 @@ all: $(NAME)
 # Compilation de l'exécutable
 $(NAME): $(OBJS)
 	@$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
-	@echo "$(GREEN) Compilation terminée : $(NAME)$(RESET)"
+	@echo "Compilation terminée : $(NAME)"
 
 # Compilation des fichiers objets
 %.o: %.cpp
@@ -43,5 +43,4 @@ fclean: clean
 # Re-compilation totale
 re: fclean all
 
-# Empêche la confusion avec des fichiers du même nom
 .PHONY: all clean fclean re

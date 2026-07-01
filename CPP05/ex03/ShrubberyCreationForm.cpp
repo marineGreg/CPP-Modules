@@ -31,15 +31,15 @@ void ShrubberyCreationForm::execute(const Bureaucrat &executor) const {
         return;
     }
 	outfile << "               ,@@@@@@@," << std::endl;
-	outfile << "       ,,,.   ,@@@@@@/@@,  .oo8888o." << std::endl;
-	outfile << "    ,&%%&%&&%,@@@@@/@@@@@@,8888\\\\88/8o" << std::endl;
-	outfile << "   ,%&\\\\%&&%&&%,@@@\\\\@@@/@@@88\\\\88888/88'" << std::endl;
-	outfile << "   %&&%&%&/%&&%@@\\\\@@/ /@@@88888\\\\88888'" << std::endl;
-	outfile << "   %&&%/ %&%%&&@@\\\\ V /@@' `88\\\\8 `/88'" << std::endl;
-	outfile << "   `&%\\\\ `/%&'    |.|        \\\\ '|8'" << std::endl;
-	outfile << "       |o|        | |         | |" << std::endl;
-	outfile << "       |.|        | |         | |" << std::endl;
-	outfile << " _\\/_\\\\/ ._\\//_/__/  ,\\_//__\\\\/.  \\_//__/" << std::endl;
+	outfile << "       ,,,.   ,@@@@@@/@@," << std::endl;
+	outfile << "    ,&%%&%&&%,@@@@@/@@@@@@," << std::endl;
+	outfile << "   ,%&\\\\%&&%&&%,@@@\\\\@@@/@@@" << std::endl;
+	outfile << "   %&&%&%&/%&&%@@\\\\@@/ /@@@" << std::endl;
+	outfile << "   %&&%/ %&%%&&@@\\\\ V /@@'" << std::endl;
+	outfile << "   `&%\\\\ `/%&'    |.|" << std::endl;
+	outfile << "       |o|        | |" << std::endl;
+	outfile << "       |.|        | |" << std::endl;
+	outfile << " _\\/_\\\\/ ._\\//_/__/  ,\\_//__" << std::endl;
 
 	outfile.close();
 	std::cout << "Shrubbery file created: " << filename << std::endl;

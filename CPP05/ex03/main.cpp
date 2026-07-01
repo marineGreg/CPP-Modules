@@ -4,30 +4,35 @@
 int	main()
 {
 	Intern someRandomIntern;
-	Bureaucrat boss("The Boss", 1);
+	Bureaucrat zapp("Zapp Brannigan", 1);
 	AForm *rrf;
+	AForm *scf;
+	AForm *ppf;
+	AForm *random;
 
-	std::cout << "===== TEST 1: Robotomy =====" << std::endl;
+	std::cout << "===== TEST 1: Intern creates valid forms =====" << std::endl;
 	rrf = someRandomIntern.makeForm("robotomy request", "Bender");
+	scf = someRandomIntern.makeForm("shrubbery creation", "Mars");
+	ppf = someRandomIntern.makeForm("presidential pardon", "Calculon");
+
 	if (rrf) {
-		boss.signForm(*rrf);
-		boss.executeForm(*rrf);
+		zapp.signForm(*rrf);
+		zapp.executeForm(*rrf);
 		delete rrf;
 	}
 
-	std::cout << "\n===== TEST 2: Shrubbery =====" << std::endl;
-	AForm *scf;
-	scf = someRandomIntern.makeForm("shrubbery creation", "Arthur");
 	if (scf) {
-		boss.signForm(*scf);
-		boss.executeForm(*scf);
 		delete scf;
 	}
 
-	std::cout << "\n===== TEST 3: Inexistant Form =====" << std::endl;
-	rrf = someRandomIntern.makeForm("presidential padon", "Intern");
-	if (rrf) {
-		delete rrf;
+	if (ppf) {
+		delete ppf;
+	}
+
+	std::cout << "\n===== TEST 2: Intern creates invalid form =====" << std::endl;
+	random = someRandomIntern.makeForm("random form", "Intern");
+	if (random) {
+		delete random;
 	}
 
 	return 0;

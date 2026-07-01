@@ -5,13 +5,13 @@ int	main()
 {
 	std::cout << "===== TEST 1: Successful Signing =====" << std::endl;
 	try {
-			Bureaucrat boss("The Boss", 10);
+			Bureaucrat ceo("The CEO", 10);
 			Form contract("Important contract", 20, 45);
 
-			std::cout << boss << std::endl;
+			std::cout << ceo << std::endl;
 			std::cout << contract << std::endl;
 
-			boss.signForm(contract); // Doit réussir car 10 <= 20
+			ceo.signForm(contract); // Doit réussir car 10 <= 20
 
 			std::cout << contract << std::endl; // Doit être "signed: yes"
 	}
@@ -58,7 +58,7 @@ int	main()
 			boss.signForm(paper);
 	}
 	catch (std::exception &e) {
-		std::cerr << "Note: " << e.what() << std::endl;
+		std::cerr << "Error: " << e.what() << std::endl;
 	}
 	return 0;
 }
