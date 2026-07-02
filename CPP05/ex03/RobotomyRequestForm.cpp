@@ -22,7 +22,7 @@ RobotomyRequestForm::~RobotomyRequestForm() {}
 
 void RobotomyRequestForm::execute(const Bureaucrat &executor) const {
 	this->checkExec(executor);
-	std::cout << "Drilling noises... BZZZZZZZZZZZZZT" << std::endl;
+	std::cout << "BBBZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZTTT" << std::endl;
 	if (std::rand() % 2)
 		std::cout << this->_target << " has been robotomized successfully!" << std::endl;
 	else
