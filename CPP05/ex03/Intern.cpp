@@ -11,7 +11,7 @@ AForm *Intern::createRobotomy(std::string target) { return new RobotomyRequestFo
 AForm *Intern::createPresidential(std::string target) { return new PresidentialPardonForm(target); }
 
 AForm *Intern::makeForm(std::string name, std::string target) {
-    // 1. Définition des pointeurs sur fonctions membres
+    // 1. Définition des noms de formulaires
     std::string formNames[] = {
         "shrubbery creation",
         "robotomy request",

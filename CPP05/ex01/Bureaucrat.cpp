@@ -24,13 +24,9 @@ Bureaucrat &Bureaucrat::operator=(const Bureaucrat &other) {
 
 Bureaucrat::~Bureaucrat() {}
 
-std::string Bureaucrat::getName(void) const {
-	return this->_name;
-}
+std::string Bureaucrat::getName(void) const { return this->_name; }
 
-int Bureaucrat::getGrade(void) const {
-	return this->_grade;
-}
+int Bureaucrat::getGrade(void) const { return this->_grade; }
 
 void Bureaucrat::upGrade() {
 	if (this->_grade - 1 < 1)
@@ -47,10 +43,10 @@ void Bureaucrat::downGrade() {
 void Bureaucrat::signForm(Form &form) {
 	try{
 		form.beSigned(*this);
-		std::cout << _name << " signed " << form.getName() << std::endl;
+		std::cout << this->_name << " signed " << form.getName() << std::endl;
 	}
 	catch (std::exception &e){
-		std::cout << _name << " could not sign " << form.getName()
+		std::cout << this->_name << " could not sign " << form.getName()
 			      << " because " << e.what() <<  "." << std::endl;
 	}
 }

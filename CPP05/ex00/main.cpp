@@ -46,7 +46,7 @@ int	main()
 	}
 	catch (std::exception &e)
 	{
-		std::cerr << "Exception caught => " << e.what() << std::endl;
+		std::cerr << "Exception caught: " << e.what() << std::endl;
 	}
 	return 0;
 }
