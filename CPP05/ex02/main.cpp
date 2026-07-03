@@ -10,15 +10,16 @@ int	main()
 	std::srand(std::time(NULL));
 
 	std::cout << "===== Section 1: Planet Express Staffing =====" << std::endl;
-	Bureaucrat zapp("Zapp Brannigan", 1);        // Le général
-	Bureaucrat hermes("Hermes Conrad", 37);     // Le bureaucrate pro
-	Bureaucrat fry("Philip Fry", 150);       // Le livreur
+	Bureaucrat zapp("Zapp Brannigan", 1);	// Le général
+	Bureaucrat hermes("Hermes Conrad", 37);	// Le bureaucrate pro
+	Bureaucrat fry("Philip Fry", 150);		// Le livreur
 
 	std::cout << zapp << std::endl;
 	std::cout << hermes << std::endl;
 	std::cout << fry << std::endl;
 
 	std::cout << "\n===== Section 2: Galactic Paperwork =====" << std::endl;
+
 	ShrubberyCreationForm marsForest("Mars");
 	RobotomyRequestForm unit22("Unit 22");
 	PresidentialPardonForm criminal("Calculon");
@@ -26,7 +27,6 @@ int	main()
 	std::cout << marsForest << std::endl;
 	std::cout << unit22 << std::endl;
 	std::cout << criminal << std::endl;
-
 
 	std::cout << "\n===== Section 3: The Delivery Boy attempts to work =====" << std::endl;
 	// Fry est grade 150. Il ne peut rien faire.
