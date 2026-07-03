@@ -38,7 +38,7 @@ int	main()
 			Form illegal("Illegal Form", 0, 50); // Grade 0 est interdit
 	}
 	catch (std::exception &e) {
-			std::cerr << "Caught expected error: " << e.what() << std::endl;
+			std::cerr << "Exception caught: " << e.what() << std::endl;
 	}
 
 	std::cout << "\n===== TEST 4: Invalid Form Creation (Too Low) =====" << std::endl;
@@ -46,7 +46,7 @@ int	main()
 			Form illegal("Illegal Form", 151, 50); // Grade 151 est interdit
 	}
 	catch (std::exception &e) {
-			std::cerr << "Caught expected error: " << e.what() << std::endl;
+			std::cerr << "Exception caught: " << e.what() << std::endl;
 	}
 	
 	std::cout << "\n===== TEST 5: Already Signed Check =====" << std::endl;
