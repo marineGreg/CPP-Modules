@@ -7,7 +7,6 @@ struct Data
 {
 	int	id;
 	std::string name;
-	std::string user;
 };
 
 #endif
