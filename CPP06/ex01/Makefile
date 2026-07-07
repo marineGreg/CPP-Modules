@@ -1,5 +1,5 @@
 # Nom de l'exécutable
-NAME        =	convert
+NAME        =	serializer
 
 # Compilateur et Flags
 CXX         =	c++
@@ -7,7 +7,7 @@ CXXFLAGS    =	-Wall -Wextra -Werror -std=c++98
 
 # Fichiers sources (à adapter selon l'exercice)
 SRCS        =	main.cpp \
-				ScalarConverter.cpp
+				Serializer.cpp
 
 # Transformation des .cpp en .o
 OBJS        = $(SRCS:.cpp=.o)

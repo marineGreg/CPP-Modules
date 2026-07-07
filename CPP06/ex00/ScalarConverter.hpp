@@ -6,7 +6,6 @@
 #include <cstdlib> // pour strtod
 #include <climits> // pour INT_MAX, INT_MIN
 #include <iomanip> // pour setprecision
-#include <cmath>   // pour isnan, isinf (ou on peut le faire à la main)
 
 class ScalarConverter
 {
@@ -15,10 +14,11 @@ class ScalarConverter
 		ScalarConverter(const ScalarConverter & src);
 		ScalarConverter &operator=(const ScalarConverter & other);
 		~ScalarConverter();
-
-	public:
+		
+		public:
 		static void convert(const std::string & input);
-};
-
+	};
+	
+	void displayResults(double d);
 
 #endif

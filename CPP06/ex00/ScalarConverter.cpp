@@ -12,23 +12,20 @@ ScalarConverter &ScalarConverter::operator=(const ScalarConverter & other) {
 ScalarConverter::~ScalarConverter() {}
 
 void ScalarConverter::convert(const std::string & input) {
-    // 1. GESTION DES CAS SPÉCIAUX (Pseudo-littéraux)
-    if (input == "nan" || input == "nanf" || input == "+inf" || input == "+inff" || 
-        input == "-inf" || input == "-inff") {
-        
-        std::cout << "char: impossible" << std::endl;
-        std::cout << "int: impossible" << std::endl;
-        
-        // On affiche nanf si c'est un float, nan si c'est un double
-        if (input.find("nan") != std::string::npos) {
-            std::cout << "float: nanf" << std::endl;
-            std::cout << "double: nan" << std::endl;
-        } else {
-            // Gestion des infinis
-            std::string res = (input[0] == '+') ? "+inf" : "-inf";
-            std::cout << "float: " << res << "f" << std::endl;
-            std::cout << "double: " << res << std::endl;
-        }
+    // Traitement des cas spéciaux (nan, inf) en premier
+    if (input == "nan" || input == "nanf") {
+        std::cout << "char: impossible\nint: impossible\nfloat: nanf\ndouble: nan" 
+		<< std::endl;
+    	return;
+	}
+    if (input == "+inf" || input == "+inff" || input == "-inf" || input == "-inff"
+		|| input == "inf" || input == "inff") {
+        std::string sign = "";
+        if (input[0] == '+') sign = "+";
+        if (input[0] == '-') sign = "-";
+        std::cout << "char: impossible\nint: impossible" << std::endl;
+        std::cout << "float: " << sign << "inff" << std::endl;
+        std::cout << "double: " << sign << "inf" << std::endl;
         return;
     }
 
@@ -36,42 +33,49 @@ void ScalarConverter::convert(const std::string & input) {
     // Si l'input est 'a', ce n'est pas un nombre mais un char.
     if (input.length() == 1 && !std::isdigit(input[0])) {
         char c = input[0];
-        std::cout << "char: '" << c << "'" << std::endl;
-        std::cout << "int: " << static_cast<int>(c) << std::endl;
-        std::cout << "float: " << std::fixed << std::setprecision(1) << static_cast<float>(c) << "f" << std::endl;
-        std::cout << "double: " << std::fixed << std::setprecision(1) << static_cast<double>(c) << std::endl;
+        displayResults(static_cast<double>(c));
         return;
     }
 
-    // 3. CONVERSION NUMÉRIQUE (Le gros morceau)
-    char* endptr;
+    // 3. CONVERSION NUMÉRIQUE
+    char * endptr;
     // strtod convertit une string en double. endptr pointera sur le reste (ex: le 'f' de 42.0f)
-    double d = std::strtod(input.c_str(), &endptr);
+    double d = std::strtod(input.c_str(), & endptr);
 
-    // Vérification sommaire : si on n'a rien lu du tout
-    if (input.c_str() == endptr) {
-        std::cout << "Error: Invalid input" << std::endl;
+    // Vérification de la validité de la string
+    // On accepte si on arrive à la fin ou si on s'arrête sur le 'f' de float
+    if (*endptr != '\0' && std::string(endptr) != "f") {
+        std::cout << "char: impossible\nint: impossible\nfloat: nanf\ndouble: nan" 
+		<< std::endl;
         return;
     }
 
-    // --- AFFICHAGE CHAR ---
-    if (d < 0 || d > 127) {
-        std::cout << "char: impossible" << std::endl;
-    } else if (!std::isprint(static_cast<int>(d))) {
-        std::cout << "char: Non displayable" << std::endl;
+	displayResults(d);
+}
+
+void displayResults(double d) {
+    // 1. AFFICHAGE CHAR
+    std::cout << "char: ";
+    if (d < 0 || d > 127 || d != d) { // Trop grand ou Pas un nombre
+        std::cout << "impossible" << std::endl;
+    } else if (!std::isprint(static_cast<int>(d))) { // Pas imprimable (ex: 0 à 31)
+        std::cout << "Non displayable" << std::endl;
     } else {
-        std::cout << "char: '" << static_cast<char>(d) << "'" << std::endl;
+        std::cout << "'" << static_cast<char>(d) << "'" << std::endl;
     }
 
-    // --- AFFICHAGE INT ---
-    if (d > INT_MAX || d < INT_MIN) {
-        std::cout << "int: impossible" << std::endl;
+    // 2. AFFICHAGE INT
+    std::cout << "int: ";
+    if (d > INT_MAX || d < INT_MIN || d != d) {
+        std::cout << "impossible" << std::endl;
     } else {
-        std::cout << "int: " << static_cast<int>(d) << std::endl;
+        std::cout << static_cast<int>(d) << std::endl;
     }
 
-    // --- AFFICHAGE FLOAT & DOUBLE ---
-    // On utilise fixed et setprecision(1) pour forcer le ".0" demandé par le sujet
-    std::cout << "float: " << std::fixed << std::setprecision(1) << static_cast<float>(d) << "f" << std::endl;
+    // 3. AFFICHAGE FLOAT & DOUBLE
+    // On force l'affichage d'au moins un ".0" avec fixed et setprecision
+    std::cout << "float: " << std::fixed << std::setprecision(1) 
+	<< static_cast<float>(d) << "f" << std::endl;
     std::cout << "double: " << std::fixed << std::setprecision(1) << d << std::endl;
 }
+ 
