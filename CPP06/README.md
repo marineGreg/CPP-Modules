@@ -47,12 +47,10 @@ Pourquoi dynamic_cast ?
     Utilisation : Identification du type réel d'une instance dans une hiérarchie polymorphe.
 
     Justification : C'est le seul cast qui effectue une vérification à l'exécution (RTTI).
+    Sur un pointeur, il renvoie NULL en cas d'échec, permettant une structure if/else.
 
-        Sur un pointeur, il renvoie NULL en cas d'échec, permettant une structure if/else.
-
-        Sur une référence, il lance une exception std::bad_cast en cas d'échec, car une référence ne peut être nulle.
-
-        Note : Il nécessite obligatoirement que la classe de base possède au moins une fonction virtuelle (destructeur virtuel ici).
+    Sur une référence, il lance une exception std::bad_cast en cas d'échec, car une référence ne peut être nulle.
+    Note : Il nécessite obligatoirement que la classe de base possède au moins une fonction virtuelle (destructeur virtuel ici).
 
 Pourquoi pas const_cast ?
 
