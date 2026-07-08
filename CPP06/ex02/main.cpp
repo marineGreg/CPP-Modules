@@ -1,0 +1,83 @@
+#include "Base.hpp"
+#include "A.hpp"
+#include "B.hpp"
+#include "C.hpp"
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+
+Base* generate(void) {
+	int i = std::rand() % 3;
+	if (i == 0)
+		return new A;
+	if (i == 1)
+		return new B;
+	return new C;
+}
+
+void identify(Base* p) {
+	if (dynamic_cast<A*>(p))
+		std::cout << "A" << std::endl;
+	else if (dynamic_cast<B*>(p))
+        std::cout << "B" << std::endl;
+    else if (dynamic_cast<C*>(p))
+        std::cout << "C" << std::endl;
+}
+
+void identify(Base& p) {
+	try {
+		A& a = dynamic_cast<A&>(p);
+		(void)a;
+		std::cout << "A" << std::endl;
+		return;		
+	} catch (std::exception &e) {}
+
+	try {
+		B& b = dynamic_cast<B&>(p);
+		(void)b;
+		std::cout << "B" << std::endl;
+		return;		
+	} catch (std::exception &e) {}
+	
+	try {
+		C& c = dynamic_cast<C&>(p);
+		(void)c;
+		std::cout << "C" << std::endl;
+		return;		
+	} catch (std::exception &e) {}
+}
+
+int main()
+{
+	std::srand(std::time(NULL));
+
+	std::cout << "===== TEST D'IDENTIFICATION RÉEL TYPE =====" << std::endl << std::endl;
+
+    for (int i = 0; i < 5; i++) {
+        std::cout << "--- Test n°" << i + 1 << " ---" << std::endl;
+
+        // 2. Génération d'un objet aléatoire (A, B ou C)
+        Base* instance = generate();
+
+        // 3. Test de l'identification par POINTEUR
+        std::cout << "Identification par pointeur  : ";
+        identify(instance);
+
+        // 4. Test de l'identification par RÉFÉRENCE
+        std::cout << "Identification par référence : ";
+        identify(*instance); // On déréférence le pointeur pour envoyer la référence
+
+        // 5. Libération de la mémoire
+        delete instance;
+        std::cout << std::endl;
+    }
+
+    // 6. Test avec un type inconnu (optionnel)
+    std::cout << "===== Test avec Base pure (ne doit rien afficher ou gérer l'erreur) =====" << std::endl;
+    Base* baseSeule = new Base();
+    std::cout << "Pointeur : "; identify(baseSeule); 
+    std::cout << "Référence : "; identify(*baseSeule);
+    delete baseSeule;
+
+    return 0;
+}
