@@ -5,6 +5,12 @@
 #include <cstddef>
 #include <stdint.h>
 
+/**
+ * Il n'y a aucune hiérarchie de classe ni aucun lien de conversion standard
+ * entre un pointeur d'objet et un nombre entier. On doit faire une
+ * réinterprétation directe des bits au niveau mémoire, ce que seul le 
+ * reinterpret_cast permet de faire.
+ */
 class Serializer
 {
 	private:
