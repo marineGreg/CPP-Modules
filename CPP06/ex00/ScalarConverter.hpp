@@ -7,6 +7,14 @@
 #include <climits> // pour INT_MAX, INT_MIN
 #include <iomanip> // pour setprecision
 
+/**
+ * Les types char, int, float et double sont tous des types numériques.
+ * Ils sont liés par des règles de conversion standards définies par le langage
+ * C++. Le static_cast est l'outil le plus sûr pour effectuer ces conversions
+ * car il demande au compilateur de transformer réellement la valeur
+ * (par exemple, tronquer la partie décimale d'un double pour en faire un
+ * entier).
+ */
 class ScalarConverter
 {
 	private:
