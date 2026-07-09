@@ -51,12 +51,12 @@ int main()
 {
 	std::srand(std::time(NULL));
 
-	std::cout << "===== TEST D'IDENTIFICATION RÉEL TYPE =====" << std::endl << std::endl;
+	std::cout << "===== TEST D'IDENTIFICATION REEL TYPE =====" << std::endl << std::endl;
 
     for (int i = 0; i < 5; i++) {
         std::cout << "--- Test n°" << i + 1 << " ---" << std::endl;
 
-        // 2. Génération d'un objet aléatoire (A, B ou C)
+        // 2. Generation d'un objet aleatoire (A, B ou C)
         Base* instance = generate();
 
         // 3. Test de l'identification par POINTEUR
@@ -64,20 +64,13 @@ int main()
         identify(instance);
 
         // 4. Test de l'identification par RÉFÉRENCE
-        std::cout << "Identification par référence : ";
-        identify(*instance); // On déréférence le pointeur pour envoyer la référence
+        std::cout << "Identification par reference : ";
+        identify(*instance); // On dereference le pointeur pour envoyer la reference
 
-        // 5. Libération de la mémoire
+        // 5. Liberation de la memoire
         delete instance;
         std::cout << std::endl;
     }
-
-    // 6. Test avec un type inconnu (optionnel)
-    std::cout << "===== Test avec Base pure (ne doit rien afficher ou gérer l'erreur) =====" << std::endl;
-    Base* baseSeule = new Base();
-    std::cout << "Pointeur : "; identify(baseSeule); 
-    std::cout << "Référence : "; identify(*baseSeule);
-    delete baseSeule;
 
     return 0;
 }
