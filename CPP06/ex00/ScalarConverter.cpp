@@ -41,11 +41,11 @@ void ScalarConverter::convert(const std::string & input) {
 
     // 3. CONVERSION NUMÉRIQUE
     char * endptr;
-    // strtod convertit une string en double. endptr pointera sur le reste (ex: le 'f' de 42.0f)
+    // strtod convertit une string en double. endptr pointera sur le reste
     double d = std::strtod(input.c_str(), & endptr);
 
     // Vérification de la validité de la string
-    // On accepte si on arrive à la fin ou si on s'arrête sur le 'f' de float
+    // On accepte si on arrive à la fin ou si on s'arrête sur le 'f'
     if (*endptr != '\0' && std::string(endptr) != "f") {
         std::cout << "char: impossible\nint: impossible\nfloat: nanf\ndouble: nan" 
 		<< std::endl;
