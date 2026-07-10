@@ -21,8 +21,10 @@ void ScalarConverter::convert(const std::string & input) {
     if (input == "+inf" || input == "+inff" || input == "-inf" || input == "-inff"
 		|| input == "inf" || input == "inff") {
         std::string sign = "";
-        if (input[0] == '+') sign = "+";
-        if (input[0] == '-') sign = "-";
+        if (input[0] == '+')
+			sign = "+";
+        if (input[0] == '-')
+			sign = "-";
         std::cout << "char: impossible\nint: impossible" << std::endl;
         std::cout << "float: " << sign << "inff" << std::endl;
         std::cout << "double: " << sign << "inf" << std::endl;
@@ -56,21 +58,19 @@ void ScalarConverter::convert(const std::string & input) {
 void displayResults(double d) {
     // 1. AFFICHAGE CHAR
     std::cout << "char: ";
-    if (d < 0 || d > 127 || d != d) { // Trop grand ou Pas un nombre
+    if (d < 0 || d > 127 || d != d) // Trop grand ou Pas un nombre
         std::cout << "impossible" << std::endl;
-    } else if (!std::isprint(static_cast<int>(d))) { // Pas imprimable (ex: 0 à 31)
+    else if (!std::isprint(static_cast<int>(d))) // Pas imprimable (ex: 0 à 31)
         std::cout << "Non displayable" << std::endl;
-    } else {
+	else
         std::cout << "'" << static_cast<char>(d) << "'" << std::endl;
-    }
 
     // 2. AFFICHAGE INT
     std::cout << "int: ";
-    if (d > INT_MAX || d < INT_MIN || d != d) {
+    if (d > INT_MAX || d < INT_MIN || d != d)
         std::cout << "impossible" << std::endl;
-    } else {
+    else
         std::cout << static_cast<int>(d) << std::endl;
-    }
 
     // 3. AFFICHAGE FLOAT & DOUBLE
     // On force l'affichage d'au moins un ".0" avec fixed et setprecision

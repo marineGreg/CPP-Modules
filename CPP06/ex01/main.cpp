@@ -37,9 +37,8 @@ int main() {
 		<< std::endl;
         std::cout << "Original : " << originalPtr << " == Recupere : " << deserializedPtr
 		<< std::endl;
-    } else {
+    } else
         std::cout << "ECHEC : Les adresses ne correspondent pas !" << std::endl;
-    }
 
     return 0;
 }
