@@ -12,7 +12,7 @@ ScalarConverter &ScalarConverter::operator=(const ScalarConverter & other) {
 ScalarConverter::~ScalarConverter() {}
 
 void ScalarConverter::convert(const std::string & input) {
-    // Traitement des cas spéciaux (nan, inf) en premier
+    // Traitement des cas speciaux (nan, inf) en premier
     if (input == "nan" || input == "nanf") {
         std::cout << "char: impossible\nint: impossible\nfloat: nanf\ndouble: nan" 
 		<< std::endl;
@@ -31,7 +31,7 @@ void ScalarConverter::convert(const std::string & input) {
         return;
     }
 
-    // 2. DÉTECTION DU TYPE CHAR UNIQUE
+    // 2. DETECTION DU TYPE CHAR UNIQUE
     // Si l'input est 'a', ce n'est pas un nombre mais un char.
     if (input.length() == 1 && !std::isdigit(input[0])) {
         char c = input[0];
@@ -44,7 +44,7 @@ void ScalarConverter::convert(const std::string & input) {
     // strtod convertit une string en double. endptr pointera sur le reste
     double d = std::strtod(input.c_str(), & endptr);
 
-    // Vérification de la validité de la string
+    // Verification de la validite de la string
     if (*endptr != '\0' && std::string(endptr) != "f") {
         std::cout << "char: impossible\nint: impossible\nfloat: nanf\ndouble: nan" 
 		<< std::endl;
