@@ -2,9 +2,11 @@
 #define ITER_HPP
 
 template <typename T, typename F>
-void iter(T *array, size_t length, F function) {
+void iter(T *array, size_t length, F func) {
+	if (!array || !func)
+        return;
 	for (size_t i = 0; i < length; i++) {
-		function(array[i]);
+		func(array[i]);
 	}
 }
 
