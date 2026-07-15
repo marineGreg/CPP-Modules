@@ -2,10 +2,17 @@
 #define BASE_HPP
 
 /**
- * Si Base n'avait aucune fonction virtuelle, alors le compilateur sait, dès la
- * compilation, qu'il n'y aura aucune vtable, donc aucune info de type à l'exécution.
- * Résultat : il refuse carrément de compiler ton dynamic_cast<A*>(p), parce
- * qu'il sait à l'avance que ce serait impossible à résoudre.
+ * Le dynamic_cast est l'opérateur dédié à la navigation sécurisée dans une 
+ * hiérarchie de classes polymorphes (downcasting). 
+ * 
+ * Contrairement au static_cast, il vérifie la validité de la conversion à 
+ * l'exécution (Runtime) en utilisant les informations de type (RTTI). 
+ * Si le type réel de l'objet ne correspond pas au type cible :
+ * - Il retourne NULL pour les pointeurs.
+ * - Il lance une exception std::bad_cast pour les références.
+ * 
+ * Note : Pour fonctionner, la classe de base doit être polymorphe, 
+ * c'est-à-dire posséder au moins une fonction virtuelle (ici le destructeur).
  */
 class Base
 {

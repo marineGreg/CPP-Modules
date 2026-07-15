@@ -63,9 +63,9 @@ int main()
         std::cout << "Identification par pointeur  : ";
         identify(instance);
 
-        // 4. Test de l'identification par RÉFÉRENCE
+        // 4. Test de l'identification par REFERENCE
         std::cout << "Identification par reference : ";
-        identify(*instance); // On dereference le pointeur pour envoyer la reference
+        identify(*instance);
 
         // 5. Liberation de la memoire
         delete instance;

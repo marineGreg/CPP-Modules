@@ -45,7 +45,6 @@ void ScalarConverter::convert(const std::string & input) {
     double d = std::strtod(input.c_str(), & endptr);
 
     // Vérification de la validité de la string
-    // On accepte si on arrive à la fin ou si on s'arrête sur le 'f'
     if (*endptr != '\0' && std::string(endptr) != "f") {
         std::cout << "char: impossible\nint: impossible\nfloat: nanf\ndouble: nan" 
 		<< std::endl;
@@ -58,7 +57,7 @@ void ScalarConverter::convert(const std::string & input) {
 void displayResults(double d) {
     // 1. AFFICHAGE CHAR
     std::cout << "char: ";
-    if (d < 0 || d > 127 || d != d) // Trop grand ou Pas un nombre
+    if (d < 0 || d > 127 || d != d) // hors limites ou NaN
         std::cout << "impossible" << std::endl;
     else if (!std::isprint(static_cast<int>(d))) // Pas imprimable (ex: 0 à 31)
         std::cout << "Non displayable" << std::endl;
