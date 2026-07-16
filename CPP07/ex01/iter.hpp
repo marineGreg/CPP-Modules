@@ -12,5 +12,4 @@ void	iter(T *array, size_t const size, F func) {
 	}
 }
 
-
 #endif
