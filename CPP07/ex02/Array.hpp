@@ -18,21 +18,21 @@ class Array
         Array& operator=(const Array & other);
         ~Array();
 
-
         T& operator[](unsigned int i);
         const T& operator[](unsigned int i) const;
         
-		// --- Fonction membre ---
         unsigned int size() const;
 
-        // --- Exception personnalisée ---
         class OutOfBoundsException : public std::exception {
-            public:
-                virtual const char* what() const throw() {
+    		public:
+        		virtual const char* what() const throw() {
 					return "Index out of bounds";
 				}
-        };
+		};
 };
+
+template <typename T>
+std::ostream& operator<<(std::ostream & os, const Array<T> & array);
 
 #include "Array.tpp"
 

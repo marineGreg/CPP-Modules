@@ -1,11 +1,10 @@
 #ifndef ARRAY_TPP
 #define ARRAY_TPP
 
-// --- Constructeur par défaut ---
+
 template <typename T>
 Array<T>::Array() : _data(NULL), _size(0) {}
 
-// --- Constructeur avec paramètre n ---
 template <typename T>
 Array<T>::Array(unsigned int n) : _size(n) {
     // Le sujet précise d'utiliser new[]
@@ -16,7 +15,7 @@ Array<T>::Array(unsigned int n) : _size(n) {
         _data = NULL;
 }
 
-// --- Constructeur de recopie ---
+// --- Constructeur de copie ---
 template <typename T>
 Array<T>::Array(const Array & src) : _data(NULL), _size(0) {
     // On réutilise l'opérateur d'affectation pour éviter la duplication de code
@@ -34,9 +33,7 @@ Array<T>& Array<T>::operator=(const Array & other) {
 				newData[i] = other._data[i];
 			}
 		}
-		if (_data) {
-			delete[] _data;
-		}
+		delete[] _data;
 		_data = newData;
 		_size = other._size;
     }
@@ -46,14 +43,13 @@ Array<T>& Array<T>::operator=(const Array & other) {
 // --- Destructeur ---
 template <typename T>
 Array<T>::~Array() {
-    if (_data)
-        delete[] _data;
+    delete[] _data;
 }
 
 // --- Opérateur [] (Version normale) ---
 template <typename T>
 T& Array<T>::operator[](unsigned int i) {
-    if (i >= _size || _data == NULL)
+    if (i >= _size)
         throw OutOfBoundsException();
     return _data[i];
 }
@@ -61,7 +57,7 @@ T& Array<T>::operator[](unsigned int i) {
 // --- Opérateur [] (Version constante) ---
 template <typename T>
 const T& Array<T>::operator[](unsigned int i) const {
-    if (i >= _size || _data == NULL)
+    if (i >= _size)
         throw OutOfBoundsException();
     return _data[i];
 }
@@ -69,6 +65,18 @@ const T& Array<T>::operator[](unsigned int i) const {
 template <typename T>
 unsigned int Array<T>::size() const {
     return _size;
+}
+
+template <typename T>
+std::ostream& operator<<(std::ostream & os, const Array<T> & array) {
+    os << "[";
+    for (unsigned int i = 0; i < array.size(); i++) {
+        os << array[i];
+        if (i < array.size() - 1)
+            os << ", ";
+    }
+    os << "]";
+    return os;
 }
 
 #endif
