@@ -6,7 +6,7 @@ Fixed::Fixed() : _value(0) {
     std::cout << "Default constructor called" << std::endl;
 }
 
-// Constructeur de recopie : appelle l'operateur d'affectation pour copier la donnee
+// Constructeur de copie : appelle l'operateur d'affectation pour copier la donnee
 Fixed::Fixed(const Fixed &other) {
     std::cout << "Copy constructor called" << std::endl;
     *this = other;

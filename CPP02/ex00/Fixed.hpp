@@ -10,7 +10,7 @@
  * 1. FORME CANONIQUE ORTHODOXE (OCF) :
  *    Obligatoire pour une gestion rigoureuse des objets en C++. Elle comprend :
  *    - Constructeur par défaut : Initialise l'objet dans un état stable.
- *    - Constructeur de recopie : Permet de créer un nouvel objet "jumeau" (Deep Copy).
+ *    - Constructeur de copie : Permet de créer un nouvel objet "jumeau" (Deep Copy).
  *    - Surcharge de l'opérateur d'affectation (=) : Permet de copier les données
  *      d'un objet existant vers un autre objet déjà créé, avec sécurité anti-auto-affectation.
  *    - Destructeur : Assure la libération propre des ressources à la fin de vie de l'objet.
