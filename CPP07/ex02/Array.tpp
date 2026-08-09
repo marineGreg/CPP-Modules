@@ -1,7 +1,6 @@
 #ifndef ARRAY_TPP
 #define ARRAY_TPP
 
-
 template <typename T>
 Array<T>::Array() : _data(NULL), _size(0) {}
 
@@ -68,15 +67,15 @@ unsigned int Array<T>::size() const {
 }
 
 template <typename T>
-std::ostream& operator<<(std::ostream & os, const Array<T> & array) {
-    os << "[";
+std::ostream& operator<<(std::ostream & out, const Array<T> & array) {
+    out << "[";
     for (unsigned int i = 0; i < array.size(); i++) {
-        os << array[i];
+        out << array[i];
         if (i < array.size() - 1)
-            os << ", ";
+            out << ", ";
     }
-    os << "]";
-    return os;
+    out << "]";
+    return out;
 }
 
 #endif
