@@ -8,7 +8,7 @@ class MutantStack : public std::stack<T> {
 public:
     // --- Forme Canonique Orthodoxe ---
     MutantStack();
-    MutantStack(const MutantStack &other);
+    MutantStack(const MutantStack &src);
     MutantStack &operator=(const MutantStack &other);
     virtual ~MutantStack();
 
