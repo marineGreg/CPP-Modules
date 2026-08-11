@@ -4,12 +4,12 @@
 #include <cctype>
 
 template <typename T>
-void printItem(T const & item) {
+void printItem(T const &item) {
 	std::cout << item << " ";
 }	
 
 template <typename T>
-void decrement(T & item) {
+void decrement(T &item) {
     item--;
 }
 
