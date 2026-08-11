@@ -4,6 +4,13 @@
 #include <iostream>
 #include <exception>
 
+/**
+ * Ce patron de classe (Class Template) sert de blueprint pour générer 
+ * des conteneurs dynamiques sécurisés. Comme le compilateur doit construire 
+ * l'intégralité de la classe concrète (ex: Array<int> ou Array<std::string>) 
+ * au moment de l'instanciation, il a besoin d'avoir accès à toute la logique 
+ * (gestion mémoire, copie profonde, opérateurs) directement ici.
+ */
 template <typename T>
 class Array
 {
