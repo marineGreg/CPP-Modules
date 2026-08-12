@@ -82,9 +82,6 @@ L'ajout des parenthèses `()` force l'initialisation par défaut des éléments.
 
 ---
 
-Pour réussir une évaluation à 42, il ne suffit pas que le code fonctionne, il faut montrer que tu maîtrises les **concepts** et que tu as compris les **contraintes spécifiques** du sujet.
-
-Voici une structure "clé en main" pour expliquer chaque exercice à ton évaluateur :
 
 ---
 
@@ -125,14 +122,3 @@ Voici une structure "clé en main" pour expliquer chaque exercice à ton évalua
 4.  **Pas de `friend` :** *"Pour l'affichage (operator<<), je n'ai pas utilisé `friend`. Je passe par l'interface publique (`size()` et `operator[]`), ce qui respecte mieux l'encapsulation."*
 
 ---
-
-### 3 Conseils pour "gagner" l'évaluation :
-
-1.  **Anticipe Valgrind :** *"J'ai vérifié mon code avec Valgrind, notamment pour l'exercice 02. Même en cas de copie ou d'affectation de tableaux vides, il n'y a aucune fuite mémoire (memory leaks)."*
-2.  **Montre tes tests :** Ne te contente pas du main du sujet. Montre ton main avec des `std::string` et des tableaux constants. *"Regarde, ici je prouve que modifier une copie n'altère pas l'original."*
-3.  **Utilise le bon vocabulaire :**
-    *   Ne dis pas "le type", dis **"le paramètre de type T"**.
-    *   Ne dis pas "créer la fonction", dis **"instancier le template"**.
-    *   Ne dis pas "copier le pointeur", dis **"shallow copy"** (mauvais) vs **"deep copy"** (bon).
-
-Avec cette structure, tu montres que tu as une vision d'ensemble du module et que tu maîtrises chaque détail technique. Tu as d'autres questions sur un point précis ?
