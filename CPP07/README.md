@@ -81,3 +81,58 @@ Puisque le mot-clé `friend` est interdit, l'opérateur de flux doit être une f
 L'ajout des parenthèses `()` force l'initialisation par défaut des éléments. Pour des `int`, cela garantit que le tableau contient des `0` au lieu de valeurs aléatoires résiduelles en mémoire.
 
 ---
+
+Pour réussir une évaluation à 42, il ne suffit pas que le code fonctionne, il faut montrer que tu maîtrises les **concepts** et que tu as compris les **contraintes spécifiques** du sujet.
+
+Voici une structure "clé en main" pour expliquer chaque exercice à ton évaluateur :
+
+---
+
+### Introduction Générale (Le "Pitch" du module)
+*"Ce module porte sur la **programmation générique** via les **Templates**. L'idée est d'écrire des structures et des fonctions dont la logique est indépendante du type de donnée traité. Le compilateur utilise mon code comme un **patron** (blueprint) pour générer le code réel au moment de l'instanciation. C'est pour cette raison que mes implémentations sont dans les headers (`.hpp`), car le compilateur doit avoir accès à la 'recette' complète pour chaque nouveau type rencontré."*
+
+---
+
+### Exercice 00 : Start with a few functions
+**Le but :** Implémenter des fonctions templates de base (`swap`, `min`, `max`).
+
+**Ce que tu expliques :**
+1.  **Généricité :** *"Mes fonctions fonctionnent avec n'importe quel type `T`, à condition que ce type supporte les opérateurs de comparaison (`<`, `>`)."*
+2.  **La règle d'égalité (Le piège du sujet) :** *"Le sujet demande de retourner le deuxième paramètre en cas d'égalité. Pour `min`, j'utilise `if (a < b) return a; return b;`. Si `a` et `b` sont égaux, la condition est fausse, et je retourne bien `b`, le deuxième."*
+3.  **Passage par référence :** *"J'utilise des références constantes (`T const &`) pour éviter des copies inutiles d'objets lourds, tout en garantissant que la fonction ne modifiera pas les valeurs originales (sauf pour `swap`)."*
+
+---
+
+### Exercice 01 : Iter
+**Le but :** Créer une fonction qui parcourt un tableau et applique une fonction sur chaque élément.
+
+**Ce que tu expliques :**
+1.  **Double Template :** *"J'utilise deux types templates : `T` pour les éléments du tableau et `F` pour la fonction. Utiliser un template pour la fonction rend `iter` plus flexible : elle accepte des pointeurs de fonction classiques, mais aussi des instances d'autres fonctions templates."*
+2.  **Gestion du `const` (L'encadré jaune) :** *"Le sujet demandait de bien gérer les éléments constants. Si je passe un tableau de `const int`, mon template `T` devient `const int`. Mon code reste donc robuste et respecte la sécurité des données."*
+3.  **Simplicité :** *"La fonction est simple : elle prend l'adresse, la taille, et boucle sur chaque index en appelant la fonction passée en paramètre."*
+
+---
+
+### Exercice 02 : Array
+**Le but :** Créer une classe template qui se comporte comme un tableau dynamique sécurisé.
+
+**Ce que tu expliques :**
+1.  **Gestion Mémoire :** *"J'utilise `new T[size]()` pour l'allocation. Les parenthèses sont cruciales : elles forcent la 'value-initialization' (les `int` sont mis à 0 par défaut au lieu d'avoir des valeurs aléatoires)."*
+2.  **Forme Canonique & Deep Copy :** *"C'est le point le plus important. Mon constructeur de recopie et mon opérateur d'affectation font une **copie profonde**. Je crée un nouveau tableau en mémoire et je copie chaque élément. Cela évite que deux objets pointent sur la même mémoire, ce qui causerait des crashs (double free) au moment du destructeur."*
+3.  **Surcharge de l'opérateur `[]` :**
+    *   **Sécurité :** *"Je vérifie l'index avant chaque accès. S'il est invalide, je lance une `std::exception` (via ma classe `OutOfBoundsException`)."*
+    *   **Const-correctness :** *"J'ai surchargé `[]` en version normale ET en version `const`. Cela permet de lire les données même si l'objet `Array` est passé en tant que référence constante."*
+4.  **Pas de `friend` :** *"Pour l'affichage (operator<<), je n'ai pas utilisé `friend`. Je passe par l'interface publique (`size()` et `operator[]`), ce qui respecte mieux l'encapsulation."*
+
+---
+
+### 3 Conseils pour "gagner" l'évaluation :
+
+1.  **Anticipe Valgrind :** *"J'ai vérifié mon code avec Valgrind, notamment pour l'exercice 02. Même en cas de copie ou d'affectation de tableaux vides, il n'y a aucune fuite mémoire (memory leaks)."*
+2.  **Montre tes tests :** Ne te contente pas du main du sujet. Montre ton main avec des `std::string` et des tableaux constants. *"Regarde, ici je prouve que modifier une copie n'altère pas l'original."*
+3.  **Utilise le bon vocabulaire :**
+    *   Ne dis pas "le type", dis **"le paramètre de type T"**.
+    *   Ne dis pas "créer la fonction", dis **"instancier le template"**.
+    *   Ne dis pas "copier le pointeur", dis **"shallow copy"** (mauvais) vs **"deep copy"** (bon).
+
+Avec cette structure, tu montres que tu as une vision d'ensemble du module et que tu maîtrises chaque détail technique. Tu as d'autres questions sur un point précis ?
