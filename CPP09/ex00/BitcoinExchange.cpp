@@ -1,151 +1,296 @@
 #include "BitcoinExchange.hpp"
 
+#include <cctype>
+#include <cstdlib>
+#include <fstream>
+
 BitcoinExchange::BitcoinExchange() {}
 
-BitcoinExchange::BitcoinExchange(const BitcoinExchange& other) {
-    *this = other;
-}
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
+    : _database(other._database) {}
 
-BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other) {
-    if (this != &other) {
-        this->_database = other._database;
-    }
+BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
+{
+    if (this != &other)
+        _database = other._database;
     return *this;
 }
 
 BitcoinExchange::~BitcoinExchange() {}
 
-// Trim nettoyant les espaces, tabulations ET retours à la ligne (\r, \n)
-std::string BitcoinExchange::_trim(const std::string& str) const {
-    size_t start = str.find_first_not_of(" \t\r\n");
+std::string BitcoinExchange::_trim(const std::string &str) const
+{
+    const std::string whitespace = " \t\r\n";
+
+    std::string::size_type start = str.find_first_not_of(whitespace);
+
     if (start == std::string::npos)
         return "";
-    size_t end = str.find_last_not_of(" \t\r\n");
+
+    std::string::size_type end = str.find_last_not_of(whitespace);
+
     return str.substr(start, end - start + 1);
 }
 
-bool BitcoinExchange::_isValidDate(const std::string& date) const {
-    if (date.length() != 10)
+bool BitcoinExchange::_isValidDate(const std::string &date) const
+{
+    if (date.size() != 10)
         return false;
+
     if (date[4] != '-' || date[7] != '-')
         return false;
 
-    for (size_t i = 0; i < date.length(); ++i) {
+    for (std::string::size_type i = 0; i < date.size(); ++i)
+    {
         if (i == 4 || i == 7)
             continue;
-        if (!std::isdigit(date[i]))
+
+        if (!std::isdigit(static_cast<unsigned char>(date[i])))
             return false;
     }
 
-    int year = std::atoi(date.substr(0, 4).c_str());
-    int month = std::atoi(date.substr(5, 2).c_str());
-    int day = std::atoi(date.substr(8, 2).c_str());
+    const int year = std::atoi(date.substr(0, 4).c_str());
+    const int month = std::atoi(date.substr(5, 2).c_str());
+    const int day = std::atoi(date.substr(8, 2).c_str());
 
-    if (month < 1 || month > 12 || day < 1 || day > 31)
+    if (year < 1 || month < 1 || month > 12 || day < 1)
         return false;
 
-    if (month == 4 || month == 6 || month == 9 || month == 11) {
-        if (day > 30)
-            return false;
-    } else if (month == 2) {
-        bool isLeap = (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
-        if (day > (isLeap ? 29 : 28))
+    static const int daysPerMonth[12] = {
+        31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+    };
+
+    int maximumDay = daysPerMonth[month - 1];
+
+    const bool leapYear = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+
+    if (month == 2 && leapYear)
+        maximumDay = 29;
+
+    return day <= maximumDay;
+}
+
+bool BitcoinExchange::_isValidValue(const std::string &valueString, double &value) const
+{
+    if (valueString.empty())
+        return false;
+
+    std::string::size_type position = 0;
+
+    if (valueString[position] == '+' || valueString[position] == '-')
+        ++position;
+
+    bool hasDigit = false;
+
+    while (position < valueString.size() && std::isdigit(static_cast<unsigned char>(valueString[position])))
+    {
+        hasDigit = true;
+        ++position;
+    }
+
+    if (position < valueString.size() && valueString[position] == '.')
+    {
+        ++position;
+        while (position < valueString.size() && std::isdigit(static_cast<unsigned char>(valueString[position])))
+        {
+            hasDigit = true;
+            ++position;
+        }
+    }
+
+    if (!hasDigit)
+        return false;
+
+    if (position < valueString.size() && (valueString[position] == 'e' || valueString[position] == 'E'))
+    {
+        ++position;
+
+        if (position < valueString.size() && (valueString[position] == '+' || valueString[position] == '-'))
+            ++position;
+
+        bool hasExponentDigit = false;
+
+        while (position < valueString.size() && std::isdigit(static_cast<unsigned char>(valueString[position])))
+        {
+            hasExponentDigit = true;
+            ++position;
+        }
+
+        if (!hasExponentDigit)
             return false;
     }
+
+    if (position != valueString.size())
+        return false;
+
+    char *end;
+    const char *begin = valueString.c_str();
+
+    value = std::strtod(begin, &end);
+
+    if (begin == end || *end != '\0')
+        return false;
+
+    // Une valeur NaN est la seule valeur différente d'elle-même.
+    if (value != value)
+        return false;
 
     return true;
 }
 
-bool BitcoinExchange::_isValidValue(const std::string& valStr, double& value) const {
-    if (valStr.empty())
-        return false;
+bool BitcoinExchange::loadDatabase(const std::string &databasePath)
+{
+    std::ifstream file(databasePath.c_str());
 
-    char* endPtr;
-    value = std::strtod(valStr.c_str(), &endPtr);
-
-    if (*endPtr != '\0' && *endPtr != 'f')
-        return false;
-
-    return true;
-}
-
-bool BitcoinExchange::loadDatabase(const std::string& dbPath) {
-    std::ifstream file(dbPath.c_str());
     if (!file.is_open())
         return false;
 
     std::string line;
-    std::getline(file, line); // Sauter le header "date,exchange_rate"
 
-    while (std::getline(file, line)) {
-        size_t commaPos = line.find(',');
-        if (commaPos != std::string::npos) {
-            std::string date = _trim(line.substr(0, commaPos));
-            std::string rateStr = _trim(line.substr(commaPos + 1));
-            double rate = std::atof(rateStr.c_str());
-            _database[date] = rate;
-        }
+    if (!std::getline(file, line))
+        return false;
+
+    if (_trim(line) != "date,exchange_rate")
+        return false;
+
+    std::map<std::string, double> database;
+
+    while (std::getline(file, line))
+    {
+        const std::string trimmedLine = _trim(line);
+
+        if (trimmedLine.empty())
+            continue;
+
+        const std::string::size_type comma = trimmedLine.find(',');
+
+        if (comma == std::string::npos || trimmedLine.find(',', comma + 1) != std::string::npos)
+            return false;
+
+        const std::string date = _trim(trimmedLine.substr(0, comma));
+
+        const std::string rateString = _trim(trimmedLine.substr(comma + 1));
+
+        double rate;
+
+        if (!_isValidDate(date) || !_isValidValue(rateString, rate) || rate < 0)
+            return false;
+
+        database[date] = rate;
     }
-    file.close();
+
+    if (file.bad() || database.empty())
+        return false;
+
+    _database.swap(database);
     return true;
 }
 
-void BitcoinExchange::processInput(const std::string& inputPath) const {
+bool BitcoinExchange::processInput(const std::string &inputPath) const
+{
     std::ifstream file(inputPath.c_str());
-    if (!file.is_open()) {
-        std::cout << "Error: could not open file." << std::endl;
-        return;
+
+    if (!file.is_open())
+    {
+        std::cout
+            << "Error: could not open file."
+            << std::endl;
+        return false;
     }
 
     std::string line;
-    while (std::getline(file, line)) {
-        std::string trimmedLine = _trim(line);
-        if (trimmedLine.empty() || trimmedLine == "date | value")
+    bool firstLine = true;
+
+    while (std::getline(file, line))
+    {
+        const std::string trimmedLine = _trim(line);
+
+        if (firstLine)
+        {
+            firstLine = false;
+
+            if (trimmedLine == "date | value")
+                continue;
+        }
+
+        if (trimmedLine.empty())
             continue;
 
-        size_t pipePos = trimmedLine.find('|');
-        if (pipePos == std::string::npos) {
-            std::cout << "Error: bad input => " << trimmedLine << std::endl;
+        const std::string::size_type pipe = trimmedLine.find('|');
+
+        if (pipe == std::string::npos || trimmedLine.find('|', pipe + 1) != std::string::npos)
+        {
+            std::cout
+                << "Error: bad input => "
+                << trimmedLine
+                << std::endl;
             continue;
         }
 
-        std::string date = _trim(trimmedLine.substr(0, pipePos));
-        std::string valStr = _trim(trimmedLine.substr(pipePos + 1));
+        const std::string date = _trim(trimmedLine.substr(0, pipe));
 
-        if (!_isValidDate(date)) {
-            std::cout << "Error: bad input => " << trimmedLine << std::endl;
+        const std::string valueString = _trim(trimmedLine.substr(pipe + 1));
+
+        if (!_isValidDate(date))
+        {
+            std::cout
+                << "Error: bad input => "
+                << trimmedLine
+                << std::endl;
             continue;
         }
 
         double value;
-        if (!_isValidValue(valStr, value)) {
-            std::cout << "Error: bad input => " << trimmedLine << std::endl;
+
+        if (!_isValidValue(valueString, value))
+        {
+            std::cout
+                << "Error: bad input => "
+                << trimmedLine
+                << std::endl;
             continue;
         }
 
-        if (value < 0) {
-            std::cout << "Error: not a positive number." << std::endl;
+        if (value < 0)
+        {
+            std::cout
+                << "Error: not a positive number."
+                << std::endl;
             continue;
         }
 
-        if (value > 1000) {
-            std::cout << "Error: too large a number." << std::endl;
+        if (value > 1000)
+        {
+            std::cout
+                << "Error: too large a number."
+                << std::endl;
             continue;
         }
 
-        // Trouver la date égale ou la plus proche inférieure dans le map
-        std::map<std::string, double>::const_iterator it = _database.lower_bound(date);
+        std::map<std::string, double>::const_iterator rate = _database.lower_bound(date);
 
-        if (it == _database.end() || it->first != date) {
-            if (it == _database.begin()) {
-                std::cout << "Error: bad input => " << date << std::endl;
+        if (rate == _database.end() || rate->first != date)
+        {
+            if (rate == _database.begin())
+            {
+                std::cout
+                    << "Error: bad input => "
+                    << date
+                    << std::endl;
                 continue;
             }
-            --it;
+
+            --rate;
         }
 
-        double result = value * it->second;
-        std::cout << date << " => " << value << " = " << result << std::endl;
+        std::cout
+            << date
+            << " => "
+            << value
+            << " = "
+            << value * rate->second
+            << std::endl;
     }
-    file.close();
+
+    return !file.bad();
 }

@@ -12,7 +12,8 @@ int main(int ac, char** av) {
         return 1;
     }
 
-    btc.processInput(av[1]);
+    if (!btc.processInput(av[1]))
+        return 1;
 
     return 0;
 }
