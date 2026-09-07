@@ -1,8 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <list>
-#include <cstdlib>
-#include <ctime>
 #include <climits>
 #include "Span.hpp"
 
@@ -21,7 +19,7 @@ int main()
         std::cout << "Longest span  (attendu : 14) -> " << sp.longestSpan() << std::endl;
     }
 
-    std::cout << "\n===== 2. TEST PLAGE D'ITÉRATEURS (15 000 NOMBRES) =====" << std::endl;
+    std::cout << "\n===== 2. AJOUT PAR PLAGE (15 000 NOMBRES) =====" << std::endl;
     {
         const unsigned int size = 15000;
         Span bigSpan(size);
@@ -38,7 +36,7 @@ int main()
     }
 
 
-    std::cout << "\n===== 3. PLAGE D'ITERATEURS ET VALEURS EXTREMES =====" << std::endl;
+    std::cout << "\n===== 3. VALEURS EXTREMES : INT_MIN ET INT_MAX =====" << std::endl;
     {
         Span extremes(2);
         int values[] = {INT_MIN, INT_MAX};
@@ -49,7 +47,7 @@ int main()
         std::cout << "Longest span (attendu : " << UINT_MAX << ") -> " << extremes.longestSpan() << std::endl;
     }
 
-    std::cout << "\n===== 3. PLAGE D'ITÉRATEURS DEPUIS STD::LIST =====" << std::endl;
+    std::cout << "\n===== 4. AJOUT PAR PLAGE DEPUIS STD::LIST =====" << std::endl;
     {
         try {
             Span sp(5);
@@ -58,7 +56,7 @@ int main()
             lst.push_back(200);
             lst.push_back(300);
 
-            // Remplissage depuis une list (prouve la généricité du template)
+            // Remplissage depuis une list
             sp.addNumber(lst.begin(), lst.end());
 
             std::cout << "Shortest span depuis list : " << sp.shortestSpan() << std::endl;
@@ -69,7 +67,7 @@ int main()
         }
     }
 
-    std::cout << "\n===== 4. TEST AVEC NOMBRES NÉGATIFS =====" << std::endl;
+    std::cout << "\n===== 5. NOMBRES NEGATIFS =====" << std::endl;
     {
         Span sp(3);
         sp.addNumber(-20);
@@ -80,7 +78,7 @@ int main()
         std::cout << "Longest span  (-20, 0, 20) (attendu : 40) -> " << sp.longestSpan() << std::endl;
     }
 
-    std::cout << "\n===== 5. TESTS D'EXCEPTIONS =====" << std::endl;
+    std::cout << "\n===== 6. GESTION DES EXCEPTIONS =====" << std::endl;
     // Test 1: Span plein
     try {
         std::cout << "-> Test ajout au-dela de la limite N... ";

@@ -103,7 +103,7 @@ int main()
         }
     }
 
-    std::cout << "\n===== 1. TEST CONTENEUR CONST =====" << std::endl;
+    std::cout << "\n===== 5. TEST CONTENEUR CONST =====" << std::endl;
     {
         std::vector<int> values;
         values.push_back(15);
@@ -120,7 +120,7 @@ int main()
         }
     }
 
-    std::cout << "\n===== 5. TEST CONTENEUR VIDE =====" << std::endl;
+    std::cout << "\n===== 6. TEST CONTENEUR VIDE =====" << std::endl;
     {
         std::vector<int> emptyVec;
         try {
