@@ -3,6 +3,7 @@
 #include <list>
 #include <cstdlib>
 #include <ctime>
+#include <climits>
 #include "Span.hpp"
 
 int main()
@@ -22,26 +23,30 @@ int main()
 
     std::cout << "\n===== 2. TEST PLAGE D'ITÉRATEURS (15 000 NOMBRES) =====" << std::endl;
     {
-        try {
-            unsigned int size = 15000;
-            Span bigSpan(size);
-            std::vector<int> randomNumbers;
+        const unsigned int size = 15000;
+        Span bigSpan(size);
+        std::vector<int> numbers;
 
-            std::srand(std::time(NULL));
-            for (unsigned int i = 0; i < size; ++i) {
-                randomNumbers.push_back(std::rand());
-            }
+        numbers.reserve(size);
+        for (unsigned int i = 0; i < size; ++i)
+            numbers.push_back(static_cast<int>(i * 2));
 
-            // Remplissage EN UN SEUL APPEL avec la plage d'itérateurs
-            bigSpan.addNumber(randomNumbers.begin(), randomNumbers.end());
+        bigSpan.addNumber(numbers.begin(), numbers.end());
 
-            std::cout << "Succes de l'ajout en masse de " << size << " elements !" << std::endl;
-            std::cout << "Shortest span (15k) : " << bigSpan.shortestSpan() << std::endl;
-            std::cout << "Longest span  (15k) : " << bigSpan.longestSpan() << std::endl;
-        }
-        catch (const std::exception &e) {
-            std::cerr << "Exception caught : " << e.what() << std::endl;
-        }
+        std::cout << "Shortest span (attendu : 2) -> " << bigSpan.shortestSpan() << std::endl;
+        std::cout << "Longest span (attendu : 29998) -> " << bigSpan.longestSpan() << std::endl;
+    }
+
+
+    std::cout << "\n===== 3. PLAGE D'ITERATEURS ET VALEURS EXTREMES =====" << std::endl;
+    {
+        Span extremes(2);
+        int values[] = {INT_MIN, INT_MAX};
+
+        extremes.addNumber(values, values + 2);
+
+        std::cout << "Shortest span (attendu : " << UINT_MAX << ") -> " << extremes.shortestSpan() << std::endl;
+        std::cout << "Longest span (attendu : " << UINT_MAX << ") -> " << extremes.longestSpan() << std::endl;
     }
 
     std::cout << "\n===== 3. PLAGE D'ITÉRATEURS DEPUIS STD::LIST =====" << std::endl;
