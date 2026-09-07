@@ -25,17 +25,17 @@ int main()
         // Test au début (premier élément)
         try {
             std::vector<int>::iterator it = easyfind(vec, 10);
-            std::cout << "[OK] Premier element trouve: " << *it << std::endl;
+            std::cout << "[OK] Premier element trouve : " << *it << std::endl;
         } catch (const std::exception &e) {
-            std::cout << "[KO] Exception: " << e.what() << std::endl;
+            std::cout << "[KO] Exception : " << e.what() << std::endl;
         }
 
         // Test à la fin (dernier élément)
         try {
             std::vector<int>::iterator it = easyfind(vec, 40);
-            std::cout << "[OK] Dernier element trouve: " << *it << std::endl;
+            std::cout << "[OK] Dernier element trouve : " << *it << std::endl;
         } catch (const std::exception &e) {
-            std::cout << "[KO] Exception: " << e.what() << std::endl;
+            std::cout << "[KO] Exception : " << e.what() << std::endl;
         }
 
         // Test valeur inexistante
@@ -44,7 +44,7 @@ int main()
             easyfind(vec, 99);
             std::cout << "[KO] Aucune exception levee !" << std::endl;
         } catch (const std::exception &e) {
-            std::cout << "[OK] Exception attrapee: " << e.what() << std::endl;
+            std::cout << "[OK] Exception attrapee : " << e.what() << std::endl;
         }
     }
 
@@ -58,7 +58,7 @@ int main()
 
         try {
             std::vector<int>::iterator it = easyfind(vec, 42);
-            std::cout << "Valeur trouvee: " << *it << std::endl;
+            std::cout << "Valeur trouvee : " << *it << std::endl;
 
             // On modifie la valeur via l'itérateur pour vérifier qu'il pointe sur la PREMIÈRE occurrence
             *it = 999;
@@ -69,7 +69,7 @@ int main()
             else
                 std::cout << "[KO] Ce n'est pas la premiere occurrence !" << std::endl;
         } catch (const std::exception &e) {
-            std::cout << "[KO] Exception: " << e.what() << std::endl;
+            std::cout << "[KO] Exception : " << e.what() << std::endl;
         }
     }
 
@@ -82,9 +82,9 @@ int main()
 
         try {
             std::list<int>::iterator it = easyfind(lst, 0);
-            std::cout << "[OK] Valeur trouvee dans la liste: " << *it << std::endl;
+            std::cout << "[OK] Valeur trouvee dans la liste : " << *it << std::endl;
         } catch (const std::exception &e) {
-            std::cout << "[KO] Exception: " << e.what() << std::endl;
+            std::cout << "[KO] Exception : " << e.what() << std::endl;
         }
     }
 
@@ -97,9 +97,26 @@ int main()
 
         try {
             std::deque<int>::iterator it = easyfind(deq, 14);
-            std::cout << "[OK] Valeur trouvee dans la deque: " << *it << std::endl;
+            std::cout << "[OK] Valeur trouvee dans la deque : " << *it << std::endl;
         } catch (const std::exception &e) {
-            std::cout << "[KO] Exception: " << e.what() << std::endl;
+            std::cout << "[KO] Exception : " << e.what() << std::endl;
+        }
+    }
+
+    std::cout << "\n===== 1. TEST CONTENEUR CONST =====" << std::endl;
+    {
+        std::vector<int> values;
+        values.push_back(15);
+        values.push_back(25);
+        values.push_back(35);
+
+        const std::vector<int> constValues(values);
+
+        try {
+            std::vector<int>::const_iterator it = easyfind(constValues, 25);
+            std::cout << "[OK] Valeur trouvee dans const conteneur : " << *it << std::endl;
+        } catch (const std::exception &e) {
+            std::cout << "[KO] Exception : " << e.what() << std::endl;
         }
     }
 

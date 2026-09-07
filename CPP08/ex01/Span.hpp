@@ -3,7 +3,6 @@
 
 # include <vector>
 # include <algorithm>
-# include <exception>
 # include <stdexcept>
 # include <iterator>
 
@@ -37,8 +36,8 @@ public:
     }
 
     // --- Calculs de Span ---
-    int shortestSpan() const;
-    int longestSpan() const;
+    unsigned int longestSpan() const;
+    unsigned int shortestSpan() const;
 };
 
 #endif

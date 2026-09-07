@@ -24,19 +24,19 @@ void Span::addNumber(int number) {
     _numbers.push_back(number);
 }
 
-int Span::longestSpan() const {
-    if (_numbers.size() <= 1) {
+unsigned int Span::longestSpan() const {
+    if (_numbers.size() < 2) {
         throw std::logic_error("Span : pas assez d'elements pour calculer un ecart.");
     }
 
     // Le plus grand écart est max - min (Complexité O(N))
-    int minVal = *std::min_element(_numbers.begin(), _numbers.end());
-    int maxVal = *std::max_element(_numbers.begin(), _numbers.end());
+    int minValue = *std::min_element(_numbers.begin(), _numbers.end());
+    int maxValue = *std::max_element(_numbers.begin(), _numbers.end());
 
-    return maxVal - minVal;
+    return static_cast<unsigned int>(maxValue) - static_cast<unsigned int>(minValue);
 }
 
-int Span::shortestSpan() const {
+unsigned int Span::shortestSpan() const {
     if (_numbers.size() <= 1) {
         throw std::logic_error("Span : pas assez d'elements pour calculer un ecart.");
     }

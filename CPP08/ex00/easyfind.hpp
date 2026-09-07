@@ -2,16 +2,7 @@
 # define EASYFIND_HPP
 
 # include <algorithm> // Pour std::find
-# include <exception> // Pour std::exception
-# include <stdexcept> // Pour std::runtime_error ou std::out_of_range
-
-// Exception personnalisée si l'élément n'est pas trouvé (optionnel mais très propre !)
-class NotFoundException : public std::exception {
-public:
-    virtual const char* what() const throw() {
-        return "Element non trouve dans le conteneur.";
-    }
-};
+# include <stdexcept> // Pour std::runtime_error
 
 template <typename T>
 typename T::iterator easyfind(T &container, int value)
@@ -19,10 +10,19 @@ typename T::iterator easyfind(T &container, int value)
     // On cherche 'value' de container.begin() jusqu'à container.end()
     typename T::iterator it = std::find(container.begin(), container.end(), value);
 
-    // Si std::find atteint la fin (end()), cela signifie que l'élément n'existe pas
+    // Si std::find atteint la fin (end()), cela signifie que l'element n'existe pas
     if (it == container.end())
-        throw NotFoundException(); // Ou throw std::runtime_error("Element non trouve");
+        throw std::runtime_error("Element non trouve dans le conteneur");
+    return it;
+}
 
+template <typename T>
+typename T::const_iterator easyfind(const T &container, int value)
+{
+    typename T::const_iterator it = std::find(container.begin(), container.end(), value);
+
+    if (it == container.end())
+        throw std::runtime_error("Element non trouve dans le conteneur");
     return it;
 }
 
