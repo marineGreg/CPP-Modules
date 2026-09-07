@@ -64,9 +64,8 @@ int main()
         ++lit;
     }
 
-    const MutantStack<int> constStack(mstack);
-
     std::cout << "\n===== 3. CONST ITERATORS =====" << std::endl;
+    const MutantStack<int> constStack(mstack);
     for (MutantStack<int>::const_iterator it = constStack.begin(); it != constStack.end(); ++it)
     {
         std::cout << *it << std::endl;
