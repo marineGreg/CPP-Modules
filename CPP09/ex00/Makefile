@@ -1,4 +1,4 @@
-NAME        =	mutant
+NAME        =	BitcoinExchange
 
 CXX         =	c++
 CXXFLAGS    =	-Wall -Wextra -Werror -std=c++98
