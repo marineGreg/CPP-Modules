@@ -6,11 +6,10 @@
 template <typename T>
 class MutantStack : public std::stack<T> {
 public:
-    // --- Forme Canonique Orthodoxe ---
     MutantStack();
     MutantStack(const MutantStack &src);
     MutantStack &operator=(const MutantStack &other);
-    virtual ~MutantStack();
+    ~MutantStack();
 
     // --- Alias de types pour les itérateurs ---
     // container_type fait référence au conteneur sous-jacent (std::deque par défaut)
