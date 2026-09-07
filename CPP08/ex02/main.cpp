@@ -4,7 +4,7 @@
 
 int main()
 {
-    std::cout << "=== TEST AVEC MUTANTSTACK ===" << std::endl;
+    std::cout << "===== 1. TEST AVEC MUTANTSTACK =====" << std::endl;
     MutantStack<int> mstack;
 
     mstack.push(5);
@@ -36,7 +36,7 @@ int main()
     std::stack<int> s(mstack);
 
 
-    std::cout << "\n=== MEME TEST AVEC STD::LIST (RÉSULTATS IDENTIQUES ATTENDUS) ===" << std::endl;
+    std::cout << "\n===== 2. MEME TEST AVEC STD::LIST (RÉSULTATS IDENTIQUES ATTENDUS) =====" << std::endl;
     std::list<int> lstack;
 
     lstack.push_back(5);
@@ -62,6 +62,20 @@ int main()
     {
         std::cout << *lit << std::endl;
         ++lit;
+    }
+
+    const MutantStack<int> constStack(mstack);
+
+    std::cout << "\n===== 3. CONST ITERATORS =====" << std::endl;
+    for (MutantStack<int>::const_iterator it = constStack.begin(); it != constStack.end(); ++it)
+    {
+        std::cout << *it << std::endl;
+    }
+
+    std::cout << "\n===== 4. REVERSE ITERATORS =====" << std::endl;
+    for (MutantStack<int>::reverse_iterator it = mstack.rbegin(); it != mstack.rend(); ++it)
+    {
+        std::cout << *it << std::endl;
     }
 
     return 0;
