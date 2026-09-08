@@ -63,7 +63,7 @@ int main()
     			std::cout << "[OK] Premiere occurrence trouvee !" << std::endl;
 			else
     			std::cout << "[KO] Mauvaise occurrence !" << std::endl;
-            std::cout << "premier occurence = " << vec[1] 
+            std::cout << "premier occurrence = " << vec[1] 
                       << " (second occurence = " << vec[3] << ")" << std::endl;
         } catch (const std::exception &e) {
             std::cout << "[KO] Exception : " << e.what() << std::endl;
