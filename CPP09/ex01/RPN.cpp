@@ -1,4 +1,7 @@
 #include "RPN.hpp"
+#include <cctype>
+#include <iostream>
+#include <sstream>
 
 RPN::RPN() {}
 
@@ -19,7 +22,7 @@ bool RPN::_isOperator(char c) const {
 
 bool RPN::_performOperation(char op) {
     if (_stack.size() < 2)
-        return false;
+    	return false;
 
     int right = _stack.top();
     _stack.pop();
@@ -38,34 +41,38 @@ bool RPN::_performOperation(char op) {
 			break;
 		case '/':
 			if (right == 0)
-				return false; // Division par zéro interdite
+				return false; // Division par zero interdite
 			_stack.push(left / right);
 			break;
 		default:
-			return false; // Opérateur inconnu
+			return false; // Operateur inconnu
 	}
     return true;
 }
 
 bool RPN::resolve(const std::string& expression) {
     // Vider la pile si réutilisée
-    while (!_stack.empty())
-        _stack.pop();
+    while (!_stack.empty()) {
+    	_stack.pop();
+	}
 
-    for (size_t i = 0; i < expression.length(); ++i) {
-        char c = expression[i];
-		
-        if (std::isspace(c))
-			continue;
+	std::istringstream stream(expression);
+	std::string token;
 
-        if (std::isdigit(c)) {
+	while (stream >> token)
+	{
+		if (token.length() != 1)
+			return false; // Token invalide (plus d'un caractère)
+
+        char c = token[0];
+
+        if (std::isdigit(static_cast<unsigned char>(c)))
             _stack.push(c - '0');
-        } else if (_isOperator(c)) {
+        else if (_isOperator(c)) {
             if (!_performOperation(c))
                 return false;
-        } else {
+        } else
             return false; // Caractère invalide (ex: parenthèses, lettres...)
-        }
     }
 
     // Il doit rester exactement un seul résultat dans la pile

@@ -1,10 +1,8 @@
 #ifndef RPN_HPP
 # define RPN_HPP
 
-# include <iostream>
-# include <string>
 # include <stack>
-# include <cctype>
+# include <string>
 
 class RPN {
 	private:
