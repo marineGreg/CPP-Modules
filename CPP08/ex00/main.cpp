@@ -58,16 +58,13 @@ int main()
 
         try {
             std::vector<int>::iterator it = easyfind(vec, 42);
-            std::cout << "Valeur trouvee : " << *it << std::endl;
 
-            // On modifie la valeur via l'itérateur pour vérifier qu'il pointe sur la PREMIÈRE occurrence
-            *it = 999;
-            std::cout << "Apres modification via itérateur, premier element = " << vec[1] 
-                      << " (second element = " << vec[3] << ")" << std::endl;
-            if (vec[1] == 999 && vec[3] == 42)
-                std::cout << "[OK] C'est bien la premiere occurrence qui a ete modifiee !" << std::endl;
-            else
-                std::cout << "[KO] Ce n'est pas la premiere occurrence !" << std::endl;
+			if (it == vec.begin() + 1)
+    			std::cout << "[OK] Premiere occurrence trouvee !" << std::endl;
+			else
+    			std::cout << "[KO] Mauvaise occurrence !" << std::endl;
+            std::cout << "premier occurence = " << vec[1] 
+                      << " (second occurence = " << vec[3] << ")" << std::endl;
         } catch (const std::exception &e) {
             std::cout << "[KO] Exception : " << e.what() << std::endl;
         }
