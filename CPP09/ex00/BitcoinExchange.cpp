@@ -6,8 +6,8 @@
 
 BitcoinExchange::BitcoinExchange() {}
 
-BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
-    : _database(other._database) {}
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &src)
+    : _database(src._database) {}
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
