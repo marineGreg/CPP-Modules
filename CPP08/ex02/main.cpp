@@ -77,5 +77,11 @@ int main()
         std::cout << *it << std::endl;
     }
 
+	std::cout << "\n===== 5. CONST REVERSE ITERATORS =====" << std::endl;
+	for (MutantStack<int>::const_reverse_iterator it = constStack.rbegin(); it != constStack.rend(); ++it)
+	{
+		std::cout << *it << std::endl;
+	}
+
     return 0;
 }

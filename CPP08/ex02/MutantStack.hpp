@@ -32,6 +32,7 @@ public:
     const_reverse_iterator rend() const;
 };
 
+// Forme Canonique Orthodoxe (OFC)
 template <typename T>
 MutantStack<T>::MutantStack() : std::stack<T>() {}
 
@@ -49,10 +50,8 @@ MutantStack<T> &MutantStack<T>::operator=(const MutantStack<T> &other) {
 template <typename T>
 MutantStack<T>::~MutantStack() {}
 
-
 // --- Implémentation des itérateurs ---
 // On accède à 'this->c', l'attribut protégé du conteneur interne de std::stack.
-
 template <typename T>
 typename MutantStack<T>::iterator MutantStack<T>::begin() {
     return this->c.begin();
