@@ -18,7 +18,7 @@ public:
     // --- Forme Canonique Orthodoxe ---
     Span(unsigned int N);
     Span(const Span &src);
-    Span &operator=(const Span &rhs);
+    Span &operator=(const Span &other);
     ~Span();
 
     // --- Ajout d'un seul élément ---
