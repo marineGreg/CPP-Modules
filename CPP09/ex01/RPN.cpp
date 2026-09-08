@@ -21,24 +21,29 @@ bool RPN::_performOperation(char op) {
     if (_stack.size() < 2)
         return false;
 
-    int b = _stack.top();
-	std::cout << "b = " << b << std::endl;
+    int right = _stack.top();
     _stack.pop();
-    int a = _stack.top();
-	std::cout << "a = " << a << std::endl;
+    int left = _stack.top();
     _stack.pop();
 
-    if (op == '+')
-        _stack.push(a + b);
-    else if (op == '-')
-        _stack.push(a - b);
-    else if (op == '*')
-        _stack.push(a * b);
-    else if (op == '/') {
-        if (b == 0)
-            return false; // Division par zéro interdite
-        _stack.push(a / b);
-    }
+	switch (op) {
+		case '+':
+			_stack.push(left + right);
+			break;
+		case '-':
+			_stack.push(left - right);
+			break;
+		case '*':
+			_stack.push(left * right);
+			break;
+		case '/':
+			if (right == 0)
+				return false; // Division par zéro interdite
+			_stack.push(left / right);
+			break;
+		default:
+			return false; // Opérateur inconnu
+	}
     return true;
 }
 
@@ -52,8 +57,6 @@ bool RPN::resolve(const std::string& expression) {
 		
         if (std::isspace(c))
 			continue;
-		
-		std::cout << "Processing character: " << c << std::endl;
 
         if (std::isdigit(c)) {
             _stack.push(c - '0');
