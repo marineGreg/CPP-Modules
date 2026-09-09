@@ -53,17 +53,17 @@ int main()
         try {
             Span sp(5);
             std::list<int> lst;
-            lst.push_back(100);
-            lst.push_back(200);
-            lst.push_back(300);
-			lst.push_back(400);
-			lst.push_back(500);
+            lst.push_back(150);
+            lst.push_back(20);
+            lst.push_back(420);
+			lst.push_back(80);
+			lst.push_back(230);
 
             // Remplissage depuis une liste
             sp.addNumber(lst.begin(), lst.end());
 
-            std::cout << "Shortest span depuis list : " << sp.shortestSpan() << std::endl;
-            std::cout << "Longest span depuis list  : " << sp.longestSpan() << std::endl;
+            std::cout << "Shortest span (attendu : 60) -> " << sp.shortestSpan() << std::endl;
+            std::cout << "Longest span (attendu : 400) -> " << sp.longestSpan() << std::endl;
         }
         catch (const std::exception &e) {
             std::cerr << "Exception caught : " << e.what() << std::endl;
@@ -73,12 +73,12 @@ int main()
     std::cout << "\n===== 5. NOMBRES NEGATIFS =====" << std::endl;
     {
         Span sp(3);
-        sp.addNumber(-20);
         sp.addNumber(0);
         sp.addNumber(20);
+        sp.addNumber(-20);
 
-        std::cout << "Shortest span (-20, 0, 20) (attendu : 20) -> " << sp.shortestSpan() << std::endl;
-        std::cout << "Longest span  (-20, 0, 20) (attendu : 40) -> " << sp.longestSpan() << std::endl;
+        std::cout << "Shortest span(attendu : 20) -> " << sp.shortestSpan() << std::endl;
+        std::cout << "Longest span(attendu : 40) -> " << sp.longestSpan() << std::endl;
     }
 
     std::cout << "\n===== 6. GESTION DES EXCEPTIONS =====" << std::endl;
