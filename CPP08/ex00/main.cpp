@@ -34,6 +34,8 @@ int main()
         try {
             std::vector<int>::iterator it = easyfind(vec, 40);
             std::cout << "[OK] Dernier element trouve : " << *it << std::endl;
+			*it = 35; // Modification de la valeur trouvée
+			std::cout << "[OK] Valeur modifiee a travers l'iterateur: " << *it << std::endl;
         } catch (const std::exception &e) {
             std::cout << "[KO] Exception : " << e.what() << std::endl;
         }
@@ -58,13 +60,12 @@ int main()
 
         try {
             std::vector<int>::iterator it = easyfind(vec, 42);
-
 			if (it == vec.begin() + 1)
-    			std::cout << "[OK] Premiere occurrence trouvee !" << std::endl;
+    			std::cout << "[OK] Premiere occurrence trouvee :" << *it << std::endl;
 			else
     			std::cout << "[KO] Mauvaise occurrence !" << std::endl;
             std::cout << "premier occurrence = " << vec[1] 
-                      << " (second occurence = " << vec[3] << ")" << std::endl;
+                      << " (second occurrence = " << vec[3] << ")" << std::endl;
         } catch (const std::exception &e) {
             std::cout << "[KO] Exception : " << e.what() << std::endl;
         }
@@ -73,12 +74,12 @@ int main()
     std::cout << "\n===== 3. TEST AVEC STD::LIST =====" << std::endl;
     {
         std::list<int> lst;
-        lst.push_back(-10);
         lst.push_back(0);
+        lst.push_back(-10);
         lst.push_back(100);
 
         try {
-            std::list<int>::iterator it = easyfind(lst, 0);
+            std::list<int>::iterator it = easyfind(lst, -10);
             std::cout << "[OK] Valeur trouvee dans la liste : " << *it << std::endl;
         } catch (const std::exception &e) {
             std::cout << "[KO] Exception : " << e.what() << std::endl;
