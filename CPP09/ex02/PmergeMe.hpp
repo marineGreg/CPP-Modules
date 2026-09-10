@@ -1,29 +1,25 @@
 #ifndef PMERGEME_HPP
 # define PMERGEME_HPP
 
-# include <iostream>
-# include <string>
+# include <cstddef>
 # include <vector>
 # include <deque>
-# include <sstream>
-# include <cstdlib>
-# include <climits>
-# include <sys/time.h>
-# include <algorithm>
-# include <iomanip>
+# include <string>
 
 class PmergeMe
 {
 	private:
-		std::vector<int> _vec;
-		std::deque<int>  _deq;
+		std::vector<int> _vector;
+		std::deque<int>  _deque;
 	
-		static size_t _getJacobsthal(size_t n);
+		void _parseInput(int ac, char **av, std::vector<int> &input) const;
 
-		void _sortVector(std::vector<int> &arr);
-		void _sortDeque(std::deque<int> &arr);
+		std::vector<std::size_t> _buildInsertionOrder(std::size_t pendingSize) const;
 
-		void _printSequence(const std::string &label, const std::vector<int> &seq) const;
+		void _sortVector(std::vector<int> &sequence);
+		void _sortDeque(std::deque<int> &sequence);
+
+		void _printSequence(const std::string &label, const std::vector<int> &sequence) const;
 
 	public:
 		PmergeMe();
