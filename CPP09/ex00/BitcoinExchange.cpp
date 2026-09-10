@@ -200,7 +200,7 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
     std::string line;
     if (!std::getline(file, line) || _trim(line) != "date | value")
 	{
-		std::cout << "Error: ivalid input file." << std::endl;
+		std::cout << "Error: invalid input file." << std::endl;
 		return false;
 	}
 
