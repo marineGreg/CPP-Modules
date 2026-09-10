@@ -5,7 +5,7 @@
 
 RPN::RPN() {}
 
-RPN::RPN(const RPN& src) { *this = src; }
+RPN::RPN(const RPN& src) : _stack(src._stack) {}
 
 RPN& RPN::operator=(const RPN& other) {
     if (this != &other) {
@@ -24,9 +24,14 @@ bool RPN::_performOperation(char op) {
     if (_stack.size() < 2)
     	return false;
 
-    int right = _stack.top();
+    const int right = _stack.top();
+
+	if (op == '/' && right == 0)
+		return false; // Division par zero interdite
+
     _stack.pop();
-    int left = _stack.top();
+    
+	const int left = _stack.top();
     _stack.pop();
 
 	switch (op) {
@@ -40,8 +45,6 @@ bool RPN::_performOperation(char op) {
 			_stack.push(left * right);
 			break;
 		case '/':
-			if (right == 0)
-				return false; // Division par zero interdite
 			_stack.push(left / right);
 			break;
 		default:
