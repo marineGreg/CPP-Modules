@@ -192,13 +192,13 @@ void PmergeMe::_printSequence(const std::string& label, const std::vector<int>& 
 // -----------------------------------------------------------------------------
 // Parsing et exécution avec mesures de temps
 // -----------------------------------------------------------------------------
-bool PmergeMe::run(int argc, char** argv) {
+bool PmergeMe::run(int ac, char** av) {
     struct timeval start, end;
 
     // --- Mesure 1 : Parsing + Tri std::vector ---
     gettimeofday(&start, NULL);
-    for (int i = 1; i < argc; ++i) {
-        std::string arg = argv[i];
+    for (int i = 1; i < ac; ++i) {
+        std::string arg = av[i];
         if (arg.empty())
             return false;
         std::istringstream iss(arg);
@@ -228,8 +228,8 @@ bool PmergeMe::run(int argc, char** argv) {
 
     // --- Mesure 2 : Parsing + Tri std::deque ---
     gettimeofday(&start, NULL);
-    for (int i = 1; i < argc; ++i) {
-        std::istringstream iss(argv[i]);
+    for (int i = 1; i < ac; ++i) {
+        std::istringstream iss(av[i]);
         std::string token;
         while (iss >> token) {
             long val = std::strtol(token.c_str(), NULL, 10);

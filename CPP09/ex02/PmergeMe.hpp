@@ -23,7 +23,7 @@ class PmergeMe
 		void _sortVector(std::vector<int> &arr);
 		void _sortDeque(std::deque<int> &arr);
 
-		void printSequence(const std::string &label, const std::vector<int> &seq) const;
+		void _printSequence(const std::string &label, const std::vector<int> &seq) const;
 
 	public:
 		PmergeMe();
@@ -34,4 +34,4 @@ class PmergeMe
 		bool run(int ac, char **av);
 };
 
-#endif;
+#endif
