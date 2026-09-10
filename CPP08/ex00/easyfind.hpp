@@ -1,9 +1,24 @@
 #ifndef EASYFIND_HPP
 # define EASYFIND_HPP
 
-# include <algorithm> // Pour std::find
-# include <stdexcept> // Pour std::runtime_error
+# include <algorithm>
+# include <stdexcept>
 
+
+/**
+ * Recherche la première occurrence d'un entier dans un conteneur modifiable.
+ *
+ * Cette fonction peut être utilisée avec un conteneur fournissant les méthodes
+ * begin() et end(), comme std::vector, std::list ou std::deque.
+ *
+ * @tparam T Type du conteneur.
+ * @param container Conteneur dans lequel effectuer la recherche.
+ * @param value Entier recherché.
+ *
+ * @return Un itérateur vers la première occurrence de value.
+ *
+ * @throws std::runtime_error Si value n'est pas présent dans le conteneur.
+ */
 template <typename T>
 typename T::iterator easyfind(T &container, int value)
 {
@@ -16,6 +31,21 @@ typename T::iterator easyfind(T &container, int value)
     return it;
 }
 
+/**
+ * Recherche la première occurrence d'un entier dans un conteneur constant.
+ *
+ * Cette surcharge permet d'utiliser easyfind avec un conteneur const.
+ * Elle renvoie un const_iterator afin d'empêcher toute modification
+ * de l'élément trouvé.
+ *
+ * @tparam T Type du conteneur.
+ * @param container Conteneur constant dans lequel effectuer la recherche.
+ * @param value Entier recherché.
+ *
+ * @return Un itérateur constant vers la première occurrence de value.
+ *
+ * @throws std::runtime_error Si value n'est pas présent dans le conteneur.
+ */
 template <typename T>
 typename T::const_iterator easyfind(const T &container, int value)
 {

@@ -14,7 +14,6 @@ int main()
         vec.push_back(30);
         vec.push_back(40);
 
-        // Test au milieu
         try {
             std::vector<int>::iterator it = easyfind(vec, 30);
             std::cout << "[OK] Valeur trouvee: " << *it << std::endl;
@@ -22,7 +21,6 @@ int main()
             std::cout << "[KO] Exception: " << e.what() << std::endl;
         }
 
-        // Test au début (premier élément)
         try {
             std::vector<int>::iterator it = easyfind(vec, 10);
             std::cout << "[OK] Premier element trouve : " << *it << std::endl;
@@ -30,7 +28,6 @@ int main()
             std::cout << "[KO] Exception : " << e.what() << std::endl;
         }
 
-        // Test à la fin (dernier élément)
         try {
             std::vector<int>::iterator it = easyfind(vec, 40);
             std::cout << "[OK] Dernier element trouve : " << *it << std::endl;
@@ -61,11 +58,11 @@ int main()
         try {
             std::vector<int>::iterator it = easyfind(vec, 42);
 			if (it == vec.begin() + 1)
-    			std::cout << "[OK] Premiere occurrence trouvee :" << *it << std::endl;
+    			std::cout << "[OK] Premiere occurrence trouvee : " << *it << std::endl;
 			else
     			std::cout << "[KO] Mauvaise occurrence !" << std::endl;
-            std::cout << "premier occurrence = " << vec[1] 
-                      << " (second occurrence = " << vec[3] << ")" << std::endl;
+            std::cout << "premiere occurrence = " << vec[1] 
+                      << " (seconde occurrence = " << vec[3] << ")" << std::endl;
         } catch (const std::exception &e) {
             std::cout << "[KO] Exception : " << e.what() << std::endl;
         }

@@ -26,6 +26,7 @@ int main()
         Span bigSpan(size);
         std::vector<int> numbers;
 
+		// Pré-allocation de la mémoire pour éviter les reallocations lors de l'ajout
         numbers.reserve(size);
         for (unsigned int i = 0; i < size; ++i)
             numbers.push_back(static_cast<int>(i * 2));

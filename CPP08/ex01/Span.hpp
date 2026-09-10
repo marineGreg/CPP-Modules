@@ -6,10 +6,17 @@
 # include <stdexcept>
 # include <iterator>
 
+/**
+ * Stocke un nombre limité d'entiers et calcule les écarts
+ * minimum et maximum entre les valeurs enregistrées.
+ *
+ * Un objet Span possède une capacité maximale fixée lors
+ * de sa construction. Tout dépassement lève une exception.
+ */
 class Span {
 private:
-    unsigned int        _maxSize;
-    std::vector<int>    _numbers;
+    unsigned int        _maxSize; // Capacité maximale du Span
+    std::vector<int>    _numbers; // Conteneur pour stocker les entiers
 
     // Constructeur par défaut privé : un Span doit être initialisé avec une taille N
     Span();
@@ -21,10 +28,17 @@ public:
     Span &operator=(const Span &other);
     ~Span();
 
-    // --- Ajout d'un seul élément ---
-    void addNumber(int number);
+    
+    void addNumber(int number); // Ajoute un entier au Span
 
-    // --- Ajout d'une plage d'éléments via itérateurs (Template) ---
+    /**
+	 * Permet d'ajouter une plage complète d'entiers au Span.
+	 * La fonction prend deux itérateurs représentant le début et la fin de la plage.
+	 * 
+	 * @tparam Iterator Type des itérateurs fournis.
+	 * @param begin Itérateur vers le premier élément.
+	 * @param end Itérateur situé après le dernier élément.
+	 */
     template <typename Iterator>
     void addNumber(Iterator begin, Iterator end) {
         // std::distance calcule le nombre d'éléments entre begin et end
@@ -36,8 +50,8 @@ public:
     }
 
     // --- Calculs de Span ---
-    unsigned int longestSpan() const;
-    unsigned int shortestSpan() const;
+    unsigned int longestSpan() const; // Calcule l'écart maximum entre les valeurs stockées
+    unsigned int shortestSpan() const; // Calcule l'écart minimum entre les valeurs stockées
 };
 
 #endif

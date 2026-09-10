@@ -1,6 +1,6 @@
 #include "Span.hpp"
 
-// Constructeur privé par défaut (non accessible)
+// Constructeur privé par défaut
 Span::Span() : _maxSize(0) {}
 
 Span::Span(unsigned int N) : _maxSize(N) {}
@@ -47,13 +47,17 @@ unsigned int Span::shortestSpan() const
     std::vector<int> sorted = _numbers;
     std::sort(sorted.begin(), sorted.end());
 
-    unsigned int minSpan = static_cast<unsigned int>(sorted[1]) - static_cast<unsigned int>(sorted[0]);
+	// Initialisation de la différence minimale avec la première paire consécutive
+    unsigned int minSpan =
+		static_cast<unsigned int>(sorted[1]) - static_cast<unsigned int>(sorted[0]);
 
 	// Comparaison de chaque paire consécutives pour trouver la différence minimale dans le tableau trié
     for (std::vector<int>::size_type i = 1; i + 1 < sorted.size(); ++i)
     {
-        unsigned int diff = static_cast<unsigned int>(sorted[i + 1]) - static_cast<unsigned int>(sorted[i]);
+        unsigned int diff =
+			static_cast<unsigned int>(sorted[i + 1]) - static_cast<unsigned int>(sorted[i]);
 
+		// Mise à jour de la différence minimale si la différence actuelle est plus petite
         if (diff < minSpan)
             minSpan = diff;
     }
