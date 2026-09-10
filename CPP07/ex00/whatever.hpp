@@ -1,12 +1,10 @@
 #ifndef WHATEVER_HPP
 #define WHATEVER_HPP
 
-/**
- * Un template n'est pas du code compilé, c'est un patron que le compilateur
- * utilise pour générer du vrai code à chaque fois qu'un type concret est utilisé
- * — c'est pour ça que toute l'implémentation doit être visible dans le header,
- * sinon le compilateur n'a pas la recette sous la main au moment de générer le
- * code.
+/*
+ * Les templates doivent être définis dans le header :
+ * le compilateur a besoin de voir leur implémentation au moment
+ * où il génère la fonction correspondant au type utilisé.
  */
 
 template <typename T>
