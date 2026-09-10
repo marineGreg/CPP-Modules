@@ -3,6 +3,7 @@
 #include <cctype>
 #include <cstdlib>
 #include <fstream>
+#include <iostream>
 
 BitcoinExchange::BitcoinExchange() {}
 
