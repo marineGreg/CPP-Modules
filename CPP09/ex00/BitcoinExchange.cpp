@@ -192,26 +192,20 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
 
     if (!file.is_open())
     {
-        std::cout
-            << "Error: could not open file."
-            << std::endl;
+        std::cout << "Error: could not open file." << std::endl;
         return false;
     }
 
     std::string line;
-    bool firstLine = true;
+    if (!std::getline(file, line) || _trim(line) != "date | value")
+	{
+		std::cout << "Error: ivalid input file." << std::endl;
+		return false;
+	}
 
     while (std::getline(file, line))
     {
         const std::string trimmedLine = _trim(line);
-
-        if (firstLine)
-        {
-            firstLine = false;
-
-            if (trimmedLine == "date | value")
-                continue;
-        }
 
         if (trimmedLine.empty())
             continue;
@@ -220,10 +214,7 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
 
         if (pipe == std::string::npos || trimmedLine.find('|', pipe + 1) != std::string::npos)
         {
-            std::cout
-                << "Error: bad input => "
-                << trimmedLine
-                << std::endl;
+            std::cout << "Error: bad input => " << trimmedLine << std::endl;
             continue;
         }
 
@@ -233,10 +224,7 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
 
         if (!_isValidDate(date))
         {
-            std::cout
-                << "Error: bad input => "
-                << trimmedLine
-                << std::endl;
+            std::cout << "Error: bad input => " << trimmedLine << std::endl;
             continue;
         }
 
@@ -244,26 +232,19 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
 
         if (!_isValidValue(valueString, value))
         {
-            std::cout
-                << "Error: bad input => "
-                << trimmedLine
-                << std::endl;
+            std::cout << "Error: bad input => " << trimmedLine << std::endl;
             continue;
         }
 
         if (value < 0)
         {
-            std::cout
-                << "Error: not a positive number."
-                << std::endl;
+            std::cout << "Error: not a positive number." << std::endl;
             continue;
         }
 
         if (value > 1000)
         {
-            std::cout
-                << "Error: too large a number."
-                << std::endl;
+            std::cout << "Error: too large a number." << std::endl;
             continue;
         }
 
@@ -273,24 +254,13 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
         {
             if (rate == _database.begin())
             {
-                std::cout
-                    << "Error: bad input => "
-                    << date
-                    << std::endl;
+                std::cout << "Error: bad input => " << date << std::endl;
                 continue;
             }
-
             --rate;
         }
 
-        std::cout
-            << date
-            << " => "
-            << value
-            << " = "
-            << value * rate->second
-            << std::endl;
+        std::cout << date << " => " << value << " = " << value * rate->second << std::endl;
     }
-
     return !file.bad();
 }
