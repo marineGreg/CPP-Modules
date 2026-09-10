@@ -14,7 +14,7 @@ class PmergeMe
 	
 		void _parseInput(int ac, char **av, std::vector<int> &input) const;
 
-		std::vector<std::size_t> _buildInsertionOrder(std::size_t pendingSize) const;
+		std::vector<std::size_t> _buildInsertionOrder(std::size_t size) const;
 
 		void _sortVector(std::vector<int> &sequence);
 		void _sortDeque(std::deque<int> &sequence);
@@ -27,7 +27,7 @@ class PmergeMe
 		PmergeMe &operator=(const PmergeMe &other);
 		~PmergeMe();
 
-		bool run(int ac, char **av);
+		void run(int ac, char **av);
 };
 
 #endif
