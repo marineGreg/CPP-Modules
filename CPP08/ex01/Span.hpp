@@ -18,8 +18,7 @@ private:
     unsigned int        _maxSize; // Capacité maximale du Span
     std::vector<int>    _numbers; // Conteneur pour stocker les entiers
 
-    // Constructeur par défaut privé : un Span doit être initialisé avec une taille N
-    Span();
+    Span(); // Constructeur par défaut privé : un Span doit être initialisé avec une taille N
 
 public:
     // --- Forme Canonique Orthodoxe ---
