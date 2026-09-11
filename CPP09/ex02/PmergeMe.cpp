@@ -27,6 +27,14 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other) {
 
 PmergeMe::~PmergeMe() {}
 
+/**
+ * Valide les arguments et les convertit en entiers positifs.
+ * La fonction rejette :
+ *  - les arguments vides
+ *  - les caracteres non numeriques
+ *  - zero et les nombres negatifs
+ * 	- les valeurs superieures a INT_MAX
+ */
 void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 {
 	if (ac < 2)
@@ -34,6 +42,7 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 
 	input.clear();
 
+	// chaque argument peut contenir plusieurs nombres, un flux en extrait donc les tokens
 	for (int i = 1; i < ac; ++i)
 	{
 		const std::string argument(av[i]);
@@ -51,7 +60,11 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 				if (!std::isdigit(c))
 					throw std::invalid_argument("invalid integer");
 			}
-
+			/*
+ 			 * La syntaxe ayant été vérifiée caractère par caractère, 
+			 * strtol() effectue la conversion et permet de détecter
+ 			 * un dépassement de capacité grâce à errno.
+ 			 */
 			errno = 0;
 			char *end = NULL;
 			const long value = std::strtol(token.c_str(), &end, 10);
@@ -68,8 +81,25 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 	}
 }
 
+/**
+ * Construit l'ordre d'insertion des elements pending a partir de la suite Jacobsthal
+ * 
+ * pending[0], correspondant a b1, est deja place dans la chaine principale
+ * il n'apparait donc pas dans l'ordre
+ * 
+ * L'ordre obtenu commence par : b3, b2, b5, b4, b11, b10, b9, b8, b7, b6...
+ */
 std::vector<std::size_t> PmergeMe::_buildInsertionOrder(std::size_t size) const
 {
+	/*
+ 	 * Les bornes Jacobsthal utiles sont :
+ 	 * 1, 3, 5, 11, 21, 43...
+ 	 *
+ 	 * Entre deux bornes, les indices sont ajoutés en ordre décroissant
+	 * afin d'optimiser les recherches binaires.
+	 *	
+	 * Les indices sont stockés à partir de zéro : l'indice 2 correspond donc à b3.
+	 */
 	std::vector<std::size_t> order;
 	std::size_t previousJacobsthal = 1;
 	std::size_t currentJacobsthal = 3;
@@ -89,7 +119,15 @@ std::vector<std::size_t> PmergeMe::_buildInsertionOrder(std::size_t size) const
 }
 
 /**
- * Tri d'un vecteur en utilisant l'algorithme de Ford-Johnson
+ * Tri recursivement un vector avec l'algorithme de Ford-Johnson
+ * Étapes de Ford-Johnson :
+ *
+ * 1. regrouper les valeurs par paires
+ * 2. comparer les deux éléments de chaque paire
+ * 3. trier récursivement les maxima
+ * 4. construire une chaîne principale triée
+ * 5. insérer les minima dans l'ordre Jacobsthal
+ * 6. limiter chaque recherche au partenaire associé
  */
 void PmergeMe::_sortVector(std::vector<int> &sequence)
 {
@@ -99,6 +137,12 @@ void PmergeMe::_sortVector(std::vector<int> &sequence)
 	const bool isOdd = sequence.size() % 2 != 0;
 	int lastElement = 0;
 
+	/*
+	 * Si le nombre d'éléments est impair, le dernier élément
+	 * reste temporairement sans partenaire.
+	 * Il rejoindra ensuite la liste pending avec une borne
+	 * de recherche située à la fin de la chaîne.
+	 */
 	if (isOdd)
 	{
 		lastElement = sequence.back();
@@ -108,23 +152,27 @@ void PmergeMe::_sortVector(std::vector<int> &sequence)
 	std::vector<std::pair<int, int> > pairs;
 	for (std::size_t i = 0; i < sequence.size(); i += 2)
 	{
-		int hight = sequence[i];
+		int high = sequence[i];
 		int low = sequence[i + 1];
 
-		if (hight < low)
-			std::swap(hight, low);
+		if (high < low)
+			std::swap(high, low);
 
-		pairs.push_back(std::make_pair(hight, low));
+		pairs.push_back(std::make_pair(high, low));
 	}
 	/**
  	* On extrait les plus grands elements de chaque paire et on les stocke dans un vecteur
- 	* Ils sont triés recursivement avec Ford-Johnson
+ 	* Ils sont tries recursivement avec Ford-Johnson
  	*/
 	std::vector<int> maxima;
 
 	for (std::size_t i = 0; i < pairs.size(); ++i)
 		maxima.push_back(pairs[i].first);
 
+	/*
+	 * Ford-Johnson trie recursivement les maxima a_i.
+	 * Le cas de base est atteint lorsque la sequence contient zero ou un element.
+	 */
 	_sortVector(maxima);
 
 	/**
@@ -149,15 +197,17 @@ void PmergeMe::_sortVector(std::vector<int> &sequence)
 
 	pairs = sortedPairs;
 
-	/**
-	 * Construction initiale de la sequence triee avec les plus grands elements de chaque paire
-	 * 
-	 * mainChain = b1, a1, a2, a3 ...
-	 * pending = b1, b2, b3 ...
-	 * 
-	 * b1 est deja dans la mainChain, on commence donc a inserer a1, puis b2, puis a2, puis b3, puis a3 ...
+	/*
+	 * Construction de la chaîne principale :
+	 * mainChain = b1, a1, a2, a3...
+	 * pending   = b1, b2, b3...
+	 *
+	 * Tous les maxima a_i sont déjà présents et triés.
+	 * b1 est également déjà placé devant a1 puisque b1 <= a1.
+	 *
+	 * Les autres éléments pending seront insérés selon
+	 * l'ordre calculé à partir des nombres de Jacobsthal.
 	 */
-
 	std::vector<int> mainChain;
 	std::vector<int> pending;
 	std::vector<std::size_t> partnerPositions;
@@ -191,6 +241,16 @@ void PmergeMe::_sortVector(std::vector<int> &sequence)
 		if (index < partnerPositions.size())
 			searchEnd = partnerPositions[index];
 
+		/*
+		 * b_i est forcément inférieur ou égal à son partenaire a_i.
+		 * Il est donc inutile de chercher après ce partenaire.
+		 *
+		 * lower_bound() travaille uniquement dans l'intervalle :
+		 * [début de mainChain, position de a_i[
+		 *
+		 * L'élément impair n'ayant pas de partenaire, sa recherche
+		 * peut aller jusqu'à la fin de la chaîne.
+		 */
 		std::vector<int>::iterator position = 
 			std::lower_bound(mainChain.begin(), mainChain.begin() + searchEnd, pending[index]);
 
@@ -198,7 +258,13 @@ void PmergeMe::_sortVector(std::vector<int> &sequence)
 
 		mainChain.insert(position, pending[index]);
 
-		/* Une insertion peut decaler les positions des maxima servant de bornes */
+		/*
+		 * Insérer une valeur déplace vers la droite tous les maxima
+		 * placés à partir de la position d'insertion.
+		 *
+		 * Leurs indices sont mis à jour afin que les prochaines
+		 * recherches conservent leurs bornes correctes.
+ 		 */
 		for (std::size_t j = 0; j < partnerPositions.size(); ++j)
 		{
 			if (partnerPositions[j] >= insertPosition)
@@ -209,7 +275,9 @@ void PmergeMe::_sortVector(std::vector<int> &sequence)
 }
 
 /**
- * Tri d'une deque en utilisant l'algorithme de Ford-Johnson
+ * Tri recursivement un deque avec l'algorithme de Ford-Johnson
+ * Même deroulement que pour std::vector, mais toutes
+ * les structures participant au tri sont des std::deque.
  */
 void PmergeMe::_sortDeque(std::deque<int> &sequence)
 {
@@ -228,13 +296,13 @@ void PmergeMe::_sortDeque(std::deque<int> &sequence)
 	std::deque<std::pair<int, int> > pairs;
 	for (std::size_t i = 0; i < sequence.size(); i += 2)
 	{
-		int hight = sequence[i];
+		int high = sequence[i];
 		int low = sequence[i + 1];
 
-		if (hight < low)
-			std::swap(hight, low);
+		if (high < low)
+			std::swap(high, low);
 
-		pairs.push_back(std::make_pair(hight, low));
+		pairs.push_back(std::make_pair(high, low));
 	}
 	
 	std::deque<int> maxima;
@@ -304,6 +372,11 @@ void PmergeMe::_sortDeque(std::deque<int> &sequence)
 	sequence = mainChain;
 }
 
+/**
+ * Affiche une sequence complete lorsqu'elle est courte
+ * Pour une grande sequence, seuls les 5 premiers elements sont affiches
+ * Les grandes séquences sont abrégées avec [...]
+ */
 void PmergeMe::_printSequence(const std::string &label, const std::vector<int> &sequence) const
 {
 	std::cout << label;
@@ -322,6 +395,16 @@ void PmergeMe::_printSequence(const std::string &label, const std::vector<int> &
 	std::cout << std::endl;
 }
 
+
+/**
+ * Orchestre l'ensemble du programme :
+ *  - validation de l'entree
+ *  - affichage de la sequence initiale
+ *  - remplissage et tri du vector
+ *  - remplissage et tri du deque
+ *  - comparaison des resultats
+ *  - affichage des temps en microsecondes
+ */
 void PmergeMe::run(int ac, char **av)
 {
 	std::vector<int> input;
@@ -331,7 +414,7 @@ void PmergeMe::run(int ac, char **av)
 
 	struct timeval start, end;
 
-	/* Mesure du remplissage et du tri du vector */
+	// La mesure inclut le remplissage du conteneur et son tri
 	gettimeofday(&start, NULL);
 
 	_vector.assign(input.begin(), input.end());

@@ -9,7 +9,7 @@ int main(int ac, char **av)
 		PmergeMe pmerge;
 		pmerge.run(ac, av);
 	}
-	catch (const std::exception &e) {
+	catch (const std::exception &) {
 		std::cerr << "Error " << std::endl;
 		return 1;
 	}

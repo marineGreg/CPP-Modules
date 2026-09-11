@@ -6,6 +6,16 @@
 # include <deque>
 # include <string>
 
+/**
+ * Trie une séquence d'entiers positifs avec l'algorithme de tri
+ * fusion-insertion de Ford-Johnson.
+ *
+ * Le même algorithme est implémenté séparément avec :
+ * - std::vector
+ * - std::deque
+ *
+ * Le programme mesure ensuite le temps de traitement obtenu pour les deux conteneurs.
+ */
 class PmergeMe
 {
 	private:
