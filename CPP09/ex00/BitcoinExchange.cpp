@@ -8,12 +8,12 @@
 BitcoinExchange::BitcoinExchange() {}
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &src)
-    : _database(src._database) {}
+    : _dB(src._dB) {}
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
     if (this != &other)
-        _database = other._database;
+        _dB = other._dB;
     return *this;
 }
 
@@ -182,7 +182,7 @@ bool BitcoinExchange::_isValidValue(const std::string &valueStr, double &value) 
  * Le fichier doit commencer par l'en-tête : date,exchange_rate
  *
  * La base est d'abord construite dans une map temporaire.
- * L'attribut _database n'est remplace qu'une fois l'integralite du fichier valide.
+ * L'attribut _dB n'est remplace qu'une fois l'integralite du fichier valide.
  *
  * @return true si le chargement complet a reussi.
  */
@@ -201,8 +201,8 @@ bool BitcoinExchange::loadDatabase(const std::string &databasePath)
     if (_trim(line) != "date,exchange_rate")
         return false;
 
-	// Les donnees sont chargees dans une map temporaire pour ne pas modifier l'attribut _database
-    std::map<std::string, double> database;
+	// Les donnees sont chargees dans une map temporaire pour ne pas modifier l'attribut _dB
+    std::map<std::string, double> dB;
 
     while (std::getline(file, line))
     {
@@ -226,14 +226,14 @@ bool BitcoinExchange::loadDatabase(const std::string &databasePath)
         if (!_isValidDate(date) || !_isValidValue(rateStr, rate) || rate < 0)
             return false;
 
-        database[date] = rate;
+        dB[date] = rate;
     }
 
-    if (file.bad() || database.empty())
+    if (file.bad() || dB.empty())
         return false;
 
 	// Toutes les lignes etant valides, la base temporaire devient la base definitive de l'objet
-    _database.swap(database);
+    _dB.swap(dB);
     return true;
 }
 
@@ -322,11 +322,11 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
         * - l'itérateur vaut begin() sans correspondance exacte :
   		*   aucune date antérieure n'existe dans la base.
   		*/
-        std::map<std::string, double>::const_iterator rate = _database.lower_bound(date);
+        std::map<std::string, double>::const_iterator rate = _dB.lower_bound(date);
 
-        if (rate == _database.end() || rate->first != date)
+        if (rate == _dB.end() || rate->first != date)
         {
-            if (rate == _database.begin())
+            if (rate == _dB.begin())
             {
                 std::cout << "Error: bad input => " << date << std::endl;
                 continue;

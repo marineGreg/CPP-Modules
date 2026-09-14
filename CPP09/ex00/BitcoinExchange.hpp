@@ -18,7 +18,7 @@
 class BitcoinExchange
 {
 	private:
-    	std::map<std::string, double> _database; // Map cle = valeur contenant les taux du Bitcoin par date
+    	std::map<std::string, double> _dB; // Map cle = valeur contenant les taux du Bitcoin par date
 
     	std::string _trim(const std::string &str) const;
     	bool _isValidDate(const std::string &date) const;
