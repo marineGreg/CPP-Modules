@@ -2,6 +2,12 @@
 #include <list>
 #include "MutantStack.hpp"
 
+/**
+ * Fonctions membres heritees de std::stack
+ * push : insert l'element sur la pile
+ * top : accede a l'element au sommet de la pile
+ * pop : ote l'element du sommet de la pile 
+ */
 int main()
 {
     std::cout << "===== 1. TEST AVEC MUTANTSTACK =====" << std::endl;
