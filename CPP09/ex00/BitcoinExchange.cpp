@@ -95,40 +95,40 @@ bool BitcoinExchange::_isValidDate(const std::string &date) const
  * La fonction accepte une partie decimale et une notation scientifique eventuelle.
  * Les limites imposées par le sujet sont vérifiees plus tard dans processInput().
  *
- * @param valueString Représentation textuelle du nombre.
+ * @param valueStr Représentation textuelle du nombre.
  * @param value Variable recevant la valeur convertie.
  * @return true si toute la chaîne représente un nombre valide.
  */
-bool BitcoinExchange::_isValidValue(const std::string &valueString, double &value) const
+bool BitcoinExchange::_isValidValue(const std::string &valueStr, double &value) const
 {
-    if (valueString.empty())
+    if (valueStr.empty())
         return false;
 
-    std::string::size_type position = 0;
+    std::string::size_type pos = 0;
 
 	// Verification du signe optionnel
-    if (valueString[position] == '+' || valueString[position] == '-')
-        ++position;
+    if (valueStr[pos] == '+' || valueStr[pos] == '-')
+        ++pos;
 
     bool hasDigit = false;
 	
 	// Verification de la partie entiere
-    while (position < valueString.size() 
-		&& std::isdigit(static_cast<unsigned char>(valueString[position])))
+    while (pos < valueStr.size() 
+		&& std::isdigit(static_cast<unsigned char>(valueStr[pos])))
     {
         hasDigit = true;
-        ++position;
+        ++pos;
     }
 
 	// Verification de la partie décimale
-    if (position < valueString.size() && valueString[position] == '.')
+    if (pos < valueStr.size() && valueStr[pos] == '.')
     {
-        ++position;
-        while (position < valueString.size()
-			&& std::isdigit(static_cast<unsigned char>(valueString[position])))
+        ++pos;
+        while (pos < valueStr.size()
+			&& std::isdigit(static_cast<unsigned char>(valueStr[pos])))
         {
             hasDigit = true;
-            ++position;
+            ++pos;
         }
     }
 
@@ -136,37 +136,34 @@ bool BitcoinExchange::_isValidValue(const std::string &valueString, double &valu
         return false;
 
 	// Verification de la notation scientifique optionnelle
-    if (position < valueString.size() 
-		&& (valueString[position] == 'e'
-		|| valueString[position] == 'E'))
+    if (pos < valueStr.size() && (valueStr[pos] == 'e' || valueStr[pos] == 'E'))
     {
-        ++position;
+        ++pos;
 
-        if (position < valueString.size()
-			&& (valueString[position] == '+'
-			|| valueString[position] == '-'))
-            ++position;
+        if (pos < valueStr.size() && (valueStr[pos] == '+' || valueStr[pos] == '-'))
+            ++pos;
 
         bool hasExponentDigit = false;
 
-        while (position < valueString.size() 
-			&& std::isdigit(static_cast<unsigned char>(valueString[position])))
+        while (pos < valueStr.size() 
+			&& std::isdigit(static_cast<unsigned char>(valueStr[pos])))
         {
             hasExponentDigit = true;
-            ++position;
+            ++pos;
         }
 
         if (!hasExponentDigit)
             return false;
     }
 
-    if (position != valueString.size())
+    if (pos != valueStr.size())
         return false;
 
 	// Conversion de la chaîne en double une fois la syntaxe verifiee
-	// end doit pointer sur la fin de la chaine : sinon une partie du texte n'a pas pu etre convertie
+	// end doit pointer sur la fin de la chaine : sinon une partie du texte n'a 
+	// pas pu etre convertie
     char *end;
-    const char *begin = valueString.c_str();
+    const char *begin = valueStr.c_str();
 
     value = std::strtod(begin, &end);
 
@@ -222,11 +219,11 @@ bool BitcoinExchange::loadDatabase(const std::string &databasePath)
 
         const std::string date = _trim(trimmedLine.substr(0, comma));
 
-        const std::string rateString = _trim(trimmedLine.substr(comma + 1));
+        const std::string rateStr = _trim(trimmedLine.substr(comma + 1));
 
         double rate;
 
-        if (!_isValidDate(date) || !_isValidValue(rateString, rate) || rate < 0)
+        if (!_isValidDate(date) || !_isValidValue(rateStr, rate) || rate < 0)
             return false;
 
         database[date] = rate;
@@ -278,7 +275,9 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
 
         const std::string::size_type pipe = trimmedLine.find('|');
 
-        if (pipe == std::string::npos || trimmedLine.find('|', pipe + 1) != std::string::npos)
+        if (pipe == std::string::npos
+			|| trimmedLine.find('|', pipe + 1)
+			!= std::string::npos)
         {
             std::cout << "Error: bad input => " << trimmedLine << std::endl;
             continue;
@@ -286,7 +285,7 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
 
         const std::string date = _trim(trimmedLine.substr(0, pipe));
 
-        const std::string valueString = _trim(trimmedLine.substr(pipe + 1));
+        const std::string valueStr = _trim(trimmedLine.substr(pipe + 1));
 
         if (!_isValidDate(date))
         {
@@ -296,7 +295,7 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
 
         double value;
 
-        if (!_isValidValue(valueString, value))
+        if (!_isValidValue(valueStr, value))
         {
             std::cout << "Error: bad input => " << trimmedLine << std::endl;
             continue;
