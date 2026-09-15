@@ -4,7 +4,6 @@
 # include <algorithm>
 # include <stdexcept>
 
-
 /**
  * Recherche la première occurrence d'un entier dans un conteneur modifiable.
  *
