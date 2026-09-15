@@ -20,10 +20,10 @@ int main()
 
     mstack.pop();
 
-    std::cout << "Size: " << mstack.size() << std::endl; // Doit afficher 1
+    std::cout << "Taille: " << mstack.size() << std::endl; // Doit afficher 1
 
-    mstack.push(3);
-    mstack.push(5);
+    mstack.push(11);
+    mstack.push(42);
     mstack.push(737);
     mstack.push(0);
 
@@ -39,10 +39,31 @@ int main()
     }
 
     // Test d'interopérabilité avec std::stack
-    std::stack<int> s(mstack);
+	std::stack<int> s(mstack);
 
+	std::cout << "\nTaille de mstack : " << mstack.size() << std::endl;
+	std::cout << "Taille de s      : " << s.size() << std::endl;
 
-    std::cout << "\n===== 2. MEME TEST AVEC STD::LIST (RÉSULTATS IDENTIQUES ATTENDUS) =====" << std::endl;
+	std::cout << "Sommet de mstack : " << mstack.top() << std::endl;
+	std::cout << "Sommet de s      : " << s.top() << std::endl;
+
+	/*
+	 * s est une copie indépendante de mstack.
+	 * Modifier s ne doit donc pas modifier mstack.
+	 * Une std::stack ne possède pas d'itérateurs publics !
+	 * On peut néanmoins afficher son contenu en la vidant avec top() et pop().
+	 */
+	s.pop();
+
+	std::cout << "Apres s.pop() =>" << std::endl;
+	std::cout << "Taille de s      : " << s.size() << std::endl;
+	std::cout << "Nouveau sommet s : " << s.top() << std::endl;
+
+	std::cout << "Taille de mstack : " << mstack.size() << std::endl;
+	std::cout << "Sommet de mstack : " << mstack.top() << std::endl;
+
+    std::cout << "\n===== 2. MEME TEST AVEC STD::LIST (RÉSULTATS IDENTIQUES ATTENDUS) ====="
+		<< std::endl;
     std::list<int> lstack;
 
     lstack.push_back(5);
@@ -52,10 +73,10 @@ int main()
 
     lstack.pop_back();
 
-    std::cout << "Size: " << lstack.size() << std::endl;
+    std::cout << "Taille: " << lstack.size() << std::endl;
 
-    lstack.push_back(3);
-    lstack.push_back(5);
+    lstack.push_back(11);
+    lstack.push_back(42);
     lstack.push_back(737);
     lstack.push_back(0);
 
