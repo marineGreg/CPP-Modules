@@ -74,12 +74,12 @@ int main()
     std::cout << "\n===== 5. NOMBRES NEGATIFS =====" << std::endl;
     {
         Span sp(3);
-        sp.addNumber(0);
-        sp.addNumber(20);
-        sp.addNumber(-20);
+		int values[] = {0, 30, -20};
+
+		sp.addNumber(values, values + 3);
 
         std::cout << "Shortest span(attendu : 20) -> " << sp.shortestSpan() << std::endl;
-        std::cout << "Longest span(attendu : 40) -> " << sp.longestSpan() << std::endl;
+        std::cout << "Longest span(attendu : 50) -> " << sp.longestSpan() << std::endl;
     }
 
     std::cout << "\n===== 6. GESTION DES EXCEPTIONS =====" << std::endl;
@@ -87,9 +87,9 @@ int main()
     try {
         std::cout << "-> Test ajout au-dela de la limite N... ";
         Span sp(2);
-        sp.addNumber(1);
-        sp.addNumber(2);
+        sp.addNumber(42);
         sp.addNumber(3);
+        sp.addNumber(11);
         std::cout << "[KO] Pas d'exception !" << std::endl;
     }
     catch (const std::exception &e) {
