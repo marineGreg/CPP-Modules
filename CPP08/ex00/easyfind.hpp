@@ -5,6 +5,16 @@
 # include <stdexcept>
 
 /**
+ * Module d'introduction a la Standard Template Library STL
+ * 
+ * Conteneur => Objet qui stocke une collection de valeurs
+ * Iterateur => Objet qui represente une position dans un conteneur
+ * Algorithme => Fonction generique travaillant sur une plage d'iterateurs
+ * Template => Modele de code genere pour un type concret au moment de la compilation
+ * Adaptateur => Interface specialisee construite au-dessus d'un autre conteneur
+ */
+
+/**
  * Recherche la première occurrence d'un entier dans un conteneur modifiable.
  *
  * Cette fonction peut être utilisée avec un conteneur fournissant les méthodes
