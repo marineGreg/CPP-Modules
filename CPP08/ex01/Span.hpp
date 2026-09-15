@@ -27,8 +27,11 @@ public:
     Span &operator=(const Span &other);
     ~Span();
 
-    
     void addNumber(int number); // Ajoute un entier au Span
+
+	// --- Calculs de Span ---
+	unsigned int longestSpan() const; // Calcule l'écart maximum entre les valeurs stockées
+	unsigned int shortestSpan() const; // Calcule l'écart minimum entre les valeurs stockées
 
     /**
 	 * Permet d'ajouter une plage complète d'entiers au Span.
@@ -47,10 +50,6 @@ public:
         // Insertion de la plage entière en un seul appel
         _numbers.insert(_numbers.end(), begin, end);
     }
-
-    // --- Calculs de Span ---
-    unsigned int longestSpan() const; // Calcule l'écart maximum entre les valeurs stockées
-    unsigned int shortestSpan() const; // Calcule l'écart minimum entre les valeurs stockées
 };
 
 #endif
