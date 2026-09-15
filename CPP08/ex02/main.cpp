@@ -6,7 +6,9 @@
  * Fonctions membres heritees de std::stack
  * push : insert l'element sur la pile
  * top : accede a l'element au sommet de la pile
- * pop : ote l'element du sommet de la pile 
+ * pop : ote l'element du sommet de la pile
+ * size : retourne le nombre d'elements
+ * empty : indique si le conteneur est vide
  */
 int main()
 {
@@ -22,8 +24,8 @@ int main()
 
     std::cout << "Taille: " << mstack.size() << std::endl; // Doit afficher 1
 
-    mstack.push(11);
-    mstack.push(42);
+    mstack.push(3);
+    mstack.push(5);
     mstack.push(737);
     mstack.push(0);
 
@@ -75,8 +77,8 @@ int main()
 
     std::cout << "Taille: " << lstack.size() << std::endl;
 
-    lstack.push_back(11);
-    lstack.push_back(42);
+    lstack.push_back(3);
+    lstack.push_back(5);
     lstack.push_back(737);
     lstack.push_back(0);
 
