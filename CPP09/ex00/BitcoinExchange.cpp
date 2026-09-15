@@ -265,13 +265,19 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
 		return false;
 	}
 
+	// Indique si au moins une ligne de données non vide a été rencontrée.
+	bool hasData = false;
+
 	// Lecture et traitement de chaque ligne du fichier
     while (std::getline(file, line))
     {
         const std::string trimmedLine = _trim(line);
 
+    	// Les lignes vides ne sont pas considérées comme des données.
         if (trimmedLine.empty())
             continue;
+
+		hasData = true;
 
         const std::string::size_type pipe = trimmedLine.find('|');
 
@@ -328,7 +334,7 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
         {
             if (rate == _dB.begin())
             {
-                std::cout << "Error: bad input => " << date << std::endl;
+                std::cout << "Error: no exchange rate available => " << date << std::endl;
                 continue;
             }
             --rate;
@@ -337,5 +343,19 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
 		// Affichage du résultat : date, valeur et taux correspondant
         std::cout << date << " => " << value << " = " << value * rate->second << std::endl;
     }
-    return !file.bad();
+    
+	// Vérifie d'abord qu'aucune erreur grave de lecture n'est survenue.
+    if (file.bad())
+    {
+        std::cout << "Error: failed while reading input file." << std::endl;
+        return false;
+    }
+
+    // Le fichier ne contenait que l'en-tête ou des lignes vides.
+    if (!hasData)
+    {
+        std::cout << "Error: input file contains no data." << std::endl;
+        return false;
+    }
+	return true;
 }
