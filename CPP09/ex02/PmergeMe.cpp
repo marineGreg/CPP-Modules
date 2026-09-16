@@ -1,16 +1,13 @@
 #include "PmergeMe.hpp"
 
 #include <iostream>
-#include <cctype>
-#include <cerrno>
-#include <climits>
-#include <cstdlib>
 #include <sstream>
-#include <stdexcept>
+#include <cstdlib>
+#include <climits>
+#include <sys/time.h>
 #include <algorithm>
 #include <iomanip>
-#include <utility>
-#include <sys/time.h>
+#include <cctype>
 
 PmergeMe::PmergeMe() {}
 
@@ -119,260 +116,6 @@ std::vector<std::size_t> PmergeMe::_buildInsertionOrder(std::size_t size) const
 }
 
 /**
- * Tri recursivement un vector avec l'algorithme de Ford-Johnson
- * Étapes de Ford-Johnson :
- *
- * 1. regrouper les valeurs par paires
- * 2. comparer les deux éléments de chaque paire
- * 3. trier récursivement les maxima
- * 4. construire une chaîne principale triée
- * 5. insérer les minima dans l'ordre Jacobsthal
- * 6. limiter chaque recherche au partenaire associé
- */
-void PmergeMe::_sortVector(std::vector<int> &sequence)
-{
-	if (sequence.size() <= 1)
-		return;
-
-	const bool isOdd = sequence.size() % 2 != 0;
-	int lastElement = 0;
-
-	/*
-	 * Si le nombre d'éléments est impair, le dernier élément
-	 * reste temporairement sans partenaire.
-	 * Il rejoindra ensuite la liste pending avec une borne
-	 * de recherche située à la fin de la chaîne.
-	 */
-	if (isOdd)
-	{
-		lastElement = sequence.back();
-		sequence.pop_back();
-	}
-
-	std::vector<std::pair<int, int> > pairs;
-	for (std::size_t i = 0; i < sequence.size(); i += 2)
-	{
-		int high = sequence[i];
-		int low = sequence[i + 1];
-
-		if (high < low)
-			std::swap(high, low);
-
-		pairs.push_back(std::make_pair(high, low));
-	}
-	/**
- 	* On extrait les plus grands elements de chaque paire et on les stocke dans un vecteur
- 	* Ils sont tries recursivement avec Ford-Johnson
- 	*/
-	std::vector<int> maxima;
-
-	for (std::size_t i = 0; i < pairs.size(); ++i)
-		maxima.push_back(pairs[i].first);
-
-	/*
-	 * Ford-Johnson trie recursivement les maxima a_i.
-	 * Le cas de base est atteint lorsque la sequence contient zero ou un element.
-	 */
-	_sortVector(maxima);
-
-	/**
-	 * On reorganise les paires en suivant l'ordre obtenu pour les maxima
-	 * Le tableau used permet de gerer correctement les doublons
-	 */
-	std::vector<std::pair<int, int> > sortedPairs;
-	std::vector<bool> used(pairs.size(), false);
-
-	for (std::size_t i = 0; i < maxima.size(); ++i)
-	{
-		for (std::size_t j = 0; j < pairs.size(); ++j)
-		{
-			if (!used[j] && pairs[j].first == maxima[i])
-			{
-				sortedPairs.push_back(pairs[j]);
-				used[j] = true;
-				break;
-			}
-		}
-	}
-
-	pairs = sortedPairs;
-
-	/*
-	 * Construction de la chaîne principale :
-	 * mainChain = b1, a1, a2, a3...
-	 * pending   = b1, b2, b3...
-	 *
-	 * Tous les maxima a_i sont déjà présents et triés.
-	 * b1 est également déjà placé devant a1 puisque b1 <= a1.
-	 *
-	 * Les autres éléments pending seront insérés selon
-	 * l'ordre calculé à partir des nombres de Jacobsthal.
-	 */
-	std::vector<int> mainChain;
-	std::vector<int> pending;
-	std::vector<std::size_t> partnerPositions;
-
-	mainChain.push_back(pairs[0].second);
-
-	for (std::size_t i = 0; i < pairs.size(); ++i)
-	{
-		mainChain.push_back(pairs[i].first);
-		partnerPositions.push_back(mainChain.size() - 1);
-		pending.push_back(pairs[i].second);
-	}
-
-	if (isOdd)
-		pending.push_back(lastElement);
-	
-	const std::vector<std::size_t> order = _buildInsertionOrder(pending.size());
-
-	for (std::size_t i = 0; i < order.size(); ++i)
-	{
-		const std::size_t index = order[i];
-		std::size_t searchEnd = mainChain.size();
-
-		/**
-		 * Si l'element possede un partenaire a_i, on ne cherche que dans la
-		 * partie precedant a_i
-		 * 
-		 * Le lastElement n'a pas de partenaire, sa borne est donc la fin
-		 * de la mainChain
-		 */
-		if (index < partnerPositions.size())
-			searchEnd = partnerPositions[index];
-
-		/*
-		 * b_i est forcément inférieur ou égal à son partenaire a_i.
-		 * Il est donc inutile de chercher après ce partenaire.
-		 *
-		 * lower_bound() travaille uniquement dans l'intervalle :
-		 * [début de mainChain, position de a_i[
-		 *
-		 * L'élément impair n'ayant pas de partenaire, sa recherche
-		 * peut aller jusqu'à la fin de la chaîne.
-		 */
-		std::vector<int>::iterator position = 
-			std::lower_bound(mainChain.begin(), mainChain.begin() + searchEnd, pending[index]);
-
-		const std::size_t insertPosition = position - mainChain.begin();
-
-		mainChain.insert(position, pending[index]);
-
-		/*
-		 * Insérer une valeur déplace vers la droite tous les maxima
-		 * placés à partir de la position d'insertion.
-		 *
-		 * Leurs indices sont mis à jour afin que les prochaines
-		 * recherches conservent leurs bornes correctes.
- 		 */
-		for (std::size_t j = 0; j < partnerPositions.size(); ++j)
-		{
-			if (partnerPositions[j] >= insertPosition)
-				++partnerPositions[j];
-		}
-	}
-	sequence = mainChain;
-}
-
-/**
- * Tri recursivement un deque avec l'algorithme de Ford-Johnson
- * Même deroulement que pour std::vector, mais toutes
- * les structures participant au tri sont des std::deque.
- */
-void PmergeMe::_sortDeque(std::deque<int> &sequence)
-{
-	if (sequence.size() <= 1)
-		return;
-
-	const bool isOdd = sequence.size() % 2 != 0;
-	int lastElement = 0;
-
-	if (isOdd)
-	{
-		lastElement = sequence.back();
-		sequence.pop_back();
-	}
-
-	std::deque<std::pair<int, int> > pairs;
-	for (std::size_t i = 0; i < sequence.size(); i += 2)
-	{
-		int high = sequence[i];
-		int low = sequence[i + 1];
-
-		if (high < low)
-			std::swap(high, low);
-
-		pairs.push_back(std::make_pair(high, low));
-	}
-	
-	std::deque<int> maxima;
-
-	for (std::size_t i = 0; i < pairs.size(); ++i)
-		maxima.push_back(pairs[i].first);
-
-	_sortDeque(maxima);
-
-	std::deque<std::pair<int, int> > sortedPairs;
-	std::deque<bool> used(pairs.size(), false);
-
-	for (std::size_t i = 0; i < maxima.size(); ++i)
-	{
-		for (std::size_t j = 0; j < pairs.size(); ++j)
-		{
-			if (!used[j] && pairs[j].first == maxima[i])
-			{
-				sortedPairs.push_back(pairs[j]);
-				used[j] = true;
-				break;
-			}
-		}
-	}
-
-	pairs = sortedPairs;
-
-	std::deque<int> mainChain;
-	std::deque<int> pending;
-	std::deque<std::size_t> partnerPositions;
-
-	mainChain.push_back(pairs[0].second);
-
-	for (std::size_t i = 0; i < pairs.size(); ++i)
-	{
-		mainChain.push_back(pairs[i].first);
-		partnerPositions.push_back(mainChain.size() - 1);
-		pending.push_back(pairs[i].second);
-	}
-
-	if (isOdd)
-		pending.push_back(lastElement);
-	
-	const std::vector<std::size_t> order = _buildInsertionOrder(pending.size());
-
-	for (std::size_t i = 0; i < order.size(); ++i)
-	{
-		const std::size_t index = order[i];
-		std::size_t searchEnd = mainChain.size();
-
-		if (index < partnerPositions.size())
-			searchEnd = partnerPositions[index];
-
-		std::deque<int>::iterator position = 
-			std::lower_bound(mainChain.begin(), mainChain.begin() + searchEnd, pending[index]);
-
-		const std::size_t insertPosition = position - mainChain.begin();
-
-		mainChain.insert(position, pending[index]);
-
-		for (std::size_t j = 0; j < partnerPositions.size(); ++j)
-		{
-			if (partnerPositions[j] >= insertPosition)
-				++partnerPositions[j];
-		}
-	}
-	sequence = mainChain;
-}
-
-/**
  * Affiche une sequence complete lorsqu'elle est courte
  * Pour une grande sequence, seuls les 5 premiers elements sont affiches
  * Les grandes séquences sont abrégées avec [...]
@@ -418,7 +161,7 @@ void PmergeMe::run(int ac, char **av)
 	gettimeofday(&start, NULL);
 
 	_vector.assign(input.begin(), input.end());
-	_sortVector(_vector);
+	_sortContainer(_vector);
 
 	gettimeofday(&end, NULL);
 
@@ -429,7 +172,7 @@ void PmergeMe::run(int ac, char **av)
 	gettimeofday(&start, NULL);
 
 	_deque.assign(input.begin(), input.end());
-	_sortDeque(_deque);
+	_sortContainer(_deque);
 
 	gettimeofday(&end, NULL);
 
