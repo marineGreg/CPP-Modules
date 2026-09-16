@@ -24,7 +24,7 @@ class PmergeMe
         std::vector<int> _vector;
         std::deque<int>  _deque;
 
-        static size_t _getJacobsthal(size_t n);
+        static std::vector<size_t> _buildInsertionOrder(size_t size);
 		void _parseInput(int ac, char **av, std::vector<int> &input) const;
 
         template <typename Container>
@@ -109,85 +109,38 @@ void PmergeMe::_sortContainer(Container &container)
 	Container sorted = mainChain;
 
 	/*
-	 * partnerIds est un conteneur parallèle à sorted.
-	 *
-	 * Un entier positif ou nul identifie un grand élément a_i.
-	 * La valeur -1 représente un petit élément déjà inséré.
-	 *
-	 * Cela permet de retrouver la position exacte du grand élément
-	 * associé à chaque pending[i], même en présence de doublons.
-	 */
-	Container partnerIds;
-
-	for (size_t i = 0; i < mainChain.size(); ++i)
-    	partnerIds.push_back(static_cast<int>(i));
-
-	/*
- 	 * pending[0] correspond à b1.
-	 * Comme b1 <= a1, il peut être placé directement au début.
+	 * b1 est nécessairement inférieur ou égal à a1.
+	 * Il peut donc être inséré directement au début.
 	 */
 	if (!pending.empty())
+	    sorted.insert(sorted.begin(), pending[0]);
+
+	/*
+	 * Construction de l'ordre Jacobsthal :
+	 * b3, b2, b5, b4, b11, b10...
+	 */
+	const std::vector<size_t> order = _buildInsertionOrder(pending.size());
+
+	for (size_t i = 0; i < order.size(); ++i)
 	{
-    	sorted.insert(sorted.begin(), pending[0]);
-    	partnerIds.insert(partnerIds.begin(), -1);
+    	const size_t index = order[i];
+    	const int value = pending[index];
+    	const int partner = mainChain[index];
+
+    	/*
+    	 * Recherche de la première occurrence du grand partenaire.
+    	 * L'élément pending[index] ne doit être recherché que dans
+    	 * la partie située avant ce partenaire.
+    	 */
+    	typename Container::iterator upperBound =
+        	std::lower_bound(sorted.begin(), sorted.end(), partner);
+
+		typename Container::iterator position =
+        	std::lower_bound(sorted.begin(), upperBound, value);
+
+    	sorted.insert(position, value);
 	}
 
-	// Insertion des autres éléments selon Jacobsthal.
-	size_t previousJacobsthal = 1;
-	size_t jacobsthalIndex = 3;
-
-	while (previousJacobsthal < pending.size())
-	{
-    	const size_t nextJacobsthal =
-        _getJacobsthal(jacobsthalIndex);
-
-    	const size_t limit =
-        std::min(nextJacobsthal, pending.size());
-
-    	for (size_t i = limit; i > previousJacobsthal; --i)
-    	{
-        	const size_t pendingIndex = i - 1;
-        	const int value = pending[pendingIndex];
-
-        	/*
-        	 * Recherche de la position actuelle du grand élément
-        	 * associé à pending[pendingIndex].
-        	 */
-        	size_t partnerPosition = 0;
-
-        	while (partnerIds[partnerPosition] != static_cast<int>(pendingIndex))
-        	{
-            	++partnerPosition;
-        	}
-
-        	/*
-        	 * La recherche binaire s'arrête avant le grand partenaire.
-        	 *
-        	 * On sait déjà que :
-        	 * pending[pendingIndex] <= grand partenaire
-        	 *
-        	 * Il serait donc inutile de chercher après lui.
-        	 */
-        	typename Container::iterator position =
-            	std::lower_bound(sorted.begin(), sorted.begin() + partnerPosition, value);
-
-        	/*
-        	 * L'indice doit être mémorisé avant insert(), car insert()
-        	 * peut invalider l'itérateur position pour un vector.
-        	 */
-        	const size_t insertionPosition = position - sorted.begin();
-
-        	sorted.insert(position, value);
-
-        	/*
-        	 * Mise à jour du conteneur parallèle.
-        	 * -1 indique que cet élément n'est pas un grand partenaire.
-        	 */
-        	partnerIds.insert(partnerIds.begin() + insertionPosition, -1);
-    		}
-    	previousJacobsthal = nextJacobsthal;
-    	++jacobsthalIndex;
-	}
     // Réinsertion de l'élément impair éventuel.
     if (isOdd)
     {

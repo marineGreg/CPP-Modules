@@ -80,26 +80,31 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 	}
 }
 
-size_t PmergeMe::_getJacobsthal(size_t n)
+std::vector<size_t>
+PmergeMe::_buildInsertionOrder(size_t size)
 {
-    if (n == 0)
-        return 0;
+    std::vector<size_t> order;
 
-    if (n == 1)
-        return 1;
+    size_t previous = 1;
+    size_t current = 3;
 
-    size_t previous = 0;
-    size_t current = 1;
-
-    for (size_t i = 2; i <= n; ++i)
+    while (previous < size)
     {
+        size_t upper = current;
+
+        if (upper > size)
+            upper = size;
+
+        for (size_t i = upper; i > previous; --i)
+            order.push_back(i - 1);
+
         const size_t next = current + 2 * previous;
 
         previous = current;
         current = next;
     }
 
-    return current;
+    return order;
 }
 
 /**
@@ -111,7 +116,10 @@ void PmergeMe::_printSequence(const std::string &label, const std::vector<int> &
 {
 	std::cout << label;
 	
-	const std::size_t limit = sequence.size() > 5 ? 5 : sequence.size();
+	std::size_t limit = sequence.size();
+
+	if (limit > 5)
+    	limit = 5;
 
 	for (std::size_t i = 0; i < limit; ++i)
 	{
