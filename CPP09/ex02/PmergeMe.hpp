@@ -25,7 +25,6 @@ class PmergeMe
         std::deque<int>  _deque;
 
         static size_t _getJacobsthal(size_t n);
-
 		void _parseInput(int ac, char **av, std::vector<int> &input) const;
 
         template <typename Container>
