@@ -125,7 +125,6 @@ void PmergeMe::_printSequence(const std::string &label, const std::vector<int> &
 	std::cout << std::endl;
 }
 
-
 /**
  * Orchestre l'ensemble du programme :
  *  - validation de l'entree
@@ -167,8 +166,17 @@ void PmergeMe::run(int ac, char **av)
 		(end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
 
 	/* Verification interne : les deux implementations doivent produire le meme resultat */
-	if (_vector.size() != _deque.size() || !std::equal(_vector.begin(), _vector.end(), _deque.begin()))
-		throw std::logic_error("containers results differ");
+	if (_vector.size() != _deque.size()
+    	|| !std::equal(_vector.begin(), _vector.end(), _deque.begin()))
+	{
+    	throw std::logic_error("containers results differ");
+	}
+
+	for (std::size_t i = 1; i < _vector.size(); ++i)
+	{
+    	if (_vector[i - 1] > _vector[i])
+        	throw std::logic_error("result is not sorted");
+	}
 
 	_printSequence("After:  ", _vector);
 
