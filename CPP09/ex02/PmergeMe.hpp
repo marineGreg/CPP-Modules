@@ -5,6 +5,7 @@
 # include <vector>
 # include <deque>
 # include <string>
+# include <algorithm>
 
 /**
  * Trie une séquence d'entiers positifs avec l'algorithme de tri
@@ -19,8 +20,8 @@
 class PmergeMe
 {
 	private:
-        std::vector<int> _vec;
-        std::deque<int>  _deq;
+        std::vector<int> _vector;
+        std::deque<int>  _deque;
 
         static size_t _getJacobsthal(size_t n);
 
@@ -40,7 +41,7 @@ class PmergeMe
         PmergeMe& operator=(const PmergeMe& other);
         ~PmergeMe();
 
-        bool run(int ac, char** av);
+        void run(int ac, char** av);
 };
 
 template <typename Container>
@@ -49,9 +50,7 @@ void PmergeMe::_sortContainer(Container &container)
     if (container.size() <= 1)
         return;
 
-    /*
-     * Retrait temporaire du dernier élément si la taille est impaire.
-     */
+    // Retrait temporaire du dernier élément si la taille est impaire.
     const bool isOdd = (container.size() % 2 != 0);
     int lastElement = 0;
 
@@ -82,9 +81,7 @@ void PmergeMe::_sortContainer(Container &container)
         lows.push_back(low);
     }
 
-    /*
-     * Tri récursif des plus grands éléments.
-     */
+    // Tri récursif des plus grands éléments.
     Container mainChain = highs;
 
     _sortContainer(mainChain);
@@ -108,66 +105,42 @@ void PmergeMe::_sortContainer(Container &container)
             }
         }
     }
-
-    /*
-     * La chaîne principale contient déjà les grands éléments triés.
-     */
+    // La chaîne principale contient déjà les grands éléments triés.
     Container sorted = mainChain;
 
-    /*
-     * Le premier petit élément est nécessairement inférieur
-     * au premier grand élément.
-     */
+    // Le premier petit élément est nécessairement inférieur au premier grand élément.
     if (!pending.empty())
         sorted.insert(sorted.begin(), pending[0]);
 
-    /*
-     * Insertion des autres éléments selon Jacobsthal.
-     */
+    // Insertion des autres éléments selon Jacobsthal.
     size_t previousJacobsthal = 1;
     size_t jacobsthalIndex = 3;
 
     while (previousJacobsthal < pending.size())
     {
-        const size_t nextJacobsthal =
-            _getJacobsthal(jacobsthalIndex);
+        const size_t nextJacobsthal = _getJacobsthal(jacobsthalIndex);
 
-        const size_t limit =
-            std::min(nextJacobsthal, pending.size());
+        const size_t limit = std::min(nextJacobsthal, pending.size());
 
         for (size_t i = limit; i > previousJacobsthal; --i)
         {
             const int value = pending[i - 1];
 
             typename Container::iterator position =
-                std::lower_bound(
-                    sorted.begin(),
-                    sorted.end(),
-                    value
-                );
-
+                std::lower_bound(sorted.begin(), sorted.end(), value);
             sorted.insert(position, value);
         }
-
         previousJacobsthal = nextJacobsthal;
         ++jacobsthalIndex;
     }
 
-    /*
-     * Réinsertion de l'élément impair éventuel.
-     */
+    // Réinsertion de l'élément impair éventuel.
     if (isOdd)
     {
         typename Container::iterator position =
-            std::lower_bound(
-                sorted.begin(),
-                sorted.end(),
-                lastElement
-            );
-
+            std::lower_bound(sorted.begin(), sorted.end(), lastElement);
         sorted.insert(position, lastElement);
     }
-
     container = sorted;
 }
 

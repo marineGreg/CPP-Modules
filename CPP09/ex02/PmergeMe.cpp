@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <iomanip>
 #include <cctype>
+#include <cerrno>
+#include <stdexcept>
 
 PmergeMe::PmergeMe() {}
 
@@ -78,41 +80,26 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 	}
 }
 
-/**
- * Construit l'ordre d'insertion des elements pending a partir de la suite Jacobsthal
- * 
- * pending[0], correspondant a b1, est deja place dans la chaine principale
- * il n'apparait donc pas dans l'ordre
- * 
- * L'ordre obtenu commence par : b3, b2, b5, b4, b11, b10, b9, b8, b7, b6...
- */
-std::vector<std::size_t> PmergeMe::_buildInsertionOrder(std::size_t size) const
+size_t PmergeMe::_getJacobsthal(size_t n)
 {
-	/*
- 	 * Les bornes Jacobsthal utiles sont :
- 	 * 1, 3, 5, 11, 21, 43...
- 	 *
- 	 * Entre deux bornes, les indices sont ajoutés en ordre décroissant
-	 * afin d'optimiser les recherches binaires.
-	 *	
-	 * Les indices sont stockés à partir de zéro : l'indice 2 correspond donc à b3.
-	 */
-	std::vector<std::size_t> order;
-	std::size_t previousJacobsthal = 1;
-	std::size_t currentJacobsthal = 3;
+    if (n == 0)
+        return 0;
 
-	while (previousJacobsthal < size)
-	{
-		const std::size_t upper = std::min(currentJacobsthal, size);
-		for (std::size_t i = upper; i > previousJacobsthal; --i)
-			order.push_back(i - 1);
+    if (n == 1)
+        return 1;
 
-		const std::size_t nextJacobsthal = currentJacobsthal + 2 * previousJacobsthal;
+    size_t previous = 0;
+    size_t current = 1;
 
-		previousJacobsthal = currentJacobsthal;
-		currentJacobsthal = nextJacobsthal;
-	}
-	return order;
+    for (size_t i = 2; i <= n; ++i)
+    {
+        const size_t next = current + 2 * previous;
+
+        previous = current;
+        current = next;
+    }
+
+    return current;
 }
 
 /**
@@ -191,4 +178,3 @@ void PmergeMe::run(int ac, char **av)
 	std::cout << "Time to process a range of " << _deque.size() << " elements with std::deque : "
 		<< std::fixed << std::setprecision(5) << dequeTime << " us" << std::endl;
 }
-
