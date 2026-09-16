@@ -27,21 +27,27 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other) {
 PmergeMe::~PmergeMe() {}
 
 /**
- * Valide les arguments et les convertit en entiers positifs.
- * La fonction rejette :
- *  - les arguments vides
- *  - les caracteres non numeriques
- *  - zero et les nombres negatifs
- * 	- les valeurs superieures a INT_MAX
+ * @brief Convertit les arguments en une séquence d'entiers positifs.
+ *
+ * Un argument peut contenir un ou plusieurs nombres séparés par des
+ * espaces. Chaque token est d'abord contrôlé caractère par caractère,
+ * puis converti avec strtol afin de détecter les dépassements.
+ *
+ * @param ac Nombre d'arguments.
+ * @param av Tableau des arguments.
+ * @param input Vector recevant les entiers validés.
+ *
+ * @throws std::invalid_argument Si l'entrée est vide ou invalide.
  */
 void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 {
 	if (ac < 2)
 		throw std::invalid_argument("missing sequence");
 
+	// Efface un éventuel contenu provenant d'un traitement précédent.
 	input.clear();
 
-	// chaque argument peut contenir plusieurs nombres, un flux en extrait donc les tokens
+	// Un argument peut contenir plusieurs nombres séparés par des espaces.
 	for (int i = 1; i < ac; ++i)
 	{
 		const std::string argument(av[i]);
@@ -52,7 +58,7 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 		while (stream >> token)
 		{
 			hasToken = true;
-
+			// Vérifie que le token contient exclusivement des chiffres.
 			for (std::size_t j = 0; j < token.size(); ++j)
 			{
 				const unsigned char c = static_cast<unsigned char>(token[j]);
@@ -60,10 +66,9 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 					throw std::invalid_argument("invalid integer");
 			}
 			/*
- 			 * La syntaxe ayant été vérifiée caractère par caractère, 
-			 * strtol() effectue la conversion et permet de détecter
- 			 * un dépassement de capacité grâce à errno.
- 			 */
+			 * strtol réalise la conversion après la validation syntaxique.
+			 * errno permet de détecter une valeur trop grande pour un long.
+			 */
 			errno = 0;
 			char *end = NULL;
 			const long value = std::strtol(token.c_str(), &end, 10);
@@ -75,29 +80,48 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 			}
 			input.push_back(static_cast<int>(value));
 		}
+		// Refuse également les arguments constitués uniquement d'espaces.
 		if (!hasToken)
 			throw std::invalid_argument("empty argument");
 	}
 }
 
-std::vector<size_t>
-PmergeMe::_buildInsertionOrder(size_t size)
+/**
+ * @brief Construit l'ordre d'insertion Ford-Johnson.
+ *
+ * Génère les indices des éléments pending selon les bornes de
+ * Jacobsthal (1, 3, 5, 11, 21, 43...). Les indices sont ajoutés par groupes 
+ * décroissants : b3, b2, b5, b4, b11, b10, etc.
+ *
+ * pending[0], correspondant à b1, n'est pas inclus puisqu'il est
+ * directement placé au début de la chaîne principale.
+ * Entre deux bornes, les indices sont ajoutés en ordre décroissant.
+ * Les indices stockés commencent à zéro : l'indice 2 représente b3.
+ * 
+ * @param size Nombre d'éléments présents dans pending.
+ * @return Un vector contenant les indices d'insertion, à partir de zéro.
+ */
+std::vector<size_t> PmergeMe::_buildInsertionOrder(size_t size)
 {
     std::vector<size_t> order;
 
+	// Première paire de bornes Jacobsthal utile : 1 puis 3.
     size_t previous = 1;
     size_t current = 3;
 
     while (previous < size)
     {
+		// La dernière borne ne doit pas dépasser la taille de pending.
         size_t upper = current;
 
         if (upper > size)
             upper = size;
 
+		// Ajout des indices du groupe dans l'ordre décroissant.
         for (size_t i = upper; i > previous; --i)
             order.push_back(i - 1);
 
+		// Construction de la borne Jacobsthal suivante.
         const size_t next = current + 2 * previous;
 
         previous = current;
@@ -108,14 +132,19 @@ PmergeMe::_buildInsertionOrder(size_t size)
 }
 
 /**
- * Affiche une sequence complete lorsqu'elle est courte
- * Pour une grande sequence, seuls les 5 premiers elements sont affiches
- * Les grandes séquences sont abrégées avec [...]
+ * @brief Affiche une version lisible d'une séquence.
+ *
+ * L'affichage est limité aux cinq premiers nombres lorsque la séquence
+ * est longue afin d'éviter une sortie gigantesque pendant les tests.
+ *
+ * @param label Libellé "Before" ou "After".
+ * @param sequence Séquence à afficher.
  */
 void PmergeMe::_printSequence(const std::string &label, const std::vector<int> &sequence) const
 {
 	std::cout << label;
 	
+	// Limite l'affichage sans modifier la séquence.
 	std::size_t limit = sequence.size();
 
 	if (limit > 5)
@@ -134,24 +163,29 @@ void PmergeMe::_printSequence(const std::string &label, const std::vector<int> &
 }
 
 /**
- * Orchestre l'ensemble du programme :
- *  - validation de l'entree
- *  - affichage de la sequence initiale
- *  - remplissage et tri du vector
- *  - remplissage et tri du deque
- *  - comparaison des resultats
- *  - affichage des temps en microsecondes
+ * @brief Coordonne toutes les étapes du programme.
+ *
+ * Le parsing est effectué une seule fois. Chaque conteneur est ensuite
+ * rempli et trié séparément afin de mesurer son propre temps de
+ * traitement.
+ *
+ * Une vérification finale garantit que vector et deque produisent la
+ * même séquence et que celle-ci est réellement triée.
+ *
+ * @param ac Nombre d'arguments.
+ * @param av Tableau des arguments.
  */
 void PmergeMe::run(int ac, char **av)
 {
 	std::vector<int> input;
 
+	// Validation commune avant les mesures de performances.
 	_parseInput(ac, av, input);
 	_printSequence("Before: ", input);
 
 	struct timeval start, end;
 
-	// La mesure inclut le remplissage du conteneur et son tri
+	// Mesure du remplissage et du tri du vector.
 	gettimeofday(&start, NULL);
 
 	_vector.assign(input.begin(), input.end());
@@ -162,7 +196,7 @@ void PmergeMe::run(int ac, char **av)
 	const double vectorTime =
 		(end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
 
-	/* Mesure du remplissage et du tri du deque. */
+	// Mesure indépendante du remplissage et du tri du deque.
 	gettimeofday(&start, NULL);
 
 	_deque.assign(input.begin(), input.end());
@@ -173,13 +207,14 @@ void PmergeMe::run(int ac, char **av)
 	const double dequeTime =
 		(end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
 
-	/* Verification interne : les deux implementations doivent produire le meme resultat */
+	// Les deux instanciations du template doivent produire le même résultat.
 	if (_vector.size() != _deque.size()
     	|| !std::equal(_vector.begin(), _vector.end(), _deque.begin()))
 	{
     	throw std::logic_error("containers results differ");
 	}
 
+	// L'égalité des conteneurs ne suffit pas : vérifie aussi l'ordre croissant.
 	for (std::size_t i = 1; i < _vector.size(); ++i)
 	{
     	if (_vector[i - 1] > _vector[i])
