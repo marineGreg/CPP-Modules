@@ -87,6 +87,239 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 }
 
 /**
+ * @brief Trie un std::vector avec l'algorithme Ford-Johnson.
+ *
+ * La fonction forme des paires, trie récursivement les plus grands
+ * éléments, puis insère les plus petits selon l'ordre de Jacobsthal.
+ *
+ * @param container Vector à trier directement.
+ */
+void PmergeMe::_sortVector(std::vector<int> &container)
+{
+    // Une séquence de taille 0 ou 1 est déjà triée.
+    if (container.size() <= 1)
+        return;
+
+    /*
+     * Lorsque la taille est impaire, le dernier élément est
+     * temporairement mis de côté.
+     */
+    const bool isOdd = (container.size() % 2 != 0);
+    int straggler = 0;
+
+    if (isOdd)
+    {
+        straggler = container.back();
+        container.pop_back();
+    }
+
+    /*
+     * Formation des paires.
+     *
+     * highs[i] contient le plus grand élément de la paire.
+     * lows[i] contient le plus petit élément de la même paire.
+     */
+    std::vector<int> highs;
+    std::vector<int> lows;
+
+    for (std::size_t i = 0; i < container.size(); i += 2)
+    {
+        int high = container[i];
+        int low = container[i + 1];
+
+        if (high < low)
+            std::swap(high, low);
+
+        highs.push_back(high);
+        lows.push_back(low);
+    }
+
+    // Tri récursif des plus grands éléments.
+    std::vector<int> mainChain = highs;
+
+    _sortVector(mainChain);
+
+    /*
+     * Réorganisation des petits éléments dans le même ordre que
+     * leurs grands partenaires après le tri de mainChain.
+     */
+    std::vector<int> pending;
+    std::vector<int> used(highs.size(), 0);
+
+    for (std::size_t i = 0; i < mainChain.size(); ++i)
+    {
+        for (std::size_t j = 0; j < highs.size(); ++j)
+        {
+            if (!used[j] && highs[j] == mainChain[i])
+            {
+                pending.push_back(lows[j]);
+                used[j] = 1;
+                break;
+            }
+        }
+    }
+    // La chaîne principale contient déjà les grands éléments triés.
+    std::vector<int> sorted = mainChain;
+
+    // b1 est inférieur ou égal à a1. Il peut donc être placé au début.
+    if (!pending.empty())
+        sorted.insert(sorted.begin(), pending[0]);
+
+    // Construction de l'ordre d'insertion : b3, b2, b5, b4, b11, b10...
+    const std::vector<std::size_t> order =
+        _buildInsertionOrder(pending.size());
+
+    for (std::size_t i = 0; i < order.size(); ++i)
+    {
+        const std::size_t index = order[i];
+        const int value = pending[index];
+        const int partner = mainChain[index];
+
+        /*
+         * Recherche de la première occurrence du grand partenaire.
+         * Le petit élément doit être inséré avant cette limite.
+         */
+        std::vector<int>::iterator upperBound =
+            std::lower_bound(sorted.begin(), sorted.end(), partner);
+
+        /*
+         * Recherche binaire de la position du petit élément,
+         * uniquement dans la zone précédant son partenaire.
+         */
+        std::vector<int>::iterator position =
+            std::lower_bound(sorted.begin(), upperBound, value);
+
+        sorted.insert(position, value);
+    }
+    /*
+     * L'élément impair n'a pas de partenaire.
+     * Sa position est recherchée dans toute la chaîne.
+     */
+    if (isOdd)
+    {
+        std::vector<int>::iterator position =
+            std::lower_bound(sorted.begin(), sorted.end(), straggler);
+
+        sorted.insert(position, straggler);
+    }
+    container = sorted;
+}
+
+/**
+ * @brief Trie un std::deque avec l'algorithme Ford-Johnson.
+ *
+ * Cette implémentation suit les mêmes étapes que la version vector,
+ * mais tous les conteneurs utilisés par le tri sont des std::deque.
+ *
+ * @param container Deque à trier directement.
+ */
+void PmergeMe::_sortDeque(std::deque<int> &container)
+{
+    // Une séquence de taille 0 ou 1 est déjà triée.
+    if (container.size() <= 1)
+        return;
+
+    /*
+     * Lorsque la taille est impaire, le dernier élément est
+     * temporairement mis de côté.
+     */
+    const bool isOdd = (container.size() % 2 != 0);
+    int straggler = 0;
+
+    if (isOdd)
+    {
+        straggler = container.back();
+        container.pop_back();
+    }
+
+    /*
+     * Formation des paires.
+     *
+     * highs[i] contient le plus grand élément de la paire.
+     * lows[i] contient le plus petit élément de la même paire.
+     */
+    std::deque<int> highs;
+    std::deque<int> lows;
+
+    for (std::size_t i = 0; i < container.size(); i += 2)
+    {
+        int high = container[i];
+        int low = container[i + 1];
+
+        if (high < low)
+            std::swap(high, low);
+
+        highs.push_back(high);
+        lows.push_back(low);
+    }
+
+    // Tri récursif des plus grands éléments.
+    std::deque<int> mainChain = highs;
+
+    _sortDeque(mainChain);
+
+    /*
+     * Réorganisation des petits éléments dans le même ordre que
+     * leurs grands partenaires après le tri de mainChain.
+     */
+    std::deque<int> pending;
+    std::deque<int> used(highs.size(), 0);
+
+    for (std::size_t i = 0; i < mainChain.size(); ++i)
+    {
+        for (std::size_t j = 0; j < highs.size(); ++j)
+        {
+            if (!used[j] && highs[j] == mainChain[i])
+            {
+                pending.push_back(lows[j]);
+                used[j] = 1;
+                break;
+            }
+        }
+    }
+    // La chaîne principale contient déjà les grands éléments triés.
+    std::deque<int> sorted = mainChain;
+
+    // b1 est inférieur ou égal à a1. Il peut donc être placé au début.
+    if (!pending.empty())
+        sorted.push_front(pending[0]);
+
+    // Construction de l'ordre d'insertion : b3, b2, b5, b4, b11, b10...
+    const std::vector<std::size_t> order =
+        _buildInsertionOrder(pending.size());
+
+    for (std::size_t i = 0; i < order.size(); ++i)
+    {
+        const std::size_t index = order[i];
+        const int value = pending[index];
+        const int partner = mainChain[index];
+
+        // Recherche de la première occurrence du grand partenaire.
+        std::deque<int>::iterator upperBound =
+            std::lower_bound(sorted.begin(), sorted.end(), partner);
+
+        // Recherche binaire limitée à la zone précédant le grand partenaire.
+        std::deque<int>::iterator position =
+            std::lower_bound(sorted.begin(), upperBound, value);
+
+        sorted.insert(position, value);
+    }
+
+    /*
+     * L'élément impair n'a pas de partenaire.
+     * Sa position est recherchée dans toute la chaîne.
+     */
+    if (isOdd)
+    {
+        std::deque<int>::iterator position =
+            std::lower_bound(sorted.begin(), sorted.end(), straggler);
+
+        sorted.insert(position, straggler);
+    }
+    container = sorted;
+}
+
+/**
  * @brief Construit l'ordre d'insertion Ford-Johnson.
  *
  * Génère les indices des éléments pending selon les bornes de

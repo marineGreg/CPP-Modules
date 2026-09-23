@@ -24,12 +24,13 @@ class PmergeMe
         std::vector<int> _vector;
         std::deque<int>  _deque;
 
-        static std::vector<size_t> _buildInsertionOrder(size_t size);
 		void _parseInput(int ac, char **av, std::vector<int> &input) const;
+		
+		void _sortVector(std::vector<int> &container);
+		void _sortDeque(std::deque<int> &container);
 
-		void _sortVector(std::vector<int>& container);
-		void _sortDeque(std::deque<int>& container);
-
+        static std::vector<size_t> _buildInsertionOrder(size_t size);
+		
         void _printSequence(
             const std::string& label,
             const std::vector<int>& sequence
