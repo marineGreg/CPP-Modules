@@ -189,7 +189,7 @@ void PmergeMe::run(int ac, char **av)
 	gettimeofday(&start, NULL);
 
 	_vector.assign(input.begin(), input.end());
-	_sortContainer(_vector);
+	_sortVector(_vector);
 
 	gettimeofday(&end, NULL);
 
@@ -200,7 +200,7 @@ void PmergeMe::run(int ac, char **av)
 	gettimeofday(&start, NULL);
 
 	_deque.assign(input.begin(), input.end());
-	_sortContainer(_deque);
+	_sortDeque(_deque);
 
 	gettimeofday(&end, NULL);
 
