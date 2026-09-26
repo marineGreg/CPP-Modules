@@ -11,7 +11,7 @@
  * Trie une séquence d'entiers positifs avec l'algorithme
  * de tri fusion-insertion de Ford-Johnson.
  *
- * Le même algorithme template est instancié pour :
+ * Le même algorithme est instancié pour :
  * - std::vector<int>
  * - std::deque<int>
  *
