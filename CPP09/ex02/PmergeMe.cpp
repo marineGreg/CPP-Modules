@@ -440,7 +440,7 @@ void PmergeMe::run(int ac, char **av)
 	const double dequeTime =
 		(end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
 
-	// Les deux instanciations du template doivent produire le même résultat.
+    // Vérifie que les deux implémentations produisent le même résultat.
 	if (_vector.size() != _deque.size()
     	|| !std::equal(_vector.begin(), _vector.end(), _deque.begin()))
 	{
