@@ -140,22 +140,24 @@ void PmergeMe::_sortVector(std::vector<int> &container)
     _sortVector(mainChain);
 
     /*
-     * Réorganisation des petits éléments dans le même ordre que
-     * leurs grands partenaires après le tri de mainChain.
+     * Le tri récursif a changé l'ordre des grands éléments. Il faut donc
+     * remettre les petits dans ce même ordre afin de conserver les paires :
+     * pending[i] reste ainsi le partenaire de mainChain[i].
+     *
+     * Le tableau used est nécessaire en cas de doublons : deux grands
+     * éléments de même valeur doivent rester associés à deux paires
+     * distinctes.
      */
     std::vector<int> pending;
-    // on créé un vector de la meme taille que highs, remplie de zéros
     std::vector<int> used(highs.size(), 0);
-    // pour chaque éléments maintenant triés
+
     for (std::size_t i = 0; i < mainChain.size(); ++i)
-    {   // on cherche cet élément dans le tableau des highs
+    {
         for (std::size_t j = 0; j < highs.size(); ++j)
-        {   // si cette paire n'a pas été encore utilisée et si le grand élément correspond
+        {
             if (!used[j] && highs[j] == mainChain[i])
             {
-                // on ajoute son petit partenaire dans pending
                 pending.push_back(lows[j]);
-                // on marque la paire comme utilisée
                 used[j] = 1;
                 break;
             }
@@ -179,8 +181,9 @@ void PmergeMe::_sortVector(std::vector<int> &container)
         const int partner = mainChain[index];
 
         /*
-         * Recherche de la première occurrence du grand partenaire.
-         * Le petit élément doit être inséré avant cette limite.
+         * Par construction, value <= partner. Il est donc inutile de
+         * rechercher sa position après partner : cette borne réduit la zone
+         * explorée par lower_bound et donc le nombre de comparaisons.
          */
         std::vector<int>::iterator upperBound =
             std::lower_bound(sorted.begin(), sorted.end(), partner);
@@ -262,24 +265,20 @@ void PmergeMe::_sortDeque(std::deque<int> &container)
     _sortDeque(mainChain);
 
     /*
-     * Réorganisation des petits éléments dans le même ordre que
-     * leurs grands partenaires après le tri de mainChain.
+     * Replace les petits partenaires dans l'ordre de mainChain. Le tableau
+     * used distingue les paires lorsque plusieurs grands ont la même valeur.
+     * L'invariant obtenu est : pending[i] est associé à mainChain[i].
      */
-    // pending est d'abord vide
     std::deque<int> pending;
-    // on créé un deque de la meme taille que highs, remplie de zéros
     std::deque<int> used(highs.size(), 0);
 
-    // pour chaque élément maintenant trié
     for (std::size_t i = 0; i < mainChain.size(); ++i)
-    {   // on cherche cet élément dans le tableau des highs
+    {
         for (std::size_t j = 0; j < highs.size(); ++j)
-        {   // si cette paire n'a pas été encore utilisée et si le grand élément correspond
+        {
             if (!used[j] && highs[j] == mainChain[i])
             {
-                // on ajoute son petit partenaire dans pending
                 pending.push_back(lows[j]);
-                // on marque la paire comme utilisée
                 used[j] = 1;
                 break;
             }
@@ -302,7 +301,10 @@ void PmergeMe::_sortDeque(std::deque<int> &container)
         const int value = pending[index];
         const int partner = mainChain[index];
 
-        // Recherche de la première occurrence du grand partenaire.
+        /*
+         * value <= partner : la recherche binaire peut s'arrêter au grand
+         * partenaire, sans examiner la fin de la chaîne principale.
+         */
         std::deque<int>::iterator upperBound =
             std::lower_bound(sorted.begin(), sorted.end(), partner);
 
@@ -346,7 +348,11 @@ std::vector<size_t> PmergeMe::_buildInsertionOrder(size_t size)
 {
     std::vector<size_t> order;
 
-	// Première paire de bornes Jacobsthal utile : 1 puis 3.
+	/*
+	 * b1 est déjà inséré. On part donc des deux premières bornes
+	 * utiles, J(2) = 1 et J(3) = 3. La relation
+	 * J(n) = J(n - 1) + 2 * J(n - 2) produit les bornes suivantes.
+	 */
     size_t previous = 1;
     size_t current = 3;
 
@@ -362,7 +368,7 @@ std::vector<size_t> PmergeMe::_buildInsertionOrder(size_t size)
         for (size_t i = upper; i > previous; --i)
             order.push_back(i - 1);
 
-		// Construction de la borne Jacobsthal suivante.
+		// Construction de la borne Jacobsthal suivante par récurrence.
         const size_t next = current + 2 * previous;
 
         previous = current;
