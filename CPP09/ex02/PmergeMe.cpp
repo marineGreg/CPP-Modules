@@ -144,15 +144,18 @@ void PmergeMe::_sortVector(std::vector<int> &container)
      * leurs grands partenaires après le tri de mainChain.
      */
     std::vector<int> pending;
+    // on créé un vector de la meme taille que highs, remplie de zéros
     std::vector<int> used(highs.size(), 0);
-
+    // pour chaque éléments maintenant triés
     for (std::size_t i = 0; i < mainChain.size(); ++i)
-    {
+    {   // on cherche cet élément dans le tableau des highs
         for (std::size_t j = 0; j < highs.size(); ++j)
-        {
+        {   // si cette paire n'a pas été encore utilisée et si le grand élément correspond
             if (!used[j] && highs[j] == mainChain[i])
             {
+                // on ajoute son petit partenaire dans pending
                 pending.push_back(lows[j]);
+                // on marque la paire comme utilisée
                 used[j] = 1;
                 break;
             }
@@ -262,16 +265,21 @@ void PmergeMe::_sortDeque(std::deque<int> &container)
      * Réorganisation des petits éléments dans le même ordre que
      * leurs grands partenaires après le tri de mainChain.
      */
+    // pending est d'abord vide
     std::deque<int> pending;
+    // on créé un deque de la meme taille que highs, remplie de zéros
     std::deque<int> used(highs.size(), 0);
 
+    // pour chaque élément maintenant trié
     for (std::size_t i = 0; i < mainChain.size(); ++i)
-    {
+    {   // on cherche cet élément dans le tableau des highs
         for (std::size_t j = 0; j < highs.size(); ++j)
-        {
+        {   // si cette paire n'a pas été encore utilisée et si le grand élément correspond
             if (!used[j] && highs[j] == mainChain[i])
             {
+                // on ajoute son petit partenaire dans pending
                 pending.push_back(lows[j]);
+                // on marque la paire comme utilisée
                 used[j] = 1;
                 break;
             }
