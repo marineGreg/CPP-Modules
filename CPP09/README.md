@@ -1,261 +1,127 @@
-# CPP Module 09 — STL
+# CPP Module 09 - STL
 
-Ce module clôt la série des modules C++ de 42 et se concentre sur l’utilisation de la **STL** (*Standard Template Library*).
+CPP09 termine les modules C++ de 42 avec trois problèmes indépendants fondés sur la STL : rechercher une donnée ordonnée, évaluer une expression avec une pile et appliquer le tri Ford-Johnson à deux conteneurs.
 
-Il contient trois exercices indépendants :
-
-1. `BitcoinExchange` : recherche de données dans une `std::map` ;
-2. `RPN` : évaluation d’une expression avec une `std::stack` ;
-3. `PmergeMe` : tri Ford-Johnson avec `std::vector` et `std::deque`.
-
-Chaque exercice doit utiliser un ou plusieurs conteneurs différents :
-
-| Exercice | Programme  | Conteneurs principaux       |
-| -------- | ---------- | --------------------------- |
-| ex00     | `btc`      | `std::map`                  |
-| ex01     | `RPN`      | `std::stack`                |
-| ex02     | `PmergeMe` | `std::vector`, `std::deque` |
-
-Le projet est compilé en **C++98** avec les options :
+Le projet est écrit en C++98 et compilé avec :
 
 ```bash
 -Wall -Wextra -Werror -std=c++98
 ```
 
----
+## Vue d'ensemble
 
-## Structure du module
+| Exercice | Programme | Conteneur principal | Problème résolu |
+|---|---|---|---|
+| ex00 | `btc` | `std::map` | Retrouver un taux de Bitcoin par date |
+| ex01 | `RPN` | `std::stack` | Évaluer une expression en notation polonaise inversée |
+| ex02 | `PmergeMe` | `std::vector`, `std::deque` | Trier avec Ford-Johnson et comparer les temps |
 
-```text
-CPP09/
-├── ex00/
-│   ├── BitcoinExchange.cpp
-│   ├── BitcoinExchange.hpp
-│   ├── data.csv
-│   ├── input.txt
-│   ├── main.cpp
-│   └── Makefile
-│
-├── ex01/
-│   ├── RPN.cpp
-│   ├── RPN.hpp
-│   ├── main.cpp
-│   └── Makefile
-│
-└── ex02/
-    ├── PmergeMe.cpp
-    ├── PmergeMe.hpp
-    ├── main.cpp
-    └── Makefile
+Le sujet interdit de réutiliser, dans les exercices suivants, un conteneur déjà choisi. Ici, les choix explicites sont donc `map`, puis `stack`, puis `vector` et `deque`.
+
+## Compilation
+
+Chaque exercice possède son propre Makefile :
+
+```bash
+cd ex00 && make
+cd ex01 && make
+cd ex02 && make
 ```
 
+Règles disponibles : `all`, `clean`, `fclean` et `re`.
+
 ---
 
-# Exercice 00 — Bitcoin Exchange
+# Ex00 - Bitcoin Exchange
 
 ## Objectif
 
-Le programme `btc` calcule la valeur d’une quantité de Bitcoin à une date donnée.
-
-Il utilise deux fichiers :
-
-* `data.csv` contient l’historique des taux du Bitcoin ;
-* un fichier fourni en argument contient les dates et quantités à évaluer.
-
-Exemple :
-
-```bash
-./btc input.txt
-```
-
-Format du fichier d’entrée :
+`btc` charge les taux contenus dans `data.csv`, puis traite un fichier fourni en argument :
 
 ```text
 date | value
 2011-01-03 | 3
-2012-01-11 | 1.5
+2011-01-09 | 1
 ```
 
-Sortie correspondante :
+Pour chaque ligne valide, le programme affiche :
 
 ```text
-2011-01-03 => 3 = 0.9
-2012-01-11 => 1.5 = 10.65
+date => quantité = quantité * taux
 ```
 
-## Conteneur utilisé
+## Pourquoi `std::map<std::string, double>` ?
 
-Les taux sont stockés dans :
+La map associe une date à un taux et maintient automatiquement ses clés triées.
 
-```cpp
-std::map<std::string, double>
-```
-
-La clé représente la date et la valeur représente le taux :
-
-```text
-"2011-01-03" → 0.3
-"2011-01-04" → 0.3
-"2011-01-05" → 0.3
-```
-
-Une `std::map` présente plusieurs avantages :
-
-* ses clés sont automatiquement triées ;
-* une date peut être recherchée efficacement ;
-* `lower_bound()` permet de retrouver la date inférieure la plus proche.
-
-## Pourquoi les dates peuvent-elles être comparées comme des chaînes ?
-
-Les dates utilisent le format :
-
-```text
-YYYY-MM-DD
-```
-
-L’année se trouve avant le mois, et le mois avant le jour. Chaque partie possède une taille fixe.
-
-L’ordre lexicographique correspond donc à l’ordre chronologique :
+Le format fixe `YYYY-MM-DD` possède le même ordre lexicographique que l'ordre chronologique :
 
 ```text
 2011-01-03 < 2011-02-01 < 2012-01-01
 ```
 
-Cela permet d’utiliser directement les dates comme clés de la `std::map`.
+La recherche d'une date s'effectue en `O(log N)` avec `lower_bound()`.
 
 ## Chargement de la base
 
-La fonction :
+`loadDatabase()` :
 
-```cpp
-bool loadDatabase(const std::string &databasePath);
-```
+1. ouvre `data.csv` ;
+2. vérifie l'en-tête `date,exchange_rate` ;
+3. valide chaque date et chaque taux ;
+4. remplit une map temporaire ;
+5. échange cette map avec `_dB` seulement si tout le CSV est valide.
 
-ouvre `data.csv`, vérifie son en-tête puis analyse chaque ligne :
-
-```text
-date,exchange_rate
-2009-01-02,0
-2009-01-05,0
-...
-```
-
-Chaque date et chaque taux sont validés avant d’être insérés dans la map.
-
-Une map temporaire est utilisée pendant le chargement. L’attribut `_database` n’est remplacé qu’une fois tout le fichier validé :
-
-```cpp
-_database.swap(database);
-```
-
-Cela évite de conserver une base partiellement chargée lorsqu’une erreur est rencontrée.
+L'utilisation d'une structure temporaire évite de conserver une base partiellement chargée.
 
 ## Validation des dates
 
-Une date doit :
+`_isValidDate()` contrôle :
 
-* contenir exactement 10 caractères ;
-* posséder des tirets aux positions 4 et 7 ;
-* ne contenir que des chiffres en dehors des tirets ;
-* avoir un mois compris entre 1 et 12 ;
-* posséder un jour valide pour le mois concerné.
+- le format exact de dix caractères ;
+- les tirets aux positions 4 et 7 ;
+- les chiffres ;
+- le nombre de jours de chaque mois ;
+- les années bissextiles.
 
-Les années bissextiles suivent cette règle :
-
-```text
-divisible par 4
-ET
-non divisible par 100, sauf si divisible par 400
-```
-
-Ainsi :
-
-```text
-2012-02-29 → valide
-2011-02-29 → invalide
-1900-02-29 → invalide
-2000-02-29 → valide
-```
+Règle d'une année bissextile : divisible par 4, sauf les multiples de 100, à moins qu'ils soient aussi divisibles par 400.
 
 ## Validation des valeurs
 
-Une valeur peut être un entier ou un nombre décimal.
+`_isValidValue()` accepte une écriture numérique complète, éventuellement décimale ou scientifique, puis convertit avec `strtod()`.
 
-Le programme vérifie d’abord sa syntaxe, puis utilise :
+`processInput()` applique ensuite les limites du sujet :
 
-```cpp
-std::strtod()
-```
+- valeur inférieure à 0 : `Error: not a positive number.` ;
+- valeur supérieure à 1000 : `Error: too large a number.` ;
+- 0 et 1000 sont acceptés.
 
-pour effectuer la conversion en `double`.
-
-Selon le sujet, la quantité doit être comprise entre `0` et `1000`.
-
-Exemples :
-
-```text
-42       → valide
-1.5      → valide
--1       → nombre négatif
-1000     → valide
-1000.01  → trop grand
-hello    → entrée invalide
-```
-
-## Recherche du taux
-
-La recherche utilise :
+## Recherche du taux inférieur le plus proche
 
 ```cpp
-_database.lower_bound(date);
+std::map<std::string, double>::const_iterator rate = _dB.lower_bound(date);
 ```
 
-`lower_bound()` renvoie le premier élément dont la clé est supérieure ou égale à la date demandée.
+`lower_bound(date)` renvoie la première clé supérieure ou égale à `date`.
 
-Trois situations sont possibles.
+- si la clé est égale, le taux exact est utilisé ;
+- si la clé est supérieure ou si l'itérateur vaut `end()`, le code recule avec `--rate` ;
+- si l'itérateur vaut déjà `begin()` sans égalité, aucune date antérieure n'existe.
 
-### Date exacte
+`first` désigne la date et `second` le taux :
 
-Si la date existe dans la base, son taux est utilisé directement.
-
-```text
-Date demandée : 2011-01-03
-Date trouvée  : 2011-01-03
+```cpp
+rate->first   // date
+rate->second  // taux
 ```
 
-### Date absente mais située après le début de la base
+## Gestion des erreurs
 
-Si `lower_bound()` renvoie une date supérieure, l’itérateur est reculé d’une position.
+Une mauvaise ligne utilisateur affiche une erreur puis utilise `continue`. Le programme poursuit donc le traitement du reste du fichier, comme l'exige la grille.
 
-```text
-Dates disponibles :
-2011-01-03
-2011-01-05
+Une erreur globale - fichier absent, mauvais en-tête, erreur grave de lecture - fait échouer `processInput()`.
 
-Date demandée :
-2011-01-04
-
-Date utilisée :
-2011-01-03
-```
-
-Le sujet demande en effet d’utiliser la date **inférieure** la plus proche, jamais la date supérieure.
-
-### Date antérieure à toute la base
-
-Si l’itérateur se trouve déjà sur `begin()` sans correspondance exacte, aucune date antérieure n’existe.
-
-La ligne est alors rejetée.
-
-## Complexité
-
-Pour une base contenant `N` taux :
-
-* insertion dans la map : `O(log N)` ;
-* recherche d’une date : `O(log N)` ;
-* chargement complet : environ `O(N log N)`.
-
-## Compilation et utilisation
+## Utilisation
 
 ```bash
 cd ex00
@@ -263,37 +129,13 @@ make
 ./btc input.txt
 ```
 
-Nettoyage :
-
-```bash
-make clean
-make fclean
-make re
-```
-
 ---
 
-# Exercice 01 — Reverse Polish Notation
+# Ex01 - Reverse Polish Notation
 
 ## Objectif
 
-Le programme `RPN` évalue une expression écrite en **notation polonaise inversée**.
-
-Dans cette notation, les opérateurs sont placés après leurs opérandes.
-
-Notation classique :
-
-```text
-7 × 7 - 7
-```
-
-Notation polonaise inversée :
-
-```text
-7 7 * 7 -
-```
-
-Utilisation :
+`RPN` évalue une expression en notation polonaise inversée :
 
 ```bash
 ./RPN "7 7 * 7 -"
@@ -305,871 +147,389 @@ Résultat :
 42
 ```
 
-## Conteneur utilisé
+## Pourquoi `std::stack<int>` ?
 
-Le programme utilise :
+Une pile fonctionne en LIFO : le dernier élément empilé est le premier retiré. Une expression RPN utilise précisément les deux résultats les plus récents lorsqu'elle rencontre un opérateur.
 
-```cpp
-std::stack<int>
-```
+## Algorithme
 
-Une `std::stack` fonctionne selon le principe **LIFO** :
+L'expression est découpée avec `std::istringstream`.
 
-```text
-Last In, First Out
-```
+- chiffre de `0` à `9` : `push()` ;
+- opérateur : récupérer deux valeurs, calculer, puis réempiler le résultat ;
+- fin de l'expression : la pile doit contenir exactement une valeur.
 
-Le dernier élément ajouté est le premier retiré.
+## Ordre des opérandes
 
-Cela correspond parfaitement au fonctionnement d’une expression RPN.
-
-## Fonctionnement général
-
-L’expression est découpée en tokens grâce à :
+Le sommet contient l'opérande droite :
 
 ```cpp
-std::istringstream
+right = _stack.top();
+_stack.pop();
+left = _stack.top();
+_stack.pop();
 ```
 
-Pour chaque token :
-
-* s’il s’agit d’un chiffre, il est ajouté à la pile ;
-* s’il s’agit d’un opérateur, deux valeurs sont retirées ;
-* le résultat de l’opération est remis dans la pile.
-
-À la fin, la pile doit contenir exactement une valeur.
-
-## Exemple détaillé
-
-Expression :
+Le calcul est ensuite :
 
 ```text
-7 7 * 7 -
+left opérateur right
 ```
 
-### Token `7`
+Pour `8 3 -`, il faut donc calculer `8 - 3`, et non `3 - 8`.
 
-```text
-Pile : [7]
-```
+## Erreurs gérées
 
-### Deuxième token `7`
+- mauvais nombre d'arguments ;
+- token différent d'un chiffre ou de `+ - * /` ;
+- moins de deux opérandes avant un opérateur ;
+- division par zéro ;
+- zéro ou plusieurs résultats restant à la fin.
 
-```text
-Pile : [7, 7]
-```
+Le sujet ne demande ni parenthèses, ni nombres décimaux, ni opérandes d'entrée supérieures ou égales à 10.
 
-### Token `*`
-
-Les deux valeurs sont retirées :
-
-```text
-7 × 7 = 49
-```
-
-Le résultat est empilé :
-
-```text
-Pile : [49]
-```
-
-### Token `7`
-
-```text
-Pile : [49, 7]
-```
-
-### Token `-`
-
-La valeur située au sommet est retirée en premier :
-
-```text
-right = 7
-left  = 49
-```
-
-Le calcul doit respecter l’ordre :
-
-```text
-left - right
-49 - 7 = 42
-```
-
-Résultat final :
-
-```text
-Pile : [42]
-```
-
-## Importance de l’ordre des opérandes
-
-Pour l’addition et la multiplication, inverser les opérandes ne change pas le résultat.
-
-Ce n’est pas vrai pour la soustraction et la division :
-
-```text
-8 2 -
-```
-
-doit produire :
-
-```text
-8 - 2 = 6
-```
-
-et non :
-
-```text
-2 - 8 = -6
-```
-
-Le premier élément retiré de la pile est donc l’opérande droite.
-
-## Validation des tokens
-
-Le sujet limite les nombres d’entrée aux chiffres inférieurs à 10.
-
-Chaque token doit donc contenir exactement un caractère :
-
-```text
-0 à 9
-+
--
-*
-/
-```
-
-Exemples invalides :
-
-```text
-12
--5
-hello
-(1 + 1)
-```
-
-Les calculs et résultats intermédiaires peuvent toutefois dépasser 9.
-
-## Gestion des erreurs
-
-Une expression est invalide si :
-
-* elle contient un token inconnu ;
-* un opérateur ne possède pas deux opérandes ;
-* une division par zéro est demandée ;
-* plusieurs valeurs restent dans la pile à la fin ;
-* aucune valeur ne reste dans la pile.
-
-Exemples :
+## Tests de la grille
 
 ```bash
-./RPN "1 +"
-```
-
-Il manque une opérande.
-
-```bash
-./RPN "1 2"
-```
-
-Il manque un opérateur.
-
-```bash
-./RPN "1 0 /"
-```
-
-Division par zéro.
-
-```bash
-./RPN "(1 + 1)"
-```
-
-Les parenthèses ne sont pas autorisées.
-
-## Pourquoi doit-il rester une seule valeur ?
-
-Une expression complète réduit progressivement tous ses opérandes jusqu’à obtenir un unique résultat.
-
-Pile vide :
-
-```text
-aucun résultat
-```
-
-Plusieurs valeurs :
-
-```text
-certains opérandes n’ont pas été utilisés
-```
-
-Exactement une valeur :
-
-```text
-expression complète et résultat valide
+./RPN "8 9 * 9 - 9 - 9 - 4 - 1 +"                  # 42
+./RPN "9 8 * 4 * 4 / 2 + 9 - 8 - 8 - 1 - 6 -"      # 42
+./RPN "1 2 * 2 / 2 + 5 * 6 - 1 3 * - 4 5 * * 8 /"  # 15
 ```
 
 ## Complexité
 
-Pour une expression contenant `N` tokens :
-
-* chaque token est traité une seule fois ;
-* `push()`, `pop()` et `top()` sont des opérations constantes.
-
-La complexité est donc :
-
-```text
-O(N)
-```
-
-## Compilation et utilisation
-
-```bash
-cd ex01
-make
-./RPN "8 9 * 9 - 9 - 9 - 4 - 1 +"
-```
-
-Résultat :
-
-```text
-42
-```
+Chaque token est traité une fois. La complexité temporelle est `O(N)` et la pile peut contenir jusqu'à `O(N)` valeurs.
 
 ---
 
-# Exercice 02 — PmergeMe
+# Ex02 - PmergeMe
 
 ## Objectif
 
-Le programme `PmergeMe` trie une séquence d’entiers positifs avec l’algorithme **Ford-Johnson**, aussi appelé **merge-insert sort**.
+`PmergeMe` trie une séquence d'entiers strictement positifs avec le merge-insert sort de Ford-Johnson.
 
-Le tri est implémenté séparément avec :
+Deux implémentations séparées sont présentes :
 
 ```cpp
-std::vector<int>
-std::deque<int>
+void _sortVector(std::vector<int> &numbers);
+void _sortDeque(std::deque<int> &numbers);
 ```
 
-Le programme affiche :
+Cette séparation suit la recommandation du sujet d'éviter une fonction de tri générique.
 
-1. la séquence avant le tri ;
-2. la séquence après le tri ;
-3. le temps de traitement du `vector` ;
-4. le temps de traitement du `deque`.
+## Pourquoi `vector` et `deque` ?
 
-Exemple :
+Les deux fournissent :
 
-```bash
-./PmergeMe 3 5 9 7 4
-```
+- l'accès aléatoire avec `operator[]` ;
+- des itérateurs à accès aléatoire utilisables par `lower_bound()` ;
+- les insertions nécessaires à la construction de la chaîne triée.
+
+`vector` utilise un bloc mémoire contigu, souvent favorable au cache. `deque` répartit ses éléments dans plusieurs blocs. Les insertions au milieu restent `O(N)` dans les deux cas, mais leurs constantes et leur localité mémoire diffèrent.
+
+## Parsing
+
+`_parseInput()` :
+
+- accepte un ou plusieurs nombres par argument ;
+- refuse les signes, décimales et caractères non numériques ;
+- convertit avec `strtol()` ;
+- refuse 0, les nombres négatifs et les valeurs supérieures à `INT_MAX`.
+
+Les doublons sont autorisés : leur gestion est laissée au choix par le sujet.
+
+## Ford-Johnson dans cette implémentation
+
+### 1. Isoler l'élément impair
+
+Si la taille est impaire, le dernier élément est temporairement retiré et conservé dans `straggler`.
+
+### 2. Former les paires
+
+Chaque paire est comparée une seule fois :
 
 ```text
-Before: 3 5 9 7 4
-After:  3 4 5 7 9
-Time to process a range of 5 elements with std::vector : 16.00000 us
-Time to process a range of 5 elements with std::deque : 31.00000 us
+high = plus grande valeur
+low  = plus petite valeur
 ```
 
-Les temps changent à chaque exécution.
-
-## Pourquoi deux conteneurs ?
-
-Le sujet impose l’utilisation d’au moins deux conteneurs différents.
-
-Les deux implémentations reçoivent exactement la même entrée et exécutent le même algorithme.
-
-### `std::vector`
-
-Les éléments sont stockés dans une zone mémoire contiguë.
-
-Avantages :
-
-* accès rapide par index ;
-* bonne localité mémoire ;
-* parcours généralement rapide.
-
-Inconvénient :
-
-* une insertion au milieu déplace les éléments suivants.
-
-### `std::deque`
-
-Les éléments sont répartis dans plusieurs blocs mémoire.
-
-Avantages :
-
-* insertions efficaces aux extrémités ;
-* accès aléatoire toujours disponible.
-
-Inconvénient :
-
-* mémoire non contiguë ;
-* parcours parfois moins favorable au cache processeur.
-
-Une exécution isolée ne permet cependant pas de conclure qu’un conteneur est toujours plus rapide que l’autre.
-
-## Validation de l’entrée
-
-Le programme accepte uniquement des entiers strictement positifs compris entre `1` et `INT_MAX`.
-
-Sont notamment rejetés :
+Le code construit deux séquences parallèles :
 
 ```text
-0
--1
-2.5
-abc
-2147483648
+highs[i] <-> lows[i]
 ```
 
-Chaque argument peut contenir un ou plusieurs nombres :
+### 3. Trier récursivement les `highs`
 
-```bash
-./PmergeMe 3 5 9 7 4
-```
+`mainChain` reçoit une copie de `highs`, puis la même fonction de tri est appelée récursivement.
 
-et :
+Le cas de base est une séquence de taille 0 ou 1.
 
-```bash
-./PmergeMe "3 5 9 7 4"
-```
+### 4. Réassocier les partenaires
 
-sont tous les deux acceptés.
-
-`strtol()` effectue la conversion et `errno` permet de détecter un dépassement de capacité.
-
----
-
-## Principe de Ford-Johnson
-
-Ford-Johnson cherche principalement à réduire le nombre de comparaisons nécessaires au tri.
-
-Il ne faut pas le confondre avec un simple tri utilisant `std::sort()`.
-
-L’algorithme suit plusieurs grandes étapes :
-
-1. former des paires ;
-2. comparer les valeurs de chaque paire ;
-3. trier récursivement les plus grandes valeurs ;
-4. construire une chaîne principale ;
-5. insérer les petites valeurs dans un ordre particulier ;
-6. limiter la recherche de chaque valeur à son partenaire.
-
-## 1. Formation des paires
-
-Les nombres sont regroupés deux par deux.
-
-Exemple :
+Le tri récursif change l'ordre des `highs`. La double boucle reconstruit `pending` afin de préserver l'invariant :
 
 ```text
-3 5 9 7
+pending[i] est le partenaire de mainChain[i]
 ```
 
-Paires initiales :
+Le conteneur `used`, rempli initialement de zéros, empêche de sélectionner deux fois la même paire lorsque plusieurs `highs` ont la même valeur.
+
+### 5. Construire la chaîne principale
+
+Les `highs` triés forment la base de `sorted`.
+
+`pending[0]`, c'est-à-dire `b1`, est placé directement au début : comme `b1 <= a1` et que `a1` est le plus petit des grands éléments, aucune recherche n'est nécessaire.
+
+### 6. Construire l'ordre Jacobsthal
+
+`_buildInsertionOrder()` génère les indices zéro-based correspondant à :
 
 ```text
-(3, 5)
-(9, 7)
+b3, b2, b5, b4, b11, b10, b9, b8, b7, b6...
 ```
 
-Chaque paire est réorganisée sous la forme :
+Les bornes utiles suivent :
 
 ```text
-(a_i, b_i)
+1, 3, 5, 11, 21, 43...
 ```
 
 avec :
 
 ```text
-a_i >= b_i
+next = current + 2 * previous
 ```
 
-On obtient :
+Jacobsthal ne détermine pas la position finale d'un nombre. Il détermine seulement quel `b_i` sera inséré ensuite.
 
-```text
-(a1 = 5, b1 = 3)
-(a2 = 9, b2 = 7)
-```
+### 7. Rechercher avant le partenaire
 
-Dans le code :
+Pour chaque indice choisi :
 
 ```cpp
-pair.first  = a_i
-pair.second = b_i
+const int value = pending[index];
+const int partner = mainChain[index];
 ```
 
-## 2. Gestion d’un élément impair
-
-Si la séquence contient un nombre impair d’éléments, le dernier est temporairement isolé.
-
-Avec :
-
-```text
-3 5 9 7 4
-```
-
-les paires sont :
-
-```text
-(5, 3)
-(9, 7)
-```
-
-et l’élément isolé est :
-
-```text
-4
-```
-
-Cet élément rejoindra ensuite les valeurs en attente d’insertion.
-
-## 3. Tri récursif des maxima
-
-Les maxima `a_i` sont extraits :
-
-```text
-5 9
-```
-
-Ils sont triés récursivement avec le même algorithme.
-
-Cette récursion continue jusqu’au cas de base :
+Le code retrouve la position actuelle du partenaire :
 
 ```cpp
-if (sequence.size() <= 1)
-	return;
+iterator ceiling = std::lower_bound(sorted.begin(), sorted.end(), partner);
 ```
 
-Une séquence de zéro ou un élément est déjà triée.
-
-## 4. Réorganisation des paires
-
-Une fois les maxima triés, les paires doivent être replacées dans le même ordre.
-
-Si les maxima triés sont :
-
-```text
-a1 a2 a3
-```
-
-leurs minima associés doivent rester :
-
-```text
-b1 b2 b3
-```
-
-Le tableau `used` garantit que chaque paire n’est sélectionnée qu’une seule fois, y compris lorsque des valeurs sont dupliquées.
-
-## 5. Construction de la chaîne principale
-
-La chaîne principale est initialement construite ainsi :
-
-```text
-b1, a1, a2, a3...
-```
-
-Les maxima sont déjà triés.
-
-`b1` peut être placé directement avant `a1` car la comparaison de la première paire garantit :
-
-```text
-b1 <= a1
-```
-
-Les valeurs en attente sont représentées par :
-
-```text
-pending = b1, b2, b3...
-```
-
-`b1` est présent dans `pending` pour conserver les indices, mais il est déjà inséré dans la chaîne principale.
-
-## 6. Suite de Jacobsthal
-
-Les autres minima ne sont pas insérés dans l’ordre naturel.
-
-Ford-Johnson utilise des bornes dérivées de la suite de Jacobsthal :
-
-```text
-J(0) = 0
-J(1) = 1
-J(n) = J(n - 1) + 2 × J(n - 2)
-```
-
-Premiers nombres :
-
-```text
-0, 1, 1, 3, 5, 11, 21, 43...
-```
-
-L’ordre d’insertion correspondant commence ainsi :
-
-```text
-b1, b3, b2, b5, b4, b11, b10, b9, b8, b7, b6...
-```
-
-Comme `b1` est déjà inséré, `_buildInsertionOrder()` génère les indices correspondant à :
-
-```text
-b3, b2, b5, b4, b11...
-```
-
-Avec des indices commençant à zéro :
-
-```text
-2, 1, 4, 3, 10, 9, 8, 7, 6, 5...
-```
-
-Cet ordre permet de maintenir des tailles de zones de recherche particulièrement adaptées à la recherche binaire.
-
-## 7. Recherche bornée
-
-Chaque `b_i` possède un partenaire `a_i` avec la relation :
-
-```text
-b_i <= a_i
-```
-
-Il est donc inutile de chercher une position après `a_i`.
-
-La recherche binaire est limitée à :
-
-```text
-[début de la chaîne, position de a_i[
-```
-
-Dans le code :
+Puis il cherche la position de `value` uniquement dans l'intervalle `[begin, ceiling)` :
 
 ```cpp
-std::lower_bound(
-	mainChain.begin(),
-	mainChain.begin() + searchEnd,
-	pending[index]
-);
+iterator position = std::lower_bound(sorted.begin(), ceiling, value);
 ```
 
-L’élément impair n’a pas de partenaire. Sa borne de recherche correspond donc à la fin de la chaîne.
+Cette limitation est valide parce que la formation de la paire a déjà établi `value <= partner`.
 
-## 8. Mise à jour des positions
+Les éléments rencontrés par la recherche binaire peuvent être des `a_i` ou des `b_i` déjà insérés : ils forment désormais une seule chaîne triée.
 
-Chaque insertion dans la chaîne peut déplacer les maxima vers la droite.
+### 8. Réinsérer le `straggler`
 
-Le tableau :
+Dans le code actuel, l'élément impair est inséré à la fin du processus avec une recherche binaire sur toute la chaîne, car il ne possède aucun partenaire fournissant un ceiling.
 
-```cpp
-partnerPositions
-```
+Cette stratégie produit un résultat trié. Une version strictement optimisée de Ford-Johnson peut traiter le straggler comme le dernier `b` et l'inclure dans l'ordre Jacobsthal afin de minimiser davantage le pire nombre de comparaisons.
 
-conserve la position actuelle de chaque `a_i`.
+## Exemple avec le code actuel
 
-Après une insertion, toutes les positions situées après le point d’insertion sont incrémentées :
-
-```cpp
-if (partnerPositions[j] >= insertPosition)
-	++partnerPositions[j];
-```
-
-Sans cette mise à jour, les recherches suivantes utiliseraient des bornes devenues incorrectes.
-
----
-
-## Exemple complet simplifié
-
-Séquence :
+Entrée :
 
 ```text
-3 5 9 7 4
+12 4 6 9 3 8 2 10 1
 ```
 
-### Paires
+Au premier niveau :
 
 ```text
-(5, 3)
-(9, 7)
+highs = [12, 9, 8, 10]
+lows  = [ 4, 6, 3,  2]
+straggler = 1
 ```
 
-Élément impair :
+Après le tri récursif et la réassociation :
 
 ```text
-4
+mainChain = [8, 9, 10, 12]
+pending   = [3, 6,  2,  4]
 ```
 
-### Maxima triés
+La chaîne commence par :
 
 ```text
-5 9
+[3, 8, 9, 10, 12]
 ```
 
-### Chaîne principale
+Pour quatre éléments pending, l'ordre vaut `[2, 1, 3]`, soit `b3`, `b2`, `b4` :
 
 ```text
-3 5 9
+insérer 2 avant son partenaire 10
+insérer 6 avant son partenaire 9
+insérer 4 avant son partenaire 12
 ```
 
-### Éléments en attente
+Enfin, le straggler `1` est inséré dans toute la chaîne :
 
 ```text
-3 7 4
+[1, 2, 3, 4, 6, 8, 9, 10, 12]
 ```
 
-Le premier `3` est déjà présent dans la chaîne.
+## Chronométrage
 
-Pour cette taille, l’ordre calculé commence par l’indice `2`, puis l’indice `1`.
-
-### Insertion de `4`
-
-L’élément impair n’a pas de partenaire : la recherche utilise toute la chaîne.
+`run()` mesure séparément, en microsecondes :
 
 ```text
-3 4 5 9
+assignation de l'entrée + tri du vector
+assignation de l'entrée + tri du deque
 ```
 
-### Insertion de `7`
+Le parsing commun et l'affichage sont hors mesure.
 
-`7` est associé à `9`. La recherche s’arrête donc avant `9`.
+Les résultats varient avec la machine, le cache, l'ordonnanceur et la taille de l'entrée. Il ne faut pas affirmer que l'un des deux conteneurs sera toujours plus rapide.
 
-```text
-3 4 5 7 9
-```
+## Vérifications internes
 
-La séquence est triée.
+Après les tris :
 
----
+1. les tailles doivent être identiques ;
+2. `std::equal()` vérifie que vector et deque ont le même contenu ;
+3. une boucle vérifie que le vector est croissant.
 
-## Mesure du temps
+Puisque le deque est identique au vector, la vérification de l'ordre du vector garantit aussi indirectement que le deque est trié.
 
-Le programme utilise :
+## Complexité pratique
 
-```cpp
-gettimeofday()
-```
+Ford-Johnson cherche avant tout à réduire les comparaisons.
 
-Le temps est converti en microsecondes :
+Dans cette implémentation :
 
-```cpp
-(end.tv_sec - start.tv_sec) * 1000000.0
-	+ (end.tv_usec - start.tv_usec);
-```
+- les recherches bornées utilisent `O(log N)` comparaisons ;
+- les insertions au milieu peuvent déplacer `O(N)` éléments ;
+- la réassociation avec deux boucles peut coûter `O(N²)`.
 
-La mesure comprend :
+Il faut distinguer l'optimisation théorique des comparaisons et le temps d'exécution réel de cette implémentation.
 
-* le remplissage du conteneur ;
-* la gestion des données ;
-* le tri Ford-Johnson.
-
-Le parsing initial est commun aux deux conteneurs et est effectué avant les mesures.
-
-Pour une très petite séquence, les temps sont instables car le coût du chronométrage et des allocations devient important.
-
-Des résultats comme ceux-ci sont normaux :
-
-```text
-std::vector : 16.00000 us
-std::deque  : 31.00000 us
-```
-
-Ils peuvent être différents à l’exécution suivante.
-
-## Vérification interne
-
-Après les deux tris, le programme vérifie que `vector` et `deque` ont produit exactement le même résultat :
-
-```cpp
-std::equal(
-	_vector.begin(),
-	_vector.end(),
-	_deque.begin()
-);
-```
-
-Une différence entre les deux conteneurs provoque une exception.
-
-## Complexité de l’implémentation
-
-Ford-Johnson est conçu pour limiter le nombre de comparaisons.
-
-Cependant, cette implémentation réassocie les maxima triés à leurs paires avec une double boucle :
-
-```text
-pour chaque maximum
-    parcourir les paires
-```
-
-Cette étape peut atteindre une complexité de `O(N²)`.
-
-Il faut donc distinguer :
-
-* la logique de Ford-Johnson, qui optimise les comparaisons ;
-* la complexité pratique de cette implémentation particulière ;
-* les performances réelles de `vector` et `deque`.
-
-Le sujet exige surtout une implémentation correcte de l’algorithme et la capacité de traiter au moins 3000 entiers.
-
-## Compilation et utilisation
+## Utilisation et tests
 
 ```bash
 cd ex02
 make
 ./PmergeMe 3 5 9 7 4
+./PmergeMe 12 4 6 9 3 8 2 10 1
 ```
 
-Test avec 3000 valeurs différentes sous Linux :
+Test Linux avec 3 000 entiers distincts :
 
 ```bash
 ./PmergeMe $(shuf -i 1-100000 -n 3000)
 ```
 
-Test avec 3000 valeurs sous macOS :
-
-```bash
-./PmergeMe $(jot -r 3000 1 100000)
-```
-
-Exemples invalides :
-
-```bash
-./PmergeMe
-./PmergeMe -1 2
-./PmergeMe 0
-./PmergeMe 1 2.5 3
-./PmergeMe 2147483648
-```
+La commande `shuf -i 1-1000 -n 3000` visible dans certaines versions de la grille ne peut fournir que 1 000 valeurs distinctes sans l'option `-r`.
 
 ---
 
-# Concepts importants du module
+# Questions courantes d'évaluation
 
-## STL
+## Pourquoi `map` dans l'ex00 ?
 
-La STL fournit notamment :
+Parce qu'elle associe une date à un taux, conserve les dates triées et permet à `lower_bound()` de retrouver une date en `O(log N)`.
 
-* des conteneurs ;
-* des itérateurs ;
-* des algorithmes génériques ;
-* des adaptateurs de conteneurs.
+## Pourquoi `stack` dans l'ex01 ?
 
-Exemples utilisés dans ce module :
+Parce que RPN consomme les deux résultats les plus récents selon le principe LIFO.
 
-```cpp
-std::map
-std::stack
-std::vector
-std::deque
-std::lower_bound
-std::equal
-```
+## Pourquoi `vector` et `deque` dans l'ex02 ?
 
-## Itérateurs
+Ils proposent tous deux l'accès aléatoire nécessaire, mais possèdent des organisations mémoire différentes permettant une comparaison de performances.
 
-Un itérateur désigne une position dans un conteneur.
+## Pourquoi former des paires ?
 
-Exemple :
+Une comparaison établit `b_i <= a_i`. Cette information permet ensuite de limiter la zone d'insertion de `b_i` à ce qui précède `a_i`.
 
-```cpp
-std::map<std::string, double>::const_iterator it;
-```
+## Pourquoi trier les `highs` récursivement ?
 
-Il permet de parcourir ou de désigner un élément sans manipuler directement sa représentation mémoire.
-
-## `lower_bound()`
-
-Deux versions de `lower_bound()` apparaissent conceptuellement dans le module.
-
-### Méthode de `std::map`
-
-```cpp
-_database.lower_bound(date);
-```
-
-Elle recherche une clé dans un arbre trié.
-
-### Algorithme de la STL
-
-```cpp
-std::lower_bound(begin, end, value);
-```
-
-Il effectue une recherche binaire dans une plage déjà triée.
-
-Les deux portent le même nom mais ne sont pas la même fonction.
-
-## Forme canonique orthodoxe
-
-Les classes du module possèdent :
-
-* un constructeur par défaut ;
-* un constructeur de copie ;
-* un opérateur d’affectation ;
-* un destructeur.
-
-Exemple :
-
-```cpp
-ClassName();
-ClassName(const ClassName &src);
-ClassName &operator=(const ClassName &other);
-~ClassName();
-```
-
----
-
-# Questions possibles en évaluation
-
-## Pourquoi utiliser une map dans BitcoinExchange ?
-
-Parce qu’elle conserve les dates triées et permet de rechercher efficacement une date exacte ou la date inférieure la plus proche.
-
-## Pourquoi les dates sont-elles stockées comme des chaînes ?
-
-Parce que le format fixe `YYYY-MM-DD` possède le même ordre lexicographique que l’ordre chronologique.
-
-## Pourquoi utiliser une stack pour RPN ?
-
-Parce que l’évaluation RPN utilise toujours en premier les dernières opérandes rencontrées, ce qui correspond au fonctionnement LIFO d’une pile.
-
-## Pourquoi l’opérande droite est-elle retirée en premier ?
-
-Parce qu’elle se trouve au sommet de la pile. Pour `8 2 -`, le premier retrait donne `2`, mais le calcul doit rester `8 - 2`.
-
-## Pourquoi trier une copie dans `shortestSpan()` ?
-
-Cette question appartient au CPP08, pas au CPP09. Dans le CPP09, l’équivalent à retenir est que `PmergeMe` travaille sur deux copies identiques de l’entrée pour comparer les deux conteneurs.
-
-## Pourquoi Ford-Johnson forme-t-il des paires ?
-
-Chaque comparaison de paire établit immédiatement une relation `b_i <= a_i`. Cette information permet ensuite de limiter la zone dans laquelle `b_i` doit être recherché.
-
-## Pourquoi trier les maxima récursivement ?
-
-Ils forment la base triée de la chaîne principale. Les minima peuvent ensuite y être insérés en profitant de leur relation avec leurs partenaires.
+Ils constituent la base ordonnée de la chaîne principale. Le même problème, plus petit, est donc résolu par récursion.
 
 ## À quoi sert Jacobsthal ?
 
-La suite détermine un ordre d’insertion qui produit des zones de recherche binaire de tailles avantageuses et limite le nombre de comparaisons.
+À choisir l'ordre des insertions afin de conserver des zones de recherche binaire proches de tailles avantageuses `2^k - 1`.
 
-## Pourquoi conserver `partnerPositions` ?
+## Pourquoi deux `lower_bound()` dans PmergeMe ?
 
-Parce que les insertions déplacent les maxima. Le programme doit toujours connaître la position actuelle du partenaire de chaque minimum afin de conserver une recherche correctement bornée.
+Le premier retrouve le ceiling `a_i` dans la chaîne actuelle. Le second cherche la position de `b_i` uniquement avant ce ceiling.
 
-## Pourquoi implémenter le tri deux fois ?
+## Pourquoi deux fonctions de tri presque identiques ?
 
-Le sujet recommande explicitement une implémentation propre à chaque conteneur afin d’observer leur comportement et leurs performances.
+Le sujet conseille d'implémenter l'algorithme pour chaque conteneur et d'éviter une fonction générique. La duplication est donc volontaire.
+
+## Pourquoi les temps diffèrent-ils ?
+
+À cause de la disposition mémoire, des allocations, du cache et du coût des déplacements. Pour de petites entrées, le bruit de mesure peut dominer.
 
 ---
 
 # Bilan
 
-Ce module permet de travailler plusieurs usages complémentaires de la STL :
+CPP09 met en pratique :
 
-* `std::map` pour organiser et rechercher des données triées ;
-* `std::stack` pour modéliser un traitement LIFO ;
-* `std::vector` et `std::deque` pour comparer deux représentations d’une même séquence ;
-* les itérateurs et algorithmes standards ;
-* le parsing et la validation d’entrées ;
-* les recherches binaires ;
-* la récursivité ;
-* l’algorithme Ford-Johnson ;
-* la suite de Jacobsthal ;
-* la mesure de performances.
+- le choix d'un conteneur adapté ;
+- les maps ordonnées et `lower_bound()` ;
+- les piles LIFO ;
+- les itérateurs ;
+- la recherche binaire ;
+- la récursion ;
+- Ford-Johnson et Jacobsthal ;
+- la validation d'entrée ;
+- la mesure de performances ;
+- la forme canonique orthodoxe.
 
-La principale idée à retenir est que choisir un conteneur ne dépend pas seulement des données à stocker : ce choix dépend surtout des opérations que le programme doit effectuer sur ces données.
+L'idée essentielle du module est que le choix d'un conteneur dépend avant tout des opérations dont l'algorithme a besoin.
+
+
+# fonction sortVector(numbers):
+
+[A] si container contient 0 ou 1 élément:
+        retourner
+
+[B] si la taille est impaire:
+        retirer le dernier élément
+        le conserver dans straggler
+
+[C] former les paires:
+        mettre les grands dans highs
+        mettre les petits dans lows
+
+[D] mainChain = copie de highs
+
+[E] sortVector(mainChain)       ← appel récursif
+
+    -----------------------------------------------
+    La suite attend que l'appel récursif soit fini.
+    -----------------------------------------------
+
+[F] réorganiser lows pour les aligner avec
+    les éléments maintenant triés de mainChain
+
+[G] sorted = mainChain
+
+[H] placer b1 au début de sorted
+
+[I] construire l'ordre Jacobsthal
+
+[J] pour chaque indice de l'ordre Jacobsthal:
+        value = petit élément à insérer
+        partner = grand partenaire
+        retrouver partner dans sorted
+        chercher la position de value avant partner
+        insérer value
+
+[K] si un straggler existe:
+        chercher sa position dans toute la chaîne
+        l'insérer
+
+[L] numbers = sorted
+
+[M] retourner au niveau précédent
