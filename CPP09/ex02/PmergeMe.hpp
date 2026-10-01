@@ -26,8 +26,8 @@ class PmergeMe
 
 		void _parseInput(int ac, char **av, std::vector<int> &input) const;
 		
-		void _sortVector(std::vector<int> &container);
-		void _sortDeque(std::deque<int> &container);
+		void _sortVector(std::vector<int> &numbers);
+		void _sortDeque(std::deque<int> &numbers);
 
         static std::vector<size_t> _buildInsertionOrder(size_t size);
 		

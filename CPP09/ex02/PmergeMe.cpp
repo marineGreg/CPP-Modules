@@ -92,25 +92,25 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
  * La fonction forme des paires, trie récursivement les plus grands
  * éléments, puis insère les plus petits selon l'ordre de Jacobsthal.
  *
- * @param container Vector à trier directement.
+ * @param numbers Vector à trier directement.
  */
-void PmergeMe::_sortVector(std::vector<int> &container)
+void PmergeMe::_sortVector(std::vector<int> &numbers)
 {
     // Une séquence de taille 0 ou 1 est déjà triée.
-    if (container.size() <= 1)
+    if (numbers.size() <= 1)
         return;
 
     /*
      * Lorsque la taille est impaire, le dernier élément est
      * temporairement mis de côté.
      */
-    const bool isOdd = (container.size() % 2 != 0);
+    const bool isOdd = (numbers.size() % 2 != 0);
     int straggler = 0;
 
     if (isOdd)
     {
-        straggler = container.back();
-        container.pop_back();
+        straggler = numbers.back();
+        numbers.pop_back();
     }
 
     /*
@@ -122,10 +122,10 @@ void PmergeMe::_sortVector(std::vector<int> &container)
     std::vector<int> highs;
     std::vector<int> lows;
 
-    for (std::size_t i = 0; i < container.size(); i += 2)
+    for (std::size_t i = 0; i < numbers.size(); i += 2)
     {
-        int high = container[i];
-        int low = container[i + 1];
+        int high = numbers[i];
+        int low = numbers[i + 1];
 
         if (high < low)
             std::swap(high, low);
@@ -208,7 +208,7 @@ void PmergeMe::_sortVector(std::vector<int> &container)
 
         sorted.insert(position, straggler);
     }
-    container = sorted;
+    numbers = sorted;
 }
 
 /**
@@ -217,25 +217,25 @@ void PmergeMe::_sortVector(std::vector<int> &container)
  * Cette implémentation suit les mêmes étapes que la version vector,
  * mais tous les conteneurs utilisés par le tri sont des std::deque.
  *
- * @param container Deque à trier directement.
+ * @param numbers Deque à trier directement.
  */
-void PmergeMe::_sortDeque(std::deque<int> &container)
+void PmergeMe::_sortDeque(std::deque<int> &numbers)
 {
     // Une séquence de taille 0 ou 1 est déjà triée.
-    if (container.size() <= 1)
+    if (numbers.size() <= 1)
         return;
 
     /*
      * Lorsque la taille est impaire, le dernier élément est
      * temporairement mis de côté.
      */
-    const bool isOdd = (container.size() % 2 != 0);
+    const bool isOdd = (numbers.size() % 2 != 0);
     int straggler = 0;
 
     if (isOdd)
     {
-        straggler = container.back();
-        container.pop_back();
+        straggler = numbers.back();
+        numbers.pop_back();
     }
 
     /*
@@ -247,10 +247,10 @@ void PmergeMe::_sortDeque(std::deque<int> &container)
     std::deque<int> highs;
     std::deque<int> lows;
 
-    for (std::size_t i = 0; i < container.size(); i += 2)
+    for (std::size_t i = 0; i < numbers.size(); i += 2)
     {
-        int high = container[i];
-        int low = container[i + 1];
+        int high = numbers[i];
+        int low = numbers[i + 1];
 
         if (high < low)
             std::swap(high, low);
@@ -326,7 +326,7 @@ void PmergeMe::_sortDeque(std::deque<int> &container)
 
         sorted.insert(position, straggler);
     }
-    container = sorted;
+    numbers = sorted;
 }
 
 /**
@@ -347,7 +347,6 @@ void PmergeMe::_sortDeque(std::deque<int> &container)
 std::vector<size_t> PmergeMe::_buildInsertionOrder(size_t size)
 {
     std::vector<size_t> order;
-
 	/*
 	 * b1 est déjà inséré. On part donc des deux premières bornes
 	 * utiles, J(2) = 1 et J(3) = 3. La relation
@@ -374,7 +373,6 @@ std::vector<size_t> PmergeMe::_buildInsertionOrder(size_t size)
         previous = current;
         current = next;
     }
-
     return order;
 }
 
