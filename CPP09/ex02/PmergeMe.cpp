@@ -114,8 +114,7 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
     }
 
     /*
-     * Formation des paires.
-     *
+	 * Formation des paires.
      * highs[i] contient le plus grand élément de la paire.
      * lows[i] contient le plus petit élément de la même paire.
      */
@@ -240,7 +239,6 @@ void PmergeMe::_sortDeque(std::deque<int> &numbers)
 
     /*
      * Formation des paires.
-     *
      * highs[i] contient le plus grand élément de la paire.
      * lows[i] contient le plus petit élément de la même paire.
      */
@@ -410,9 +408,8 @@ void PmergeMe::_printSequence(const std::string &label, const std::vector<int> &
 /**
  * @brief Coordonne toutes les étapes du programme.
  *
- * Le parsing est effectué une seule fois. Chaque conteneur est ensuite
- * rempli et trié séparément afin de mesurer son propre temps de
- * traitement.
+ * Le parsing est effectué une seule fois. Chaque conteneur est ensuite rempli 
+ * et trié séparément afin de mesurer son propre temps de traitement.
  *
  * Une vérification finale garantit que vector et deque produisent la
  * même séquence et que celle-ci est réellement triée.

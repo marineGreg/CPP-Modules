@@ -156,12 +156,14 @@ bool BitcoinExchange::_isValidValue(const std::string &valueStr, double &value) 
             return false;
     }
 
+	// toute la chaine doit etre consomme pour que la valeur soit valide.
     if (pos != valueStr.size())
         return false;
 
-	// Conversion de la chaîne en double une fois la syntaxe verifiee
-	// end doit pointer sur la fin de la chaine : sinon une partie du texte n'a 
-	// pas pu etre convertie
+	/* La syntaxe a ete verifiee. Conversion de la chaîne en double.
+	 * begin pointe sur le debut de la chaine
+	 * end pointe sur le premiere caractere non converti (ou fin de chaine)
+	 */
     char *end;
     const char *begin = valueStr.c_str();
 
@@ -211,6 +213,7 @@ bool BitcoinExchange::loadDatabase(const std::string &databasePath)
         if (trimmedLine.empty())
             continue;
 
+		// Recherche de la virgule unique séparant la date du taux.
         const std::string::size_type comma = trimmedLine.find(',');
 
         if (comma == std::string::npos 
@@ -226,13 +229,14 @@ bool BitcoinExchange::loadDatabase(const std::string &databasePath)
         if (!_isValidDate(date) || !_isValidValue(rateStr, rate) || rate < 0)
             return false;
 
+		// La date devient la clé et le taux devient la valeur.
         dB[date] = rate;
     }
 
     if (file.bad() || dB.empty())
         return false;
 
-	// Toutes les lignes etant valides, la base temporaire devient la base definitive de l'objet
+	// Toutes les lignes sont valides, la map temporaire devient la base definitive de l'objet
     _dB.swap(dB);
     return true;
 }
@@ -279,6 +283,7 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
 
 		hasData = true;
 
+		// recherche du separateur unique entre la date et la valeur.
         const std::string::size_type pipe = trimmedLine.find('|');
 
         if (pipe == std::string::npos
@@ -289,10 +294,12 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
             continue;
         }
 
+		// Extraction et nettoyage de la date et de la valeur
         const std::string date = _trim(trimmedLine.substr(0, pipe));
 
         const std::string valueStr = _trim(trimmedLine.substr(pipe + 1));
 
+		// Vérifie le format YYYY-MM-DD et la validité du calendrier.
         if (!_isValidDate(date))
         {
             std::cout << "Error: bad input => " << trimmedLine << std::endl;
@@ -301,6 +308,7 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
 
         double value;
 
+		// verifie que la valeur est un nombre valide et la convertit en double
         if (!_isValidValue(valueStr, value))
         {
             std::cout << "Error: bad input => " << trimmedLine << std::endl;
@@ -320,31 +328,36 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
         }
 
 		/*
- 		 * lower_bound(date) renvoie à la date ou à la date antérieure la plus proche
+ 		 * lower_bound(date) renvoie la première date supérieure ou égale
  		 *
  		 * Trois cas sont possibles :
- 		* - la clé correspond exactement : on utilise ce taux ;
-	    * - la clé est supérieure ou end() : on recule d'une position ;
-        * - l'itérateur vaut begin() sans correspondance exacte :
-  		*   aucune date antérieure n'existe dans la base.
-  		*/
-        std::map<std::string, double>::const_iterator rate = _dB.lower_bound(date);
+ 		 * - la clé correspond exactement : on utilise ce taux ;
+	     * - la clé est supérieure ou end() : on recule d'une position ;
+         * - l'itérateur vaut begin() sans correspondance exacte :
+  		 *   aucune date antérieure n'existe dans la base.
+  		 */
+        std::map<std::string, double>::const_iterator entry = _dB.lower_bound(date);
 
-        if (rate == _dB.end() || rate->first != date)
+        if (entry == _dB.end() || entry->first != date)
         {
-            if (rate == _dB.begin())
+            if (entry == _dB.begin())
             {
                 std::cout << "Error: no exchange rate available => " << date << std::endl;
                 continue;
             }
-            --rate;
+			// Sélectionne la date inférieure la plus proche.
+            --entry;
         }
 
 		// Affichage du résultat : date, valeur et taux correspondant
-        std::cout << date << " => " << value << " = " << value * rate->second << std::endl;
+        std::cout << date << " => " << value << " = " << value * entry->second << std::endl;
     }
     
-	// Vérifie d'abord qu'aucune erreur grave de lecture n'est survenue.
+	/*
+     * La boucle peut se terminer normalement parce que getline()
+     * a rencontré la fin du fichier. file.bad() distingue cette fin
+     * normale d'une véritable erreur de lecture.
+     */
     if (file.bad())
     {
         std::cout << "Error: failed while reading input file." << std::endl;
