@@ -74,7 +74,7 @@ bool RPN::resolve(const std::string& expression) {
 	std::string token;
 
 	// Parcourir chaque token de l'expression
-	while (stream >> token) // operator>> surcharge de classe istringstream pour extraire la data formatee
+	while (stream >> token) // operator>> surcharge de istringstream pour extraire la data formatee
 	{
 		if (token.length() != 1)
 			return false; // Token invalide (plus d'un caractère)
