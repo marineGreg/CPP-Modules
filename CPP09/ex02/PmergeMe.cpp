@@ -387,21 +387,12 @@ void PmergeMe::_printSequence(const std::string &label, const std::vector<int> &
 {
 	std::cout << label;
 	
-	// Limite l'affichage sans modifier la séquence.
-	std::size_t limit = sequence.size();
-
-	if (limit > 5)
-    	limit = 5;
-
-	for (std::size_t i = 0; i < limit; ++i)
+	for (std::size_t i = 0; i < sequence.size(); ++i)
 	{
 		if (i != 0)
 			std::cout << " ";
 		std::cout << sequence[i];
 	}
-	if (sequence.size() > 5)
-		std::cout << " [...]";
-
 	std::cout << std::endl;
 }
 
