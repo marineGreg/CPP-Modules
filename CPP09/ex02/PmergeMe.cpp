@@ -96,13 +96,13 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
  */
 void PmergeMe::_sortVector(std::vector<int> &numbers)
 {
-    // Une séquence de taille 0 ou 1 est déjà triée.
+    // Une séquence vide ou composée d'un seul élément est déjà triée.
     if (numbers.size() <= 1)
         return;
 
     /*
-     * Lorsque la taille est impaire, le dernier élément est
-     * temporairement mis de côté.
+     * Si la taille est impaire, le dernier élément est temporairement
+     * isolé. Il sera ensuite ajouté à pending comme élément sans partenaire.
      */
     const bool isOdd = (numbers.size() % 2 != 0);
     int straggler = 0;
@@ -114,9 +114,9 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
     }
 
     /*
-	 * Formation des paires.
-     * highs[i] contient le plus grand élément de la paire.
-     * lows[i] contient le plus petit élément de la même paire.
+     * Formation des paires :
+     * highs[i] contient le plus grand élément ;
+     * lows[i] contient le plus petit élément associé.
      */
     std::vector<int> highs;
     std::vector<int> lows;
@@ -133,7 +133,7 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
         lows.push_back(low);
     }
 
-    // Tri récursif des plus grands éléments.
+    // Tri récursif des grands éléments.
     std::vector<int> mainChain = highs;
 
     _sortVector(mainChain);
@@ -162,52 +162,63 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
             }
         }
     }
-    // La chaîne principale contient déjà les grands éléments triés.
-    std::vector<int> sorted = mainChain;
+    
+	// Le straggler est ajouté après les petits partenaires.
+	if (isOdd)
+    	pending.push_back(straggler);
 
-    // b1 est inférieur ou égal à a1. Il peut donc être placé au début.
+	std::vector<int> sorted;
+
     if (!pending.empty())
-        sorted.insert(sorted.begin(), pending[0]);
+        sorted.push_back(pending[0]);
 
-    // Construction de l'ordre d'insertion : b3, b2, b5, b4, b11, b10...
-    const std::vector<std::size_t> order =
-        _buildInsertionOrder(pending.size());
+    sorted.insert(sorted.end(), mainChain.begin(), mainChain.end());
+
+    /*
+     * Construit l'ordre d'insertion :
+     * b3, b2, b5, b4, b11, b10...
+     * pending.size() inclut désormais le straggler.
+     */
+    const std::vector<std::size_t> order = _buildInsertionOrder(pending.size());
 
     for (std::size_t i = 0; i < order.size(); ++i)
     {
         const std::size_t index = order[i];
         const int value = pending[index];
-        const int partner = mainChain[index];
 
-        /*
-         * Par construction, value <= partner. Il est donc inutile de
-         * rechercher sa position après partner : cette borne réduit la zone
-         * explorée par lower_bound et donc le nombre de comparaisons.
+		/*
+         * Les petits partenaires occupent les indices : 0 ... mainChain.size() - 1
+         * Lorsque la taille est impaire, le straggler a été ajouté après
+         * eux et possède donc l'indice mainChain.size().
          */
-        std::vector<int>::iterator upperBound =
-            std::lower_bound(sorted.begin(), sorted.end(), partner);
+		const bool isStraggler = isOdd && index == mainChain.size();
 
         /*
-         * Recherche binaire de la position du petit élément,
-         * uniquement dans la zone précédant son partenaire.
+         * Par défaut, la recherche utilise toute la chaîne.
+         * Cette limite sera conservée uniquement pour le straggler.
+         */
+        std::vector<int>::iterator upBound = sorted.end();
+
+        if (!isStraggler)
+        {
+            const int partner = mainChain[index];
+			// Localise le grand partenaire
+            upBound = std::lower_bound( sorted.begin(), sorted.end(), partner);
+        }
+
+        /*
+         * Pour un low normal :
+         * recherche limitée à la zone précédant son partenaire.
+         * Pour le straggler :
+         * upBound vaut sorted.end(), donc toute la chaîne est utilisée.
          */
         std::vector<int>::iterator position =
-            std::lower_bound(sorted.begin(), upperBound, value);
+            std::lower_bound(sorted.begin(), upBound, value);
 
         sorted.insert(position, value);
     }
-    /*
-     * L'élément impair n'a pas de partenaire.
-     * Sa position est recherchée dans toute la chaîne.
-     */
-    if (isOdd)
-    {
-        std::vector<int>::iterator position =
-            std::lower_bound(sorted.begin(), sorted.end(), straggler);
-
-        sorted.insert(position, straggler);
-    }
-    numbers = sorted;
+    // Échange efficace du résultat avec le conteneur reçu.
+    numbers.swap(sorted);
 }
 
 /**
@@ -220,13 +231,13 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
  */
 void PmergeMe::_sortDeque(std::deque<int> &numbers)
 {
-    // Une séquence de taille 0 ou 1 est déjà triée.
+    // Une séquence vide ou composée d'un seul élément est déjà triée.
     if (numbers.size() <= 1)
         return;
 
     /*
-     * Lorsque la taille est impaire, le dernier élément est
-     * temporairement mis de côté.
+     * Si la taille est impaire, le dernier élément est temporairement
+     * retiré. Il deviendra ensuite un élément pending sans partenaire.
      */
     const bool isOdd = (numbers.size() % 2 != 0);
     int straggler = 0;
@@ -238,9 +249,9 @@ void PmergeMe::_sortDeque(std::deque<int> &numbers)
     }
 
     /*
-     * Formation des paires.
-     * highs[i] contient le plus grand élément de la paire.
-     * lows[i] contient le plus petit élément de la même paire.
+     * Formation des paires :
+     * highs[i] contient le plus grand élément ;
+     * lows[i] contient le plus petit élément associé.
      */
     std::deque<int> highs;
     std::deque<int> lows;
@@ -257,7 +268,7 @@ void PmergeMe::_sortDeque(std::deque<int> &numbers)
         lows.push_back(low);
     }
 
-    // Tri récursif des plus grands éléments.
+    // Tri récursif des grands éléments.
     std::deque<int> mainChain = highs;
 
     _sortDeque(mainChain);
@@ -282,49 +293,58 @@ void PmergeMe::_sortDeque(std::deque<int> &numbers)
             }
         }
     }
-    // La chaîne principale contient déjà les grands éléments triés.
+
+    /*
+     * Le straggler est ajouté à pending comme dernier b.
+     * Il n'aura cependant aucun partenaire dans mainChain.
+     */
+    if (isOdd)
+        pending.push_back(straggler);
+
+    // La chaîne initiale contient les grands éléments triés.
     std::deque<int> sorted = mainChain;
 
-    // b1 est inférieur ou égal à a1. Il peut donc être placé au début.
+	// b1 est inférieur ou égal à a1. Il peut donc être placé au début.
     if (!pending.empty())
         sorted.push_front(pending[0]);
 
     // Construction de l'ordre d'insertion : b3, b2, b5, b4, b11, b10...
-    const std::vector<std::size_t> order =
-        _buildInsertionOrder(pending.size());
+    const std::vector<std::size_t> order = _buildInsertionOrder(pending.size());
 
     for (std::size_t i = 0; i < order.size(); ++i)
     {
         const std::size_t index = order[i];
         const int value = pending[index];
-        const int partner = mainChain[index];
+
+		const bool isStraggler = isOdd && index == mainChain.size();
+        /*
+         * Toute la chaîne constitue la zone par défaut.
+         * C'est cette borne que conservera le straggler.
+         */
+        std::deque<int>::iterator upBound = sorted.end();
 
         /*
-         * value <= partner : la recherche binaire peut s'arrêter au grand
-         * partenaire, sans examiner la fin de la chaîne principale.
+         * Si l'élément n'est pas le straggler, il possède un partenaire. 
+         * Sa recherche peut être limitée à ce partenaire.
          */
-        std::deque<int>::iterator upperBound =
-            std::lower_bound(sorted.begin(), sorted.end(), partner);
+        if (!isStraggler)
+        {
+            const int partner = mainChain[index];
+            upBound = std::lower_bound(sorted.begin(), sorted.end(), partner);
+        }
 
-        // Recherche binaire limitée à la zone précédant le grand partenaire.
+        /*
+         * Recherche binaire dans la zone autorisée :
+         * - avant le partenaire pour un low normal
+         * - dans toute la chaîne pour le straggler
+         */
         std::deque<int>::iterator position =
-            std::lower_bound(sorted.begin(), upperBound, value);
+            std::lower_bound(sorted.begin(), upBound, value);
 
         sorted.insert(position, value);
     }
-
-    /*
-     * L'élément impair n'a pas de partenaire.
-     * Sa position est recherchée dans toute la chaîne.
-     */
-    if (isOdd)
-    {
-        std::deque<int>::iterator position =
-            std::lower_bound(sorted.begin(), sorted.end(), straggler);
-
-        sorted.insert(position, straggler);
-    }
-    numbers = sorted;
+    // Échange efficace du résultat avec le conteneur reçu.
+    numbers.swap(sorted);
 }
 
 /**
