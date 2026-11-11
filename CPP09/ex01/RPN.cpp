@@ -81,10 +81,10 @@ bool RPN::resolve(const std::string& expression) {
 
         char c = token[0];
 
-		if (std::isdigit(static_cast<unsigned char>(c))) // Si le token est un chiffre
-            _stack.push(c - '0'); // Convertir le caractere en entier et l'empiler
-        else if (_isOperator(c)) { // Si le token est un operateur
-            if (!_performOperation(c)) // Effectuer l'operation
+		if (std::isdigit(static_cast<unsigned char>(c))) { // Si le token est un chiffre
+            _stack.push(c - '0');   // Convertir le caractere en entier et l'empiler
+        } else if (_isOperator(c)) {  // Si le token est un operateur
+            if (!_performOperation(c))  // Effectuer l'operation
                 return false;
         } else
             return false; // Caractere invalide
