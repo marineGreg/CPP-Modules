@@ -365,29 +365,18 @@ void PmergeMe::_sortDeque(std::deque<int> &numbers)
 std::vector<size_t> PmergeMe::_buildInsertionOrder(size_t size)
 {
     std::vector<size_t> order;
-	/*
-	 * b1 est déjà inséré. On part donc des deux premières bornes
-	 * utiles, J(2) = 1 et J(3) = 3. La relation
-	 * J(n) = J(n - 1) + 2 * J(n - 2) produit les bornes suivantes.
-	 */
+
     size_t previous = 1;
     size_t current = 3;
 
     while (previous < size)
     {
-		// La dernière borne ne doit pas dépasser la taille de pending.
-        size_t upper = current;
+        size_t upper = std::min(current, size);
 
-        if (upper > size)
-            upper = size;
-
-		// Ajout des indices du groupe dans l'ordre décroissant.
         for (size_t i = upper; i > previous; --i)
             order.push_back(i - 1);
 
-		// Construction de la borne Jacobsthal suivante par récurrence.
-        const size_t next = current + 2 * previous;
-
+        size_t next = current + 2 * previous;
         previous = current;
         current = next;
     }

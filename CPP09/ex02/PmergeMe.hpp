@@ -5,7 +5,6 @@
 # include <vector>
 # include <deque>
 # include <string>
-# include <algorithm>
 
 /**
  * Trie une séquence d'entiers positifs avec l'algorithme
