@@ -17,17 +17,17 @@ RPN& RPN::operator=(const RPN& other) {
 RPN::~RPN() {}
 
 /**
- * Analyse et evalue une sequence en RPN complete.
+ * Analyse et evalue une expression en RPN complete.
  */
-bool RPN::resolve(const std::string& sequence) {
+bool RPN::resolve(const std::string& expression) {
 	while (!_stack.empty()) {
 		_stack.pop();
 	}
-	// istringstream decoupe la sequence en tokens separes par espaces, tab ou blancs
-	std::istringstream stream(sequence);
+	// istringstream decoupe l'expression en tokens separes par espaces, tab ou blancs
+	std::istringstream stream(expression);
 	std::string token;
 
-	// Parcourir chaque token de la sequence
+	// Parcourir chaque token de l'expression
 	while (stream >> token)
 	{
 		if (token.length() != 1)

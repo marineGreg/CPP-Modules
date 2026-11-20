@@ -19,6 +19,14 @@
  */
 class PmergeMe
 {
+	public:
+		PmergeMe();
+		PmergeMe(const PmergeMe& other);
+		PmergeMe& operator=(const PmergeMe& other);
+		~PmergeMe();
+
+		void run(int ac, char** av);
+
 	private:
         std::vector<int> _vector;
         std::deque<int>  _deque;
@@ -34,14 +42,6 @@ class PmergeMe
             const std::string& label,
             const std::vector<int>& sequence
         ) const;
-
-    public:
-        PmergeMe();
-        PmergeMe(const PmergeMe& other);
-        PmergeMe& operator=(const PmergeMe& other);
-        ~PmergeMe();
-
-        void run(int ac, char** av);
 };
 
 #endif

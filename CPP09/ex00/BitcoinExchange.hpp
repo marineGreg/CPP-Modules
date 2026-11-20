@@ -17,6 +17,15 @@
  */
 class BitcoinExchange
 {
+	public:
+		BitcoinExchange();
+		BitcoinExchange(const BitcoinExchange &src);
+		BitcoinExchange &operator=(const BitcoinExchange &other);
+		~BitcoinExchange();
+
+		bool loadDatabase(const std::string &databasePath);
+		bool processInput(const std::string &inputPath) const;
+
 	private:
     	std::map<std::string, double> _dB;
 
@@ -24,15 +33,6 @@ class BitcoinExchange
     	bool _isValidDate(const std::string &date) const;
     	bool _isValidValue(const std::string &valueString, double &value) const;
 		void _processLine(const std::string &line) const;
-
-	public:
-    	BitcoinExchange();
-    	BitcoinExchange(const BitcoinExchange &src);
-    	BitcoinExchange &operator=(const BitcoinExchange &other);
-    	~BitcoinExchange();
-
-    	bool loadDatabase(const std::string &databasePath);
-    	bool processInput(const std::string &inputPath) const;
 };
 
 #endif
