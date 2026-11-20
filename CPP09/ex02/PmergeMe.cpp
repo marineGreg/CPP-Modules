@@ -26,6 +26,73 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other) {
 PmergeMe::~PmergeMe() {}
 
 /**
+ * @brief Coordonne toutes les étapes du programme.
+ *
+ * Le parsing est effectué une seule fois. Chaque conteneur est ensuite rempli 
+ * et trié séparément afin de mesurer son propre temps de traitement.
+ *
+ * Une vérification finale garantit que vector et deque produisent la
+ * même séquence et que celle-ci est réellement triée.
+ *
+ * @param ac Nombre d'arguments.
+ * @param av Tableau des arguments.
+ */
+void PmergeMe::run(int ac, char **av)
+{
+	std::vector<int> input;
+
+	// Validation commune avant les mesures de performances.
+	_parseInput(ac, av, input);
+	_printSequence("Before: ", input);
+
+	struct timeval start, end;
+
+	// Mesure du remplissage et du tri du vector.
+	gettimeofday(&start, NULL);
+
+	_vector.assign(input.begin(), input.end());
+	_sortVector(_vector);
+
+	gettimeofday(&end, NULL);
+
+	const double vectorTime =
+		(end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
+
+	// Mesure indépendante du remplissage et du tri du deque.
+	gettimeofday(&start, NULL);
+
+	_deque.assign(input.begin(), input.end());
+	_sortDeque(_deque);
+
+	gettimeofday(&end, NULL);
+
+	const double dequeTime =
+		(end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
+
+	// Vérifie que les deux implémentations produisent le même résultat.
+	if (_vector.size() != _deque.size()
+		|| !std::equal(_vector.begin(), _vector.end(), _deque.begin()))
+	{
+		throw std::logic_error("containers results differ");
+	}
+
+	// L'égalité des conteneurs ne suffit pas : vérifie aussi l'ordre croissant.
+	for (std::size_t i = 1; i < _vector.size(); ++i)
+	{
+		if (_vector[i - 1] > _vector[i])
+			throw std::logic_error("result is not sorted");
+	}
+
+	_printSequence("After:  ", _vector);
+
+	std::cout << "Time to process a range of " << _vector.size() << " elements with std::vector : "
+		<< std::fixed << std::setprecision(5) << vectorTime << " us" << std::endl;
+
+	std::cout << "Time to process a range of " << _deque.size() << " elements with std::deque : "
+		<< std::fixed << std::setprecision(5) << dequeTime << " us" << std::endl;
+}
+
+/**
  * @brief Convertit les arguments en une sequence d'entiers positifs.
  *
  * Un argument peut contenir un ou plusieurs nombres séparés par des
@@ -383,13 +450,13 @@ std::vector<size_t> PmergeMe::_buildInsertionOrder(size_t size)
 }
 
 /**
- * @brief Affiche une version lisible d'une séquence.
+ * @brief Affiche l'integralite d'une sequence.
  *
- * L'affichage est limité aux cinq premiers nombres lorsque la séquence
- * est longue afin d'éviter une sortie gigantesque pendant les tests.
+ * Chaque element est affiche dans son ordre actuel et separe du suivant
+ * par un espace. Le libelle est affiche avant le premier element.
  *
- * @param label Libellé "Before" ou "After".
- * @param sequence Séquence à afficher.
+ * @param label Libelle placé avant la sequence, par exemple "Before: ".
+ * @param sequence Sequence complete a afficher.
  */
 void PmergeMe::_printSequence(const std::string &label, const std::vector<int> &sequence) const
 {
@@ -402,71 +469,4 @@ void PmergeMe::_printSequence(const std::string &label, const std::vector<int> &
 		std::cout << sequence[i];
 	}
 	std::cout << std::endl;
-}
-
-/**
- * @brief Coordonne toutes les étapes du programme.
- *
- * Le parsing est effectué une seule fois. Chaque conteneur est ensuite rempli 
- * et trié séparément afin de mesurer son propre temps de traitement.
- *
- * Une vérification finale garantit que vector et deque produisent la
- * même séquence et que celle-ci est réellement triée.
- *
- * @param ac Nombre d'arguments.
- * @param av Tableau des arguments.
- */
-void PmergeMe::run(int ac, char **av)
-{
-	std::vector<int> input;
-
-	// Validation commune avant les mesures de performances.
-	_parseInput(ac, av, input);
-	_printSequence("Before: ", input);
-
-	struct timeval start, end;
-
-	// Mesure du remplissage et du tri du vector.
-	gettimeofday(&start, NULL);
-
-	_vector.assign(input.begin(), input.end());
-	_sortVector(_vector);
-
-	gettimeofday(&end, NULL);
-
-	const double vectorTime =
-		(end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
-
-	// Mesure indépendante du remplissage et du tri du deque.
-	gettimeofday(&start, NULL);
-
-	_deque.assign(input.begin(), input.end());
-	_sortDeque(_deque);
-
-	gettimeofday(&end, NULL);
-
-	const double dequeTime =
-		(end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
-
-    // Vérifie que les deux implémentations produisent le même résultat.
-	if (_vector.size() != _deque.size()
-    	|| !std::equal(_vector.begin(), _vector.end(), _deque.begin()))
-	{
-    	throw std::logic_error("containers results differ");
-	}
-
-	// L'égalité des conteneurs ne suffit pas : vérifie aussi l'ordre croissant.
-	for (std::size_t i = 1; i < _vector.size(); ++i)
-	{
-    	if (_vector[i - 1] > _vector[i])
-        	throw std::logic_error("result is not sorted");
-	}
-
-	_printSequence("After:  ", _vector);
-
-	std::cout << "Time to process a range of " << _vector.size() << " elements with std::vector : "
-		<< std::fixed << std::setprecision(5) << vectorTime << " us" << std::endl;
-
-	std::cout << "Time to process a range of " << _deque.size() << " elements with std::deque : "
-		<< std::fixed << std::setprecision(5) << dequeTime << " us" << std::endl;
 }

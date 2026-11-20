@@ -16,6 +16,45 @@ RPN& RPN::operator=(const RPN& other) {
 
 RPN::~RPN() {}
 
+/**
+ * Analyse et evalue une sequence en RPN complete.
+ */
+bool RPN::resolve(const std::string& sequence) {
+	while (!_stack.empty()) {
+		_stack.pop();
+	}
+	// istringstream decoupe la sequence en tokens separes par espaces, tab ou blancs
+	std::istringstream stream(sequence);
+	std::string token;
+
+	// Parcourir chaque token de la sequence
+	while (stream >> token)
+	{
+		if (token.length() != 1)
+			return false;
+
+		char c = token[0];
+		if (std::isdigit(static_cast<unsigned char>(c)))
+		{
+			_stack.push(c - '0'); // Convertir le caractere en entier et l'empiler
+		}
+		else if (_isOperator(c))
+		{
+			if (!_performOperation(c))  
+				return false;
+		} 
+		else
+			return false; // Caractere invalide
+	}
+
+	// Il doit rester exactement un seul résultat dans la pile
+	if (_stack.size() != 1)
+		return false;
+
+	std::cout << _stack.top() << std::endl;
+	return true;
+}
+
 /** 
  * Verifie si un caractere correspond a un operateur autorise : +, -, *, /
  */
@@ -58,44 +97,5 @@ bool RPN::_performOperation(char op) {
 		default:
 			return false; // Operateur inconnu
 	}
-    return true;
-}
-
-/**
- * Analyse et evalue une sequence en RPN complete.
- */
-bool RPN::resolve(const std::string& sequence) {
-    while (!_stack.empty()) {
-    	_stack.pop();
-	}
-	// istringstream decoupe la sequence en tokens separes par espaces, tab ou blancs
-	std::istringstream stream(sequence);
-	std::string token;
-
-	// Parcourir chaque token de la sequence
-	while (stream >> token)
-	{
-		if (token.length() != 1)
-			return false;
-
-        char c = token[0];
-		if (std::isdigit(static_cast<unsigned char>(c)))
-		{
-            _stack.push(c - '0'); // Convertir le caractere en entier et l'empiler
-		}
-		else if (_isOperator(c))
-		{
-            if (!_performOperation(c))  
-                return false;
-        } 
-		else
-            return false; // Caractere invalide
-    }
-
-    // Il doit rester exactement un seul résultat dans la pile
-    if (_stack.size() != 1)
-        return false;
-
-    std::cout << _stack.top() << std::endl;
     return true;
 }

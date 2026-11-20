@@ -11,12 +11,134 @@ BitcoinExchange::BitcoinExchange(const BitcoinExchange &src) : _dB(src._dB) {}
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
-    if (this != &other)
-        _dB = other._dB;
-    return *this;
+	if (this != &other)
+	_dB = other._dB;
+return *this;
 }
 
 BitcoinExchange::~BitcoinExchange() {}
+
+/**
+ * Charge les taux contenus dans le fichier CSV.
+ * Le fichier doit commencer par l'en-tete : date,exchange_rate
+ *
+ * La base est d'abord construite dans une map temporaire.
+ * L'attribut _dB n'est remplace qu'une fois l'integralite du fichier valide.
+ *
+ * @return true si le chargement complet a reussi.
+ */
+bool BitcoinExchange::loadDatabase(const std::string &databasePath)
+{
+	std::ifstream file(databasePath.c_str());
+
+	if (!file.is_open())
+		return false;
+
+	std::string line;
+
+	if (!std::getline(file, line))
+		return false;
+
+	if (_trim(line) != "date,exchange_rate")
+		return false;
+
+	// Les donnees sont chargees dans une map temporaire pour ne pas modifier l'attribut _dB
+	std::map<std::string, double> dB;
+
+	while (std::getline(file, line))
+	{
+		const std::string trimmedLine = _trim(line);
+
+		if (trimmedLine.empty())
+			continue;
+
+		// Recherche de la virgule unique separant la date du taux.
+		const std::string::size_type comma = trimmedLine.find(',');
+
+		if (comma == std::string::npos 
+			|| trimmedLine.find(',', comma + 1) != std::string::npos)
+			return false;
+
+		const std::string date = _trim(trimmedLine.substr(0, comma));
+
+		const std::string rateStr = _trim(trimmedLine.substr(comma + 1));
+
+		double rate;
+
+		if (!_isValidDate(date) || !_isValidValue(rateStr, rate) || rate < 0)
+			return false;
+
+		// La date devient la cle et le taux devient la valeur.
+		dB[date] = rate;
+	}
+
+	if (file.bad() || dB.empty())
+		return false;
+
+	// Lignes valides : la map temporaire devient la base definitive de l'objet
+	_dB.swap(dB);
+	return true;
+}
+
+/**
+ * Lit et traite le fichier d'entree fourni par l'utilisateur.
+ *
+ * Le fichier doit commencer par l'en-tete "date | value".
+ * Les lignes vides sont ignorees et chaque ligne non vide est transmise
+ * a _processLine(), qui verifie son contenu et affiche soit le resultat
+ * de la conversion, soit l'erreur correspondante.
+ *
+ * Une ligne incorrecte n'interrompt pas la lecture : le reste du fichier
+ * est toujours traite.
+ */
+bool BitcoinExchange::processInput(const std::string &inputPath) const
+{
+	std::ifstream file(inputPath.c_str());
+
+	if (!file.is_open())
+	{
+		std::cout << "Error: could not open file." << std::endl;
+		return false;
+	}
+
+	std::string line;
+	if (!std::getline(file, line) || _trim(line) != "date | value")
+	{
+		std::cout << "Error: invalid input file." << std::endl;
+		return false;
+	}
+
+	bool hasData = false;
+
+	while (std::getline(file, line))
+	{
+		const std::string trimmedLine = _trim(line);
+
+		if (trimmedLine.empty())
+			continue;
+
+		hasData = true;
+		_processLine(trimmedLine);
+	}
+	
+	/*
+	 * La boucle peut se terminer normalement parce que getline()
+	 * a rencontre la fin du fichier. file.bad() distingue cette fin
+	 * normale d'une veritable erreur de lecture.
+	 */
+	if (file.bad())
+	{
+		std::cout << "Error: failed while reading input file." << std::endl;
+		return false;
+	}
+
+	if (!hasData)
+	{
+		std::cout << "Error: input file contains no data." << std::endl;
+		return false;
+	}
+	return true;
+}
 
 /**
  * Supprime les espaces et caracteres blancs situes au debut et a la fin d'une chaine.
@@ -180,68 +302,6 @@ bool BitcoinExchange::_isValidValue(const std::string &valueStr, double &value) 
 }
 
 /**
- * Charge les taux contenus dans le fichier CSV.
- * Le fichier doit commencer par l'en-tete : date,exchange_rate
- *
- * La base est d'abord construite dans une map temporaire.
- * L'attribut _dB n'est remplace qu'une fois l'integralite du fichier valide.
- *
- * @return true si le chargement complet a reussi.
- */
-bool BitcoinExchange::loadDatabase(const std::string &databasePath)
-{
-    std::ifstream file(databasePath.c_str());
-
-    if (!file.is_open())
-        return false;
-
-    std::string line;
-
-    if (!std::getline(file, line))
-        return false;
-
-    if (_trim(line) != "date,exchange_rate")
-        return false;
-
-	// Les donnees sont chargees dans une map temporaire pour ne pas modifier l'attribut _dB
-    std::map<std::string, double> dB;
-
-    while (std::getline(file, line))
-    {
-        const std::string trimmedLine = _trim(line);
-
-        if (trimmedLine.empty())
-            continue;
-
-		// Recherche de la virgule unique separant la date du taux.
-        const std::string::size_type comma = trimmedLine.find(',');
-
-        if (comma == std::string::npos 
-			|| trimmedLine.find(',', comma + 1) != std::string::npos)
-            return false;
-
-        const std::string date = _trim(trimmedLine.substr(0, comma));
-
-        const std::string rateStr = _trim(trimmedLine.substr(comma + 1));
-
-        double rate;
-
-        if (!_isValidDate(date) || !_isValidValue(rateStr, rate) || rate < 0)
-            return false;
-
-		// La date devient la cle et le taux devient la valeur.
-        dB[date] = rate;
-    }
-
-    if (file.bad() || dB.empty())
-        return false;
-
-	// Lignes valides : la map temporaire devient la base definitive de l'objet
-    _dB.swap(dB);
-    return true;
-}
-
-/**
  * Traite une ligne non vide du fichier utilisateur.
  *
  * La fonction separe la date et la valeur, valide les deux champs,
@@ -312,62 +372,3 @@ void BitcoinExchange::_processLine(const std::string &line) const
               << std::endl;
 }
 
-/**
- * Lit et traite le fichier d'entree fourni par l'utilisateur.
- *
- * Le fichier doit commencer par l'en-tete "date | value".
- * Les lignes vides sont ignorees et chaque ligne non vide est transmise
- * a _processLine(), qui verifie son contenu et affiche soit le resultat
- * de la conversion, soit l'erreur correspondante.
- *
- * Une ligne incorrecte n'interrompt pas la lecture : le reste du fichier
- * est toujours traite.
- */
-bool BitcoinExchange::processInput(const std::string &inputPath) const
-{
-    std::ifstream file(inputPath.c_str());
-
-    if (!file.is_open())
-    {
-        std::cout << "Error: could not open file." << std::endl;
-        return false;
-    }
-
-    std::string line;
-    if (!std::getline(file, line) || _trim(line) != "date | value")
-	{
-		std::cout << "Error: invalid input file." << std::endl;
-		return false;
-	}
-
-	bool hasData = false;
-
-    while (std::getline(file, line))
-    {
-        const std::string trimmedLine = _trim(line);
-
-        if (trimmedLine.empty())
-            continue;
-
-		hasData = true;
-		_processLine(trimmedLine);
-    }
-    
-	/*
-     * La boucle peut se terminer normalement parce que getline()
-     * a rencontre la fin du fichier. file.bad() distingue cette fin
-     * normale d'une veritable erreur de lecture.
-     */
-    if (file.bad())
-    {
-        std::cout << "Error: failed while reading input file." << std::endl;
-        return false;
-    }
-
-    if (!hasData)
-    {
-        std::cout << "Error: input file contains no data." << std::endl;
-        return false;
-    }
-	return true;
-}
