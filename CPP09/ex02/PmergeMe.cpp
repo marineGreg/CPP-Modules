@@ -95,13 +95,13 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
  */
 void PmergeMe::_sortVector(std::vector<int> &numbers)
 {
-    // Une séquence vide ou composée d'un seul élément est déjà triée.
+    // Une sequence vide ou composée d'un seul element est déjà triée.
     if (numbers.size() <= 1)
         return;
 
     /*
-     * Si la taille est impaire, le dernier élément est temporairement
-     * isolé. Il sera ensuite ajouté à pending comme élément sans partenaire.
+     * Si la taille est impaire, le dernier element est temporairement
+     * isole. Il sera ensuite ajoute à pending comme element sans partenaire.
      */
     const bool isOdd = (numbers.size() % 2 != 0);
     int straggler = 0;
@@ -114,8 +114,8 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
 
     /*
      * Formation des paires :
-     * highs[i] contient le plus grand élément ;
-     * lows[i] contient le plus petit élément associé.
+     * highs[i] contient le plus grand element ;
+     * lows[i] contient le plus petit element associe.
      */
     std::vector<int> highs;
     std::vector<int> lows;
