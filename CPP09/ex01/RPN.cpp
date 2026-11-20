@@ -17,7 +17,7 @@ RPN& RPN::operator=(const RPN& other) {
 RPN::~RPN() {}
 
 /** 
- * Vérifie si un caractère correspond à un opérateur autorisé : +, -, *, /.
+ * Verifie si un caractere correspond a un operateur autorise : +, -, *, /
  */
 bool RPN::_isOperator(char c) const {
     return (c == '+' || c == '-' || c == '*' || c == '/');
@@ -62,31 +62,33 @@ bool RPN::_performOperation(char op) {
 }
 
 /**
- * Analyse et evalue une expression en RPN complete.
+ * Analyse et evalue une sequence en RPN complete.
  */
-bool RPN::resolve(const std::string& expression) {
-    // Vider la pile avant de commencer l'evaluation
+bool RPN::resolve(const std::string& sequence) {
     while (!_stack.empty()) {
     	_stack.pop();
 	}
-	// istringstream découpe l'expression en tokens séparés par espaces, tab ou blancs.
-	std::istringstream stream(expression);
+	// istringstream decoupe la sequence en tokens separes par espaces, tab ou blancs
+	std::istringstream stream(sequence);
 	std::string token;
 
-	// Parcourir chaque token de l'expression
-	while (stream >> token) // operator>> surcharge de istringstream pour extraire la data formatee
+	// Parcourir chaque token de la sequence
+	while (stream >> token)
 	{
 		if (token.length() != 1)
-			return false; // Token invalide (plus d'un caractère)
+			return false;
 
         char c = token[0];
-
-		if (std::isdigit(static_cast<unsigned char>(c))) { // Si le token est un chiffre
-            _stack.push(c - '0');   // Convertir le caractere en entier et l'empiler
-        } else if (_isOperator(c)) {  // Si le token est un operateur
-            if (!_performOperation(c))  // Effectuer l'operation
+		if (std::isdigit(static_cast<unsigned char>(c)))
+		{
+            _stack.push(c - '0'); // Convertir le caractere en entier et l'empiler
+		}
+		else if (_isOperator(c))
+		{
+            if (!_performOperation(c))  
                 return false;
-        } else
+        } 
+		else
             return false; // Caractere invalide
     }
 

@@ -1,5 +1,4 @@
 #include "PmergeMe.hpp"
-
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
@@ -27,7 +26,7 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other) {
 PmergeMe::~PmergeMe() {}
 
 /**
- * @brief Convertit les arguments en une séquence d'entiers positifs.
+ * @brief Convertit les arguments en une sequence d'entiers positifs.
  *
  * Un argument peut contenir un ou plusieurs nombres séparés par des
  * espaces. Chaque token est d'abord contrôlé caractère par caractère,
@@ -89,8 +88,8 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 /**
  * @brief Trie un std::vector avec l'algorithme Ford-Johnson.
  *
- * La fonction forme des paires, trie récursivement les plus grands
- * éléments, puis insère les plus petits selon l'ordre de Jacobsthal.
+ * La fonction forme des paires, trie recursivement les plus grands
+ * elements, puis insere les plus petits selon l'ordre de Jacobsthal.
  *
  * @param numbers Vector à trier directement.
  */

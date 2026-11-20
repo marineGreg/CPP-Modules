@@ -7,14 +7,14 @@
 # include <string>
 
 /**
- * Trie une séquence d'entiers positifs avec l'algorithme
+ * Trie une sequence d'entiers positifs avec l'algorithme
  * de tri fusion-insertion de Ford-Johnson.
  *
- * Le même algorithme est instancié pour :
+ * Le meme algorithme est instancie pour :
  * - std::vector<int>
  * - std::deque<int>
  *
- * Le programme mesure séparément le temps de traitement
+ * Le programme mesure separement le temps de traitement
  * obtenu pour les deux conteneurs.
  */
 class PmergeMe

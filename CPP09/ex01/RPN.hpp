@@ -6,7 +6,7 @@
 
 
 /**
- * Evalue une expression en notation polonaise inversée (RPN) et retourne le résultat.
+ * Evalue une sequence en notation polonaise inversee (RPN) et retourne le resultat.
  * 
  * Les operandes sont empiles jusqu'a la rencontre d'un operateur.
  * L'operateur retire les deux dernieres valeurs, effectue le calcul et
@@ -25,7 +25,7 @@ class RPN {
     	RPN& operator=(const RPN& other);
     	~RPN();
 
-    	bool resolve(const std::string& expression);
+    	bool resolve(const std::string& sequence);
 };
 
 #endif

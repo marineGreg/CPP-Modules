@@ -7,8 +7,7 @@
 
 BitcoinExchange::BitcoinExchange() {}
 
-BitcoinExchange::BitcoinExchange(const BitcoinExchange &src)
-    : _dB(src._dB) {}
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &src) : _dB(src._dB) {}
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
@@ -20,7 +19,7 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 BitcoinExchange::~BitcoinExchange() {}
 
 /**
- * Supprime les espaces et caracteres blancs situes au debut et à la fin d'une chaine.
+ * Supprime les espaces et caracteres blancs situes au debut et a la fin d'une chaine.
  *
  * @param str Chaine à nettoyer.
  * @return La chaine nettoyee, ou une chaine vide si elle ne contenait que des espaces.
@@ -40,14 +39,14 @@ std::string BitcoinExchange::_trim(const std::string &str) const
 }
 
 /**
- * Vérifie qu'une date respecte le format YYYY-MM-DD
+ * Verifie qu'une date respecte le format YYYY-MM-DD
  * et qu'elle existe réellement dans le calendrier.
  *
- * La fonction vérifie notamment :
+ * La fonction verifie notamment :
  * - la position des tirets ;
- * - la présence exclusive de chiffres ;
+ * - la presence exclusive de chiffres ;
  * - les limites des mois et des jours ;
- * - les années bissextiles.
+ * - les annees bissextiles.
  */
 bool BitcoinExchange::_isValidDate(const std::string &date) const
 {
@@ -74,16 +73,17 @@ bool BitcoinExchange::_isValidDate(const std::string &date) const
         return false;
 
     static const int daysPerMonth[12] = {
-        31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
-    }; // Nombre de jours par mois, sans tenir compte des années bissextiles.
+        31, 28, 31, 30, 31, 30,
+		31, 31, 30, 31, 30, 31
+    };
+	// Ajustement de l'indice du tableau (0-based)
+    int maximumDay = daysPerMonth[month - 1];
 
-    int maximumDay = daysPerMonth[month - 1]; // Ajustement de l'indice du tableau (0-based)
-
-	// Vérification des années bissextiles : un an est bissextile s'il est divisible par 4,
-	// sauf s'il est divisible par 100, à moins qu'il ne soit divisible par 400.
+	// Verification des annees bissextiles : un an est bissextile s'il est divisible 
+	// par 4, sauf s'il est divisible par 100, a moins qu'il ne soit divisible par 400.
     const bool leapYear = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
 
-    if (month == 2 && leapYear) // Février d'une année bissextile
+    if (month == 2 && leapYear) // Fevrier d'une annee bissextile
         maximumDay = 29;
 
     return day <= maximumDay;
@@ -93,11 +93,11 @@ bool BitcoinExchange::_isValidDate(const std::string &date) const
  * Verifie qu'une chaine represente un nombre valide et convertit ce nombre en double.
  *
  * La fonction accepte une partie decimale et une notation scientifique eventuelle.
- * Les limites imposées par le sujet sont vérifiees plus tard dans processInput().
+ * Les limites imposees par le sujet sont vérifiees plus tard dans processInput().
  *
- * @param valueStr Représentation textuelle du nombre.
+ * @param valueStr Representation textuelle du nombre.
  * @param value Variable recevant la valeur convertie.
- * @return true si toute la chaîne représente un nombre valide.
+ * @return true si toute la chaine représente un nombre valide.
  */
 bool BitcoinExchange::_isValidValue(const std::string &valueStr, double &value) const
 {
@@ -120,7 +120,7 @@ bool BitcoinExchange::_isValidValue(const std::string &valueStr, double &value) 
         ++pos;
     }
 
-	// Verification de la partie décimale
+	// Verification de la partie decimale
     if (pos < valueStr.size() && valueStr[pos] == '.')
     {
         ++pos;
@@ -160,7 +160,7 @@ bool BitcoinExchange::_isValidValue(const std::string &valueStr, double &value) 
     if (pos != valueStr.size())
         return false;
 
-	/* La syntaxe a ete verifiee. Conversion de la chaîne en double.
+	/* La syntaxe a ete verifiee. Conversion de la chaine en double.
 	 * begin pointe sur le debut de la chaine
 	 * end pointe sur le premiere caractere non converti (ou fin de chaine)
 	 */
@@ -172,7 +172,7 @@ bool BitcoinExchange::_isValidValue(const std::string &valueStr, double &value) 
     if (begin == end || *end != '\0')
         return false;
 
-    // Une valeur NaN est la seule valeur differente d'elle-meme.
+	// NaN (not a number) n'est egal à aucune valeur, pas meme a lui-meme
     if (value != value)
         return false;
 
@@ -181,7 +181,7 @@ bool BitcoinExchange::_isValidValue(const std::string &valueStr, double &value) 
 
 /**
  * Charge les taux contenus dans le fichier CSV.
- * Le fichier doit commencer par l'en-tête : date,exchange_rate
+ * Le fichier doit commencer par l'en-tete : date,exchange_rate
  *
  * La base est d'abord construite dans une map temporaire.
  * L'attribut _dB n'est remplace qu'une fois l'integralite du fichier valide.
@@ -213,7 +213,7 @@ bool BitcoinExchange::loadDatabase(const std::string &databasePath)
         if (trimmedLine.empty())
             continue;
 
-		// Recherche de la virgule unique séparant la date du taux.
+		// Recherche de la virgule unique separant la date du taux.
         const std::string::size_type comma = trimmedLine.find(',');
 
         if (comma == std::string::npos 
@@ -229,27 +229,99 @@ bool BitcoinExchange::loadDatabase(const std::string &databasePath)
         if (!_isValidDate(date) || !_isValidValue(rateStr, rate) || rate < 0)
             return false;
 
-		// La date devient la clé et le taux devient la valeur.
+		// La date devient la cle et le taux devient la valeur.
         dB[date] = rate;
     }
 
     if (file.bad() || dB.empty())
         return false;
 
-	// Toutes les lignes sont valides, la map temporaire devient la base definitive de l'objet
+	// Lignes valides : la map temporaire devient la base definitive de l'objet
     _dB.swap(dB);
     return true;
 }
 
 /**
- * Lit le fichier fourni par l'utilisateur et traite chaque ligne.
+ * Traite une ligne non vide du fichier utilisateur.
  *
- * Pour chaque date valide :
- * - le taux exact est utilise s'il existe ;
- * - sinon, le taux de la date anterieure la plus proche est utilise.
+ * La fonction separe la date et la valeur, valide les deux champs,
+ * recherche le taux correspondant puis affiche le resultat.
  *
- * Une ligne invalide produit une erreur mais n'interrompt pas
- * le traitement des lignes suivantes.
+ * Une ligne invalide affiche une erreur puis retourne simplement
+ * a processInput(), qui pourra continuer avec la ligne suivante.
+ */
+void BitcoinExchange::_processLine(const std::string &line) const
+{
+    // Recherche l'unique separateur entre la date et la valeur
+    const std::string::size_type pipe = line.find('|');
+
+    if (pipe == std::string::npos
+        || line.find('|', pipe + 1) != std::string::npos)
+    {
+        std::cout << "Error: bad input => " << line << std::endl;
+        return;
+    }
+
+    const std::string date = _trim(line.substr(0, pipe));
+    const std::string valueStr = _trim(line.substr(pipe + 1));
+
+    if (!_isValidDate(date))
+    {
+        std::cout << "Error: bad input => " << line << std::endl;
+        return;
+    }
+
+    double value;
+    if (!_isValidValue(valueStr, value))
+    {
+        std::cout << "Error: bad input => " << line << std::endl;
+        return;
+    }
+
+    if (value < 0)
+    {
+        std::cout << "Error: not a positive number." << std::endl;
+        return;
+    }
+
+    if (value > 1000)
+    {
+        std::cout << "Error: too large a number." << std::endl;
+        return;
+    }
+
+    // lower_bound() renvoie la 1ere date superieure ou egale a la date recherchee
+    std::map<std::string, double>::const_iterator entry = _dB.lower_bound(date);
+
+    // Si aucune correspondance exacte, selectionne la date anterieure la plus proche
+    if (entry == _dB.end() || entry->first != date)
+    {
+        // Si entry vaut deja begin(), aucune date anterieure n'est disponible
+        if (entry == _dB.begin())
+        {
+            std::cout << "Error: no exchange rate available => "
+                	  << date << std::endl;
+            return;
+        }
+        --entry; // Selectionne la date inferieure la plus proche
+    }
+
+    // Affichage du résultat : date, valeur et taux correspondant
+    std::cout << date << " => " << value
+        	  << " = " << value * entry->second
+              << std::endl;
+}
+
+/**
+ * Lit et traite le fichier d'entree fourni par l'utilisateur.
+ *
+ * Le fichier doit commencer par l'en-tete "date | value".
+ * Les lignes vides sont ignorees et chaque ligne non vide est transmise
+ * a _processLine(), qui verifie son contenu et affiche soit le resultat
+ * de la conversion, soit l'erreur correspondante.
+ *
+ * Une ligne incorrecte n'interrompt pas la lecture : le reste du fichier
+ * est toujours traite.
  */
 bool BitcoinExchange::processInput(const std::string &inputPath) const
 {
@@ -261,7 +333,6 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
         return false;
     }
 
-	// Verification de l'en-tête du fichier
     std::string line;
     if (!std::getline(file, line) || _trim(line) != "date | value")
 	{
@@ -269,94 +340,23 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
 		return false;
 	}
 
-	// Indique si au moins une ligne de données non vide a été rencontrée.
 	bool hasData = false;
 
-	// Lecture et traitement de chaque ligne du fichier
     while (std::getline(file, line))
     {
         const std::string trimmedLine = _trim(line);
 
-    	// Les lignes vides ne sont pas considérées comme des données.
         if (trimmedLine.empty())
             continue;
 
 		hasData = true;
-
-		// recherche du separateur unique entre la date et la valeur.
-        const std::string::size_type pipe = trimmedLine.find('|');
-
-        if (pipe == std::string::npos
-			|| trimmedLine.find('|', pipe + 1)
-			!= std::string::npos)
-        {
-            std::cout << "Error: bad input => " << trimmedLine << std::endl;
-            continue;
-        }
-
-		// Extraction et nettoyage de la date et de la valeur
-        const std::string date = _trim(trimmedLine.substr(0, pipe));
-
-        const std::string valueStr = _trim(trimmedLine.substr(pipe + 1));
-
-		// Vérifie le format YYYY-MM-DD et la validité du calendrier.
-        if (!_isValidDate(date))
-        {
-            std::cout << "Error: bad input => " << trimmedLine << std::endl;
-            continue;
-        }
-
-        double value;
-
-		// verifie que la valeur est un nombre valide et la convertit en double
-        if (!_isValidValue(valueStr, value))
-        {
-            std::cout << "Error: bad input => " << trimmedLine << std::endl;
-            continue;
-        }
-
-        if (value < 0)
-        {
-            std::cout << "Error: not a positive number." << std::endl;
-            continue;
-        }
-
-        if (value > 1000)
-        {
-            std::cout << "Error: too large a number." << std::endl;
-            continue;
-        }
-
-		/*
- 		 * lower_bound(date) renvoie la première date supérieure ou égale
- 		 *
- 		 * Trois cas sont possibles :
- 		 * - la clé correspond exactement : on utilise ce taux ;
-	     * - la clé est supérieure ou end() : on recule d'une position ;
-         * - l'itérateur vaut begin() sans correspondance exacte :
-  		 *   aucune date antérieure n'existe dans la base.
-  		 */
-        std::map<std::string, double>::const_iterator entry = _dB.lower_bound(date);
-
-        if (entry == _dB.end() || entry->first != date)
-        {
-            if (entry == _dB.begin())
-            {
-                std::cout << "Error: no exchange rate available => " << date << std::endl;
-                continue;
-            }
-			// Sélectionne la date inférieure la plus proche.
-            --entry;
-        }
-
-		// Affichage du résultat : date, valeur et taux correspondant
-        std::cout << date << " => " << value << " = " << value * entry->second << std::endl;
+		_processLine(trimmedLine);
     }
     
 	/*
      * La boucle peut se terminer normalement parce que getline()
-     * a rencontré la fin du fichier. file.bad() distingue cette fin
-     * normale d'une véritable erreur de lecture.
+     * a rencontre la fin du fichier. file.bad() distingue cette fin
+     * normale d'une veritable erreur de lecture.
      */
     if (file.bad())
     {
@@ -364,7 +364,6 @@ bool BitcoinExchange::processInput(const std::string &inputPath) const
         return false;
     }
 
-    // Le fichier ne contenait que l'en-tête ou des lignes vides.
     if (!hasData)
     {
         std::cout << "Error: input file contains no data." << std::endl;
