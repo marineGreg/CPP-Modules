@@ -10,7 +10,7 @@
  * Trie une sequence d'entiers positifs avec l'algorithme
  * de tri fusion-insertion de Ford-Johnson.
  *
- * Le meme algorithme est instancie pour :
+ * Le meme algorithme est instancie separement pour :
  * - std::vector<int>
  * - std::deque<int>
  *
