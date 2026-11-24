@@ -15,7 +15,7 @@
  * - std::deque<int>
  *
  * Ces deux conteneurs fournissent :
- * - un acces direct par indice en temps constant 0(1);
+ * - un acces direct par indice en temps constant O(1);
  * - des iterateurs a acces aleatoire ;
  * - les operations necessaires a std::lower_bound() ;
  * - l'insertion d'un element a une position determinee.
