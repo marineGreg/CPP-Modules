@@ -10,12 +10,33 @@
  * Trie une sequence d'entiers positifs avec l'algorithme
  * de tri fusion-insertion de Ford-Johnson.
  *
- * Le meme algorithme est instancie separement pour :
+ * L'algorithme est implemente separement pour :
  * - std::vector<int>
  * - std::deque<int>
  *
- * Le programme mesure separement le temps de traitement
- * obtenu pour les deux conteneurs.
+ * Ces deux conteneurs fournissent :
+ * - un acces direct par indice en temps constant 0(1);
+ * - des iterateurs a acces aleatoire ;
+ * - les operations necessaires a std::lower_bound() ;
+ * - l'insertion d'un element a une position determinee.
+ *
+ * std::vector stocke ses elements dans une zone memoire contigue.
+ * Il favorise donc les parcours et l'utilisation du cache processeur,
+ * mais une insertion au milieu peut necessiter le deplacement de tous
+ * les elements suivants.
+ *
+ * std::deque stocke ses elements dans une memoire non contigue
+ * un deque est decoupe en plusieurs petits blocs memoire fixes.
+ * Chaque saut vers le milieu necessite une double indirection 
+ * (trouver le bon bloc, puis l'element dans le bloc), ce qui sollicite un 
+ * peu plus le cache processeur
+ *
+ * Les insertions au milieu restent lineaires pour les deux conteneurs.
+ * Leur organisation memoire differente permet cependant de comparer
+ * concretement leur comportement avec le meme algorithme.
+ *
+ * Le programme mesure separement le temps de traitement obtenu
+ * pour chaque implementation.
  */
 class PmergeMe
 {

@@ -10,10 +10,15 @@
  *
  * Les taux sont stockes dans une std::map :
  * - la cle represente une date au format YYYY-MM-DD ;
- * - la valeur represente le taux du Bitcoin associe à cette date.
+ * - la valeur represente le taux du Bitcoin associe a cette date.
  *
- * Le format ISO des dates permet de les comparer directement dans 
- * l'ordre chronologique avec l'ordre lexicographique.
+ * La std::map ne conserve pas l'ordre d'insertion du fichier :
+ * elle maintient automatiquement ses cles triees.
+ *
+ * Le format ISO des dates permet a l'ordre lexicographique des cles
+ * de correspondre a leur ordre chronologique. Cette organisation
+ * permet notamment de rechercher efficacement la date inferieure
+ * la plus proche avec lower_bound().
  */
 class BitcoinExchange
 {

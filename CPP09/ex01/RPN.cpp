@@ -18,6 +18,10 @@ RPN::~RPN() {}
 
 /**
  * Analyse et evalue une expression en RPN complete.
+ * Chaque token est soit un chiffre unique (0-9), soit un operateur (+, -, *, /).
+ * Les tokens sont separes par des espaces.
+ * Le resultat final est affiche sur la sortie standard.
+ * La fonction retourne true si l'expression est valide et evaluee avec succes.
  */
 bool RPN::resolve(const std::string& expression) {
 	while (!_stack.empty()) {

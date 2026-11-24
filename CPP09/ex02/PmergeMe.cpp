@@ -418,7 +418,7 @@ void PmergeMe::_sortDeque(std::deque<int> &numbers)
  *
  * Génère les indices des éléments pending selon les bornes de
  * Jacobsthal (1, 3, 5, 11, 21, 43...). Les indices sont ajoutés par groupes 
- * décroissants : b3, b2, b5, b4, b11, b10, etc.
+ * décroissants : b3, b2, b5, b4, b11, b10, b9, b8 b7, b6, b21, b20, etc.
  *
  * pending[0], correspondant à b1, n'est pas inclus puisqu'il est
  * directement placé au début de la chaîne principale.
