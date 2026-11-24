@@ -24,9 +24,9 @@ RPN::~RPN() {}
  * La fonction retourne true si l'expression est valide et evaluee avec succes.
  */
 bool RPN::resolve(const std::string& expression) {
-	while (!_stack.empty()) {
+	while (!_stack.empty()) // Nettoyer la pile avant d'evaluer une nouvelle expression
 		_stack.pop();
-	}
+
 	// istringstream decoupe l'expression en tokens separes par espaces, tab ou blancs
 	std::istringstream stream(expression);
 	std::string token;

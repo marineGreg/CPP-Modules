@@ -212,6 +212,9 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
      * Le tableau used est nécessaire en cas de doublons : deux grands
      * éléments de même valeur doivent rester associés à deux paires
      * distinctes.
+	 *
+	 * La pile des appels récursifs s'inverse : le dernier grand element trie
+	 * est le premier à être traité.
      */
     std::vector<int> pending;
     std::vector<int> used(highs.size(), 0);
