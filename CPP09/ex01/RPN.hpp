@@ -1,8 +1,7 @@
 #ifndef RPN_HPP
-# define RPN_HPP
-
-# include <stack>
-# include <string>
+#define RPN_HPP
+#include <stack>
+#include <string>
 
 /**
  * Evalue une expression en notation polonaise inversee (RPN)

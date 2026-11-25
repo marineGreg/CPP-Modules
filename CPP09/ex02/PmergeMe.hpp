@@ -1,10 +1,9 @@
 #ifndef PMERGEME_HPP
-# define PMERGEME_HPP
-
-# include <cstddef>
-# include <vector>
-# include <deque>
-# include <string>
+#define PMERGEME_HPP
+#include <stddef.h>
+#include <vector>
+#include <deque>
+#include <string>
 
 /**
  * Trie une sequence d'entiers positifs avec l'algorithme

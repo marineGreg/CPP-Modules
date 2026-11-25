@@ -1,8 +1,7 @@
 #ifndef BITCOINEXCHANGE_HPP
-# define BITCOINEXCHANGE_HPP
-
-# include <map>
-# include <string>
+#define BITCOINEXCHANGE_HPP
+#include <map>
+#include <string>
 
 /**
  * Charge un historique des taux du Bitcoin depuis un fichier CSV,

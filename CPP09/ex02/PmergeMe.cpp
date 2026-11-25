@@ -213,8 +213,9 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
      * éléments de même valeur doivent rester associés à deux paires
      * distinctes.
 	 *
-	 * La pile des appels récursifs s'inverse : le dernier grand element trie
-	 * est le premier à être traité.
+     * Après le retour de _sortVector(mainChain), mainChain est déjà triée.
+     * L'appel courant reprend ici et réassocie les petits éléments à leurs
+     * partenaires. Les appels reprennent ainsi du plus profond au premier.
      */
     std::vector<int> pending;
     std::vector<int> used(highs.size(), 0);
@@ -248,7 +249,7 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
      * b3, b2, b5, b4, b11, b10...
      * pending.size() inclut désormais le straggler.
      */
-    const std::vector<std::size_t> order = _buildInsertionOrder(pending.size());
+    const std::vector<size_t> order = _buildInsertionOrder(pending.size());
 
     for (size_t i = 0; i < order.size(); ++i)
     {
@@ -293,8 +294,10 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
 /**
  * @brief Trie un std::deque avec l'algorithme Ford-Johnson.
  *
- * Cette implémentation suit les mêmes étapes que la version vector,
- * mais tous les conteneurs utilisés par le tri sont des std::deque.
+ * Cette implémentation suit les mêmes étapes que la version vector.
+ * Les entiers à trier sont manipulés dans des std::deque.
+ * Seul order reste un std::vector : il contient les indices des éléments
+ * à insérer, produits par _buildInsertionOrder() pour les deux versions.
  *
  * @param numbers Deque à trier directement.
  */
@@ -343,9 +346,17 @@ void PmergeMe::_sortDeque(std::deque<int> &numbers)
     _sortDeque(mainChain);
 
     /*
-     * Replace les petits partenaires dans l'ordre de mainChain. Le tableau
-     * used distingue les paires lorsque plusieurs grands ont la même valeur.
-     * L'invariant obtenu est : pending[i] est associé à mainChain[i].
+     * Le tri récursif a changé l'ordre des grands éléments. Il faut donc
+     * remettre les petits dans ce même ordre afin de conserver les paires :
+     * pending[i] reste ainsi le partenaire de mainChain[i].
+     *
+     * Le tableau used est nécessaire en cas de doublons : deux grands
+     * éléments de même valeur doivent rester associés à deux paires
+     * distinctes.
+	 *
+     * Après le retour de _sortDeque(mainChain), mainChain est déjà triée.
+     * L'appel courant reprend ici et réassocie les petits éléments à leurs
+     * partenaires. Les appels reprennent ainsi du plus profond au premier.
      */
     std::deque<int> pending;
     std::deque<int> used(highs.size(), 0);
@@ -378,7 +389,7 @@ void PmergeMe::_sortDeque(std::deque<int> &numbers)
         sorted.push_front(pending[0]);
 
     // Construction de l'ordre d'insertion : b3, b2, b5, b4, b11, b10...
-    const std::vector<std::size_t> order = _buildInsertionOrder(pending.size());
+    const std::vector<size_t> order = _buildInsertionOrder(pending.size());
 
     for (size_t i = 0; i < order.size(); ++i)
     {
