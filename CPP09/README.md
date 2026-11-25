@@ -303,36 +303,27 @@ next = current + 2 * previous
 
 Jacobsthal ne détermine pas la position finale d'un nombre. Il détermine seulement quel `b_i` sera inséré ensuite.
 
-### 7. Rechercher avant le partenaire
+### 7. Insérer les éléments de `pending`
 
-Pour chaque indice choisi :
+Après la réassociation, si la taille d'entrée était impaire, le
+`straggler` est ajouté à la fin de `pending`, avant de calculer
+l'ordre Jacobsthal. Il participe donc au même ordre d'insertion
+que les autres `b_i`.
 
-```cpp
-const int value = pending[index];
-const int partner = mainChain[index];
-```
+Pour chaque indice choisi, on récupère `value = pending[index]` :
 
-Le code retrouve la position actuelle du partenaire :
+- Si l'élément a un partenaire, `mainChain[index]` donne sa valeur.
+  Un premier `lower_bound` retrouve la première occurrence de cette
+  valeur dans `sorted` et fixe la borne `upBound`.
+- Si `index == mainChain.size()` et que la taille était impaire,
+  c'est le `straggler`. Il n'a pas de partenaire : on ne lit pas
+  `mainChain[index]` et `upBound` reste à `sorted.end()`.
 
-```cpp
-iterator ceiling = std::lower_bound(sorted.begin(), sorted.end(), partner);
-```
-
-Puis il cherche la position de `value` uniquement dans l'intervalle `[begin, ceiling)` :
-
-```cpp
-iterator position = std::lower_bound(sorted.begin(), ceiling, value);
-```
-
-Cette limitation est valide parce que la formation de la paire a déjà établi `value <= partner`.
-
-Les éléments rencontrés par la recherche binaire peuvent être des `a_i` ou des `b_i` déjà insérés : ils forment désormais une seule chaîne triée.
-
-### 8. Réinsérer le `straggler`
-
-Dans le code actuel, l'élément impair est inséré à la fin du processus avec une recherche binaire sur toute la chaîne, car il ne possède aucun partenaire fournissant un ceiling.
-
-Cette stratégie produit un résultat trié. Une version strictement optimisée de Ford-Johnson peut traiter le straggler comme le dernier `b` et l'inclure dans l'ordre Jacobsthal afin de minimiser davantage le pire nombre de comparaisons.
+Un second `lower_bound` cherche la position d'insertion dans
+`[sorted.begin(), upBound)`. Pour un élément apparié, la recherche
+s'arrête avant la borne, car la comparaison de la paire a déjà établi
+`value <= partner`. Pour le `straggler`, la recherche couvre toute
+la chaîne triée.
 
 ## Exemple avec le code actuel
 
@@ -350,32 +341,26 @@ lows  = [ 4, 6, 3,  2]
 straggler = 1
 ```
 
-Après le tri récursif et la réassociation :
+Après le tri récursif, la réassociation et l'ajout du `straggler` :
 
 ```text
 mainChain = [8, 9, 10, 12]
-pending   = [3, 6,  2,  4]
+pending   = [3, 6,  2,  4, 1]
+             b1 b2 b3 b4 b5
 ```
 
-La chaîne commence par :
+`b1 = 3` est placé directement au début de `sorted`, qui vaut alors
+`[3, 8, 9, 10, 12]`.
 
-```text
-[3, 8, 9, 10, 12]
-```
+Pour cinq éléments dans `pending`, l'ordre d'insertion vaut
+`[2, 1, 4, 3]` en indices C++, soit `b3`, `b2`, `b5`, `b4`.
 
-Pour quatre éléments pending, l'ordre vaut `[2, 1, 3]`, soit `b3`, `b2`, `b4` :
-
-```text
-insérer 2 avant son partenaire 10
-insérer 6 avant son partenaire 9
-insérer 4 avant son partenaire 12
-```
-
-Enfin, le straggler `1` est inséré dans toute la chaîne :
-
-```text
-[1, 2, 3, 4, 6, 8, 9, 10, 12]
-```
+| Élément inséré | Borne exclue de la recherche | `sorted` après insertion |
+|---|---|---|
+| `b3 = 2` | `10` | `[2, 3, 8, 9, 10, 12]` |
+| `b2 = 6` | `9` | `[2, 3, 6, 8, 9, 10, 12]` |
+| `b5 = 1` (straggler) | `sorted.end()` : toute la chaîne | `[1, 2, 3, 6, 8, 9, 10, 12]` |
+| `b4 = 4` | `12` | `[1, 2, 3, 4, 6, 8, 9, 10, 12]` |
 
 ## Chronométrage
 
@@ -510,26 +495,24 @@ L'idée essentielle du module est que le choix d'un conteneur dépend avant tout
     La suite attend que l'appel récursif soit fini.
     -----------------------------------------------
 
-[F] réorganiser lows pour les aligner avec
-    les éléments maintenant triés de mainChain
+[F] construire pending en réassociant chaque low à son high trié
 
-[G] sorted = mainChain
+[G] si la taille d'entrée était impaire:
+        ajouter straggler à la fin de pending
 
-[H] placer b1 au début de sorted
+[H] former sorted avec b1 suivi de mainChain
 
-[I] construire l'ordre Jacobsthal
+[I] construire l'ordre Jacobsthal à partir de pending.size()
 
-[J] pour chaque indice de l'ordre Jacobsthal:
-        value = petit élément à insérer
-        partner = grand partenaire
-        retrouver partner dans sorted
-        chercher la position de value avant partner
-        insérer value
+[J] pour chaque index de cet ordre:
+        value = pending[index]
+        upBound = sorted.end()
 
-[K] si un straggler existe:
-        chercher sa position dans toute la chaîne
-        l'insérer
+        si ce n'est pas le straggler:
+            partner = mainChain[index]
+            upBound = lower_bound(sorted.begin(), sorted.end(), partner)
 
-[L] numbers = sorted
+        position = lower_bound(sorted.begin(), upBound, value)
+        insérer value à position
 
-[M] retourner au niveau précédent
+[K] échanger numbers et sorted
