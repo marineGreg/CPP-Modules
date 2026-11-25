@@ -23,7 +23,8 @@ RPN::~RPN() {}
  * Le resultat final est affiche sur la sortie standard.
  * La fonction retourne true si l'expression est valide et evaluee avec succes.
  */
-bool RPN::resolve(const std::string& expression) {
+bool RPN::resolve(const std::string& expression)
+{
 	while (!_stack.empty()) // Nettoyer la pile avant d'evaluer une nouvelle expression
 		_stack.pop();
 
@@ -62,7 +63,8 @@ bool RPN::resolve(const std::string& expression) {
 /** 
  * Verifie si un caractere correspond a un operateur autorise : +, -, *, /
  */
-bool RPN::_isOperator(char c) const {
+bool RPN::_isOperator(char c) const
+{
     return (c == '+' || c == '-' || c == '*' || c == '/');
 }
 
@@ -71,7 +73,8 @@ bool RPN::_isOperator(char c) const {
  * La valeur de droite est retiree en premier, puis la valeur de gauche.
  * Le resultat est ensuite remis sur la pile.
  */
-bool RPN::_performOperation(char op) {
+bool RPN::_performOperation(char op)
+{
     if (_stack.size() < 2)
     	return false;
 
