@@ -77,7 +77,7 @@ void PmergeMe::run(int ac, char **av)
 	}
 
 	// L'égalité des conteneurs ne suffit pas : vérifie aussi l'ordre croissant.
-	for (std::size_t i = 1; i < _vector.size(); ++i)
+	for (size_t i = 1; i < _vector.size(); ++i)
 	{
 		if (_vector[i - 1] > _vector[i])
 			throw std::logic_error("result is not sorted");
@@ -125,7 +125,7 @@ void PmergeMe::_parseInput(int ac, char **av, std::vector<int> &input) const
 		{
 			hasToken = true;
 			// Vérifie que le token contient exclusivement des chiffres.
-			for (std::size_t j = 0; j < token.size(); ++j)
+			for (size_t j = 0; j < token.size(); ++j)
 			{
 				const unsigned char c = static_cast<unsigned char>(token[j]);
 				if (!std::isdigit(c))
@@ -187,7 +187,7 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
     std::vector<int> highs;
     std::vector<int> lows;
 
-    for (std::size_t i = 0; i < numbers.size(); i += 2)
+    for (size_t i = 0; i < numbers.size(); i += 2)
     {
         int high = numbers[i];
         int low = numbers[i + 1];
@@ -219,9 +219,9 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
     std::vector<int> pending;
     std::vector<int> used(highs.size(), 0);
 
-    for (std::size_t i = 0; i < mainChain.size(); ++i)
+    for (size_t i = 0; i < mainChain.size(); ++i)
     {
-        for (std::size_t j = 0; j < highs.size(); ++j)
+        for (size_t j = 0; j < highs.size(); ++j)
         {
             if (!used[j] && highs[j] == mainChain[i])
             {
@@ -250,9 +250,9 @@ void PmergeMe::_sortVector(std::vector<int> &numbers)
      */
     const std::vector<std::size_t> order = _buildInsertionOrder(pending.size());
 
-    for (std::size_t i = 0; i < order.size(); ++i)
+    for (size_t i = 0; i < order.size(); ++i)
     {
-        const std::size_t index = order[i];
+        const size_t index = order[i];
         const int value = pending[index];
 
 		/*
@@ -325,7 +325,7 @@ void PmergeMe::_sortDeque(std::deque<int> &numbers)
     std::deque<int> highs;
     std::deque<int> lows;
 
-    for (std::size_t i = 0; i < numbers.size(); i += 2)
+    for (size_t i = 0; i < numbers.size(); i += 2)
     {
         int high = numbers[i];
         int low = numbers[i + 1];
@@ -350,9 +350,9 @@ void PmergeMe::_sortDeque(std::deque<int> &numbers)
     std::deque<int> pending;
     std::deque<int> used(highs.size(), 0);
 
-    for (std::size_t i = 0; i < mainChain.size(); ++i)
+    for (size_t i = 0; i < mainChain.size(); ++i)
     {
-        for (std::size_t j = 0; j < highs.size(); ++j)
+        for (size_t j = 0; j < highs.size(); ++j)
         {
             if (!used[j] && highs[j] == mainChain[i])
             {
@@ -380,9 +380,9 @@ void PmergeMe::_sortDeque(std::deque<int> &numbers)
     // Construction de l'ordre d'insertion : b3, b2, b5, b4, b11, b10...
     const std::vector<std::size_t> order = _buildInsertionOrder(pending.size());
 
-    for (std::size_t i = 0; i < order.size(); ++i)
+    for (size_t i = 0; i < order.size(); ++i)
     {
-        const std::size_t index = order[i];
+        const size_t index = order[i];
         const int value = pending[index];
 
 		const bool isStraggler = isOdd && index == mainChain.size();
@@ -465,7 +465,7 @@ void PmergeMe::_printSequence(const std::string &label, const std::vector<int> &
 {
 	std::cout << label;
 	
-	for (std::size_t i = 0; i < sequence.size(); ++i)
+	for (size_t i = 0; i < sequence.size(); ++i)
 	{
 		if (i != 0)
 			std::cout << " ";

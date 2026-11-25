@@ -42,7 +42,7 @@ class PmergeMe
 {
 	public:
 		PmergeMe();
-		PmergeMe(const PmergeMe& other);
+		PmergeMe(const PmergeMe& src);
 		PmergeMe& operator=(const PmergeMe& other);
 		~PmergeMe();
 

@@ -9,11 +9,11 @@ BitcoinExchange::BitcoinExchange() {}
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &src) : _dB(src._dB) {}
 
-BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
-{
-	if (this != &other)
-	_dB = other._dB;
-return *this;
+BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other) {
+	if (this != &other) {
+		_dB = other._dB;
+	}
+	return *this;
 }
 
 BitcoinExchange::~BitcoinExchange() {}
