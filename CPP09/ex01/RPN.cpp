@@ -2,6 +2,7 @@
 #include <cctype>
 #include <iostream>
 #include <sstream>
+#include <climits>
 
 RPN::RPN() {}
 
@@ -69,40 +70,71 @@ bool RPN::_isOperator(char c) const
 }
 
 /**
- * Applique un operateur aux deux valeurs placees au sommet de la pile.
- * La valeur de droite est retiree en premier, puis la valeur de gauche.
- * Le resultat est ensuite remis sur la pile.
+ * Applique un opérateur aux deux valeurs au sommet de la pile.
+ *
+ * La première valeur dépilée est l'opérande droite, la seconde
+ * est l'opérande gauche. Cet ordre compte pour la soustraction
+ * et la division.
+ *
+ * Avant le calcul, la méthode vérifie que l'opération ne divise
+ * pas par zéro et que son résultat est représentable par un int.
+ * Si le calcul réussit, le résultat est empilé.
  */
 bool RPN::_performOperation(char op)
 {
     if (_stack.size() < 2)
-    	return false;
+        return false;
 
-    const int right = _stack.top(); // Valeur de droite est extraite en premier
-
-	if (op == '/' && right == 0)
-		return false; // Division par zero interdite
-
-    _stack.pop();
-    
-	const int left = _stack.top(); // Valeur de gauche est extraite en second
+    const int right = _stack.top();
     _stack.pop();
 
-	switch (op) {
-		case '+':
-			_stack.push(left + right);
-			break;
-		case '-':
-			_stack.push(left - right);
-			break;
-		case '*':
-			_stack.push(left * right);
-			break;
-		case '/':
-			_stack.push(left / right);
-			break;
-		default:
-			return false; // Operateur inconnu
-	}
+    const int left = _stack.top();
+    _stack.pop();
+
+    int result;
+
+    switch (op)
+    {
+        case '+':
+            if ((right > 0 && left > INT_MAX - right)
+                || (right < 0 && left < INT_MIN - right))
+                return false;
+            result = left + right;
+            break;
+
+        case '-':
+            if ((right > 0 && left < INT_MIN + right)
+                || (right < 0 && left > INT_MAX + right))
+                return false;
+            result = left - right;
+            break;
+
+        case '*':
+            if (left > 0)
+            {
+                if ((right > 0 && left > INT_MAX / right)
+                    || (right < 0 && right < INT_MIN / left))
+                    return false;
+            }
+            else if (left < 0)
+            {
+                if ((right > 0 && left < INT_MIN / right)
+                    || (right < 0 && left < INT_MAX / right))
+                    return false;
+            }
+            result = left * right;
+            break;
+
+        case '/':
+            if (right == 0 || (left == INT_MIN && right == -1))
+                return false;
+            result = left / right;
+            break;
+
+        default:
+            return false;
+    }
+
+    _stack.push(result);
     return true;
 }
